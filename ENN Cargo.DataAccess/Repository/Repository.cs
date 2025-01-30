@@ -28,7 +28,6 @@ namespace ENN_Cargo.DataAccess.Repository
         {
             return await dbSet.Where(predicate).ToListAsync();
         }
-
         public async Task<IEnumerable<T>> AllWithIncludeAsync(params Expression<Func<T, object>>[] include)
         {
             IQueryable<T> query = dbSet;

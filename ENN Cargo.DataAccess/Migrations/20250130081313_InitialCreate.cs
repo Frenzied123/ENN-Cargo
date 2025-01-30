@@ -61,7 +61,9 @@ namespace ENN_Cargo.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,7 +79,11 @@ namespace ENN_Cargo.DataAccess.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     FromAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FromCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FromTown = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ToAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ToCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ToTown = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PickUpDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -95,6 +101,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -305,29 +313,29 @@ namespace ENN_Cargo.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "CompanyStocks",
-                columns: new[] { "Id", "Address", "Email", "Name", "PhoneNumber" },
+                columns: new[] { "Id", "Address", "Country", "Email", "Name", "PhoneNumber", "Town" },
                 values: new object[,]
                 {
-                    { 1, "Boyana 56,Sofia", "glassind@gmail.com", "Glass Industries", "0895038543" },
-                    { 2, "Medne Rudnik 23,Burgas", "metalind@gmail.com", "Metal Industries", "0885037821" }
+                    { 1, "Boyana 56", "Bulgaria", "glassind@gmail.com", "Glass Industries", "0895038543", "Sofia" },
+                    { 2, "Medne Rudnik 23", "Bulgaria", "metalind@gmail.com", "Metal Industries", "0885037821", "Burgas" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Shipments",
-                columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "PickUpDate", "ToAddress", "Weight" },
+                columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "FromCountry", "FromTown", "PickUpDate", "ToAddress", "ToCountry", "ToTown", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 31, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5113), "Electronics", "Sklad Kappa", new DateTime(2025, 1, 28, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5063), "Kaufland", 24.0 },
-                    { 2, new DateTime(2025, 2, 2, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5124), "Furniture", "Sklad Videnov", new DateTime(2025, 1, 28, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5121), "Metro", 27.0 }
+                    { 1, new DateTime(2025, 2, 2, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5149), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5096), "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
+                    { 2, new DateTime(2025, 2, 4, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5157), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5155), "Metro", "Bulgaria", "Sofia", 27.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "TruckCompanies",
-                columns: new[] { "Id", "Address", "Email", "Name", "PhoneNumber" },
+                columns: new[] { "Id", "Address", "Country", "Email", "Name", "PhoneNumber", "Town" },
                 values: new object[,]
                 {
-                    { 1, "J.K Vasil Levski 23, Kazanlak", "expresslog@gmail.com", "Express Logistics", "0876038543" },
-                    { 2, "Stolipinovo 12, Plovdiv", "fastfre@gmail.com", "Fast Freight", "08850923854" }
+                    { 1, "J.K Vasil Levski 23", "Bulgaria", "expresslog@gmail.com", "Express Logistics", "0876038543", "Kazanlak" },
+                    { 2, "Stolipinovo 12", "Bulgaria", "fastfre@gmail.com", "Fast Freight", "08850923854", "Plovdiv" }
                 });
 
             migrationBuilder.InsertData(

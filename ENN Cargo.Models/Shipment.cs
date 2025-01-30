@@ -12,7 +12,11 @@ namespace ENN_Cargo.Models
         public string Description { get; set; }
         public double Weight { get; set; }
         public string FromAddress { get; set; }
+        public string FromCountry { get; set; }
+        public string FromTown { get; set; }
         public string ToAddress { get; set; }
+        public string ToCountry { get; set; }
+        public string ToTown { get; set; }
         public DateTime? PickUpDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public ICollection<CompanyStocks_Shipments> CompanyStocks_Shipments { get; set; }

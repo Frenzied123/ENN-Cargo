@@ -1,8 +1,7 @@
 ﻿using ENN_Cargo.DataAccess.Repository.IRepository;
 using ENN_Cargo.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ENN_Cargo.Core
@@ -15,43 +14,26 @@ namespace ENN_Cargo.Core
         {
             repository = _repository;
         }
-        public async Task AddAsync(TruckCompany entity)
-        {
-            await repository.AddAsync(entity);
-        }
-
-        public async Task<IEnumerable<TruckCompany>> AllByAsync(Expression<Func<TruckCompany, bool>> predicate)
-        {
-            return await repository.AllByAsync(predicate);
-        }
-
-        public async Task<IEnumerable<TruckCompany>> AllWithIncludeAsync(params Expression<Func<TruckCompany, object>>[] include)
-        {
-            return await repository.AllWithIncludeAsync(include);
-        }
-
-        public async Task<TruckCompany> FindAsync(Expression<Func<TruckCompany, bool>> predicate)
-        {
-            return await repository.FindAsync(predicate);
-        }
         public async Task<IEnumerable<TruckCompany>> GetAllAsync()
         {
             return await repository.GetAllAsync();
         }
 
-        public async Task<TruckCompany> GetByIdAsync(Expression<Func<TruckCompany, bool>> filter)
-        {
-            return await repository.GetByIdAsync(filter);
-        }
         public async Task<TruckCompany> GetByIdAsync(int id)
         {
             return await repository.GetByIdAsync(x => x.Id == id);
         }
 
-        public async Task RemoveAsync(TruckCompany entity)
+        public async Task AddAsync(TruckCompany entity)
         {
-            await repository.RemoveAsync(entity);
+            await repository.AddAsync(entity);
         }
+
+        public async Task UpdateAsync(TruckCompany entity)
+        {
+            await repository.UpdateAsync(entity);
+        }
+
         public async Task RemoveAsync(int id)
         {
             var truckCompany = await repository.GetByIdAsync(x => x.Id == id);
@@ -61,14 +43,37 @@ namespace ENN_Cargo.Core
             }
         }
 
-        public async Task UpdateAsync(TruckCompany entity)
+        public async Task<IEnumerable<TruckCompany>> GetFilteredTruckCompaniesAsync(int? minDrivers, int? maxDrivers, int? minVehicles, int? maxVehicles, string country, string town)
         {
-            await repository.UpdateAsync(entity);
-        }
+            var truckCompanies = await repository.GetAllAsync();
+            var query = truckCompanies.AsQueryable();
 
-        public async Task UpdateTruckCompanyAsync(TruckCompany truckCompany)
-        {
-            await repository.UpdateAsync(truckCompany);
+            if (minDrivers.HasValue)
+            {
+                query = query.Where(x => x.Drivers.Count >= minDrivers);
+            }
+            if (maxDrivers.HasValue)
+            {
+                query = query.Where(x => x.Drivers.Count <= maxDrivers);
+            }
+            if (minVehicles.HasValue)
+            {
+                query = query.Where(x => x.Vehicles.Count >= minVehicles);
+            }
+            if (maxVehicles.HasValue)
+            {
+                query = query.Where(x => x.Vehicles.Count <= maxVehicles);
+            }
+            if (!string.IsNullOrEmpty(country))
+            {
+                query = query.Where(x => x.Country == country);
+            }
+            if (!string.IsNullOrEmpty(town))
+            {
+                query = query.Where(x => x.Town == town);
+            }
+
+            return query.ToList();
         }
     }
 }

@@ -11,5 +11,6 @@ namespace ENN_Cargo.Core
         Task AddAsync(TruckCompany truckCompany);
         Task UpdateAsync(TruckCompany truckCompany);
         Task RemoveAsync(int id);
+        Task<IEnumerable<TruckCompany>> GetFilteredTruckCompaniesAsync(int? minDrivers, int? maxDrivers, int? minVehicles, int? maxVehicles, string country, string city);
     }
 }

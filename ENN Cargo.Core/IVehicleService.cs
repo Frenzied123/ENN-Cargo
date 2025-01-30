@@ -1,6 +1,8 @@
-﻿using ENN_Cargo.Models;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using ENN_Cargo.Models;
 
 namespace ENN_Cargo.Core
 {
@@ -11,5 +13,6 @@ namespace ENN_Cargo.Core
         Task AddAsync(Vehicle vehicle);
         Task UpdateAsync(Vehicle vehicle);
         Task RemoveAsync(int id);
+        Task<IEnumerable<Vehicle>> AllByAsync(Expression<Func<Vehicle, bool>> predicate);
     }
 }

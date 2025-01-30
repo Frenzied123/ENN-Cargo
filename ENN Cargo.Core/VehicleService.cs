@@ -2,6 +2,7 @@
 using ENN_Cargo.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -9,78 +10,39 @@ namespace ENN_Cargo.Core
 {
     public class VehicleService : IVehicleService
     {
-        private readonly IRepository<Vehicle> repository;
+        private readonly IRepository<Vehicle> _vehicleRepository;
 
-        public VehicleService(IRepository<Vehicle> _repository)
+        public VehicleService(IRepository<Vehicle> vehicleRepository)
         {
-            repository = _repository;
+            _vehicleRepository = vehicleRepository;
         }
-
-        public async Task AddAsync(Vehicle entity)
-        {
-            await repository.AddAsync(entity);
-        }
-
-        public async Task AddVehicleAsync(Vehicle vehicle)
-        {
-            await repository.AddAsync(vehicle);
-        }
-
-        public async Task<IEnumerable<Vehicle>> AllByAsync(Expression<Func<Vehicle, bool>> predicate)
-        {
-            return await repository.AllByAsync(predicate);
-        }
-
-        public async Task<IEnumerable<Vehicle>> AllWithIncludeAsync(params Expression<Func<Vehicle, object>>[] include)
-        {
-            return await repository.AllWithIncludeAsync(include);
-        }
-
-        public async Task<Vehicle> FindAsync(Expression<Func<Vehicle, bool>> predicate)
-        {
-            return await repository.FindAsync(predicate);
-        }
-
         public async Task<IEnumerable<Vehicle>> GetAllAsync()
         {
-            return await repository.GetAllAsync();
-        }
-
-        public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync()
-        {
-            return await repository.GetAllAsync();
-        }
-
-        public async Task<Vehicle> GetByIdAsync(Expression<Func<Vehicle, bool>> filter)
-        {
-            return await repository.GetByIdAsync(filter);
+            return await _vehicleRepository.GetAllAsync();
         }
         public async Task<Vehicle> GetByIdAsync(int id)
         {
-            return await repository.GetByIdAsync(x => x.Id == id);
+            return await _vehicleRepository.GetByIdAsync(x => x.Id == id);
         }
-
-        public async Task RemoveAsync(Vehicle entity)
+        public async Task AddAsync(Vehicle vehicle)
         {
-            await repository.RemoveAsync(entity);
+            await _vehicleRepository.AddAsync(vehicle);
+        }
+        public async Task UpdateAsync(Vehicle vehicle)
+        {
+            await _vehicleRepository.UpdateAsync(vehicle);
         }
         public async Task RemoveAsync(int id)
         {
-            var vehicle = await repository.GetByIdAsync(x => x.Id == id);
+            var vehicle = await GetByIdAsync(id);
             if (vehicle != null)
             {
-                await repository.RemoveAsync(vehicle);
+                await _vehicleRepository.RemoveAsync(vehicle);
             }
         }
-
-        public async Task UpdateAsync(Vehicle entity)
+        public async Task<IEnumerable<Vehicle>> AllByAsync(Expression<Func<Vehicle, bool>> predicate)
         {
-            await repository.UpdateAsync(entity);
-        }
-
-        public async Task UpdateVehicleAsync(Vehicle vehicle)
-        {
-            await repository.UpdateAsync(vehicle);
+            return await _vehicleRepository.AllByAsync(predicate);
         }
     }
 }

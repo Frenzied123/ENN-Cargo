@@ -11,5 +11,6 @@ namespace ENN_Cargo.Core
         Task AddAsync(Driver driver);
         Task UpdateAsync(Driver driver);
         Task RemoveAsync(int id);
+        Task<IEnumerable<Driver>> GetFilteredDriversAsync(int? minExperience, int? maxExperience, string sortByExperience, string sortByTruckCompany);
     }
 }

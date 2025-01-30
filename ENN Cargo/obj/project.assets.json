@@ -8205,23 +8205,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\en\\.nuget\\packages\\": {},
+    "C:\\Users\\nuri2\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo\\ENN Cargo.csproj",
+      "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo\\ENN Cargo.csproj",
       "projectName": "ENN Cargo",
-      "projectPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo\\ENN Cargo.csproj",
-      "packagesPath": "C:\\Users\\en\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo\\obj\\",
+      "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo\\ENN Cargo.csproj",
+      "packagesPath": "C:\\Users\\nuri2\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\en\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\nuri2\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -8236,17 +8236,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
-              "projectPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj"
+            "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
+              "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj"
             },
-            "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
-              "projectPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj"
+            "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
+              "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj"
             },
-            "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
-              "projectPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj"
+            "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
+              "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj"
             },
-            "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {
-              "projectPath": "C:\\Users\\en\\Desktop\\qwuiwduqwi\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj"
+            "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {
+              "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj"
             }
           }
         }
@@ -8259,7 +8259,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -8319,140 +8319,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27",
-      "libraryId": "Azure.Identity",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
-      "libraryId": "Azure.Identity",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv",
-      "libraryId": "Azure.Identity",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7",
-      "libraryId": "Microsoft.Data.SqlClient",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
-      "libraryId": "Microsoft.Extensions.Caching.Memory",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.IdentityModel.JsonWebTokens' 6.24.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "libraryId": "Microsoft.IdentityModel.JsonWebTokens",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'NuGet.Common' 6.3.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-6qmf-mmc7-6c2p",
-      "libraryId": "NuGet.Common",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1904",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'NuGet.Packaging' 6.3.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-68w7-72jg-6qpp",
-      "libraryId": "NuGet.Packaging",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'NuGet.Protocol' 6.3.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-6qmf-mmc7-6c2p",
-      "libraryId": "NuGet.Protocol",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Formats.Asn1' 5.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-447r-wph3-92pm",
-      "libraryId": "System.Formats.Asn1",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.24.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Text.Json' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
-      "libraryId": "System.Text.Json",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Text.Json' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
-      "libraryId": "System.Text.Json",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

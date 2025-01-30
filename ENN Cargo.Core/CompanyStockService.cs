@@ -1,73 +1,84 @@
 ﻿using ENN_Cargo.DataAccess.Repository.IRepository;
 using ENN_Cargo.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace ENN_Cargo.Core
 {
     public class CompanyStockService : ICompanyStockService
     {
-        private readonly IRepository<CompanyStock> repository;
+        private readonly IRepository<CompanyStock> _repository;
 
-        public CompanyStockService(IRepository<CompanyStock> _repository)
+        public CompanyStockService(IRepository<CompanyStock> repository)
         {
-            repository = _repository;
-        }
-
-        public async Task AddAsync(CompanyStock entity)
-        {
-            await repository.AddAsync(entity);
-        }
-
-        public async Task<IEnumerable<CompanyStock>> AllByAsync(Expression<Func<CompanyStock, bool>> predicate)
-        {
-            return await repository.AllByAsync(predicate);
-        }
-
-        public async Task<IEnumerable<CompanyStock>> AllWithIncludeAsync(params Expression<Func<CompanyStock, object>>[] include)
-        {
-            return await repository.AllWithIncludeAsync(include);
-        }
-
-        public async Task<CompanyStock> FindAsync(Expression<Func<CompanyStock, bool>> predicate)
-        {
-            return await repository.FindAsync(predicate);
+            _repository = repository;
         }
 
         public async Task<IEnumerable<CompanyStock>> GetAllAsync()
         {
-            return await repository.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<CompanyStock> GetByIdAsync(Expression<Func<CompanyStock, bool>> filter)
+        public async Task<IEnumerable<CompanyStock>> GetSortedCompanyStocksAsync(string sortOrder)
         {
-            return await repository.GetByIdAsync(filter);
+            var companyStocks = await _repository.GetAllAsync();
+            if (sortOrder == "A-Z")
+            {
+                return companyStocks.OrderBy(x => x.Name).ToList();
+            }
+            else if (sortOrder == "Z-A")
+            {
+                return companyStocks.OrderByDescending(x => x.Name).ToList();
+            }
+            return companyStocks.ToList();
         }
 
         public async Task<CompanyStock> GetByIdAsync(int id)
         {
-            return await repository.GetByIdAsync(x => x.Id == id);
+            return await _repository.GetByIdAsync(x => x.Id == id);
         }
 
-        public async Task RemoveAsync(CompanyStock entity)
+        public async Task AddAsync(CompanyStock companyStock)
         {
-            await repository.RemoveAsync(entity);
+            await _repository.AddAsync(companyStock);
+        }
+
+        public async Task UpdateAsync(CompanyStock companyStock)
+        {
+            await _repository.UpdateAsync(companyStock);
         }
 
         public async Task RemoveAsync(int id)
         {
-            var companyStock = await repository.GetByIdAsync(x => x.Id == id);
+            var companyStock = await _repository.GetByIdAsync(x => x.Id == id);
             if (companyStock != null)
             {
-                await repository.RemoveAsync(companyStock);
+                await _repository.RemoveAsync(companyStock);
             }
         }
 
-        public async Task UpdateAsync(CompanyStock entity)
+        public async Task<IEnumerable<CompanyStock>> GetFilteredCompanyStocksAsync(string sortOrder, string countryFilter, string townFilter)
         {
-            await repository.UpdateAsync(entity);
+            var companyStocks = await _repository.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(countryFilter))
+            {
+                companyStocks = companyStocks.Where(x => x.Country.Contains(countryFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(townFilter))
+            {
+                companyStocks = companyStocks.Where(x => x.Town.Contains(townFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (sortOrder == "A-Z")
+            {
+                companyStocks = companyStocks.OrderBy(x => x.Name).ToList();
+            }
+            else if (sortOrder == "Z-A")
+            {
+                companyStocks = companyStocks.OrderByDescending(x => x.Name).ToList();
+            }
+
+            return companyStocks;
         }
     }
 }

@@ -11,5 +11,6 @@ namespace ENN_Cargo.Core
         Task AddAsync(Shipment shipment);
         Task UpdateAsync(Shipment shipment);
         Task RemoveAsync(int id);
+        Task<IEnumerable<Shipment>> GetFilteredShipmentsAsync(double? minWeight, double? maxWeight,string fromCountry, string fromCity,string toCountry, string toCity,DateTime? pickUpDateFrom, DateTime? pickUpDateTo,DateTime? deliveryDateFrom, DateTime? deliveryDateTo);
     }
 }

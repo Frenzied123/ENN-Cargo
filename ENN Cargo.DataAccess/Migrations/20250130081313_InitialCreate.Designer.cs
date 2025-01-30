@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ENN_Cargo.DataAccess.Migrations
 {
     [DbContext(typeof(ENN_CargoApplicationDbContext))]
-    [Migration("20250128184505_InitialCreate")]
+    [Migration("20250130081313_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,6 +37,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +53,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Town")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("CompanyStocks");
@@ -57,18 +65,22 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Boyana 56,Sofia",
+                            Address = "Boyana 56",
+                            Country = "Bulgaria",
                             Email = "glassind@gmail.com",
                             Name = "Glass Industries",
-                            PhoneNumber = "0895038543"
+                            PhoneNumber = "0895038543",
+                            Town = "Sofia"
                         },
                         new
                         {
                             Id = 2,
-                            Address = "Medne Rudnik 23,Burgas",
+                            Address = "Medne Rudnik 23",
+                            Country = "Bulgaria",
                             Email = "metalind@gmail.com",
                             Name = "Metal Industries",
-                            PhoneNumber = "0885037821"
+                            PhoneNumber = "0885037821",
+                            Town = "Burgas"
                         });
                 });
 
@@ -165,10 +177,26 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FromCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FromTown")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("PickUpDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ToAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToTown")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -183,21 +211,29 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 1, 31, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5113),
+                            DeliveryDate = new DateTime(2025, 2, 2, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5149),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
-                            PickUpDate = new DateTime(2025, 1, 28, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5063),
+                            FromCountry = "Bulgaria",
+                            FromTown = "Kazanlak",
+                            PickUpDate = new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5096),
                             ToAddress = "Kaufland",
+                            ToCountry = "Bulgaria",
+                            ToTown = "Plovdiv",
                             Weight = 24.0
                         },
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 2, 2, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5124),
+                            DeliveryDate = new DateTime(2025, 2, 4, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5157),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
-                            PickUpDate = new DateTime(2025, 1, 28, 20, 45, 4, 150, DateTimeKind.Local).AddTicks(5121),
+                            FromCountry = "Bulgaria",
+                            FromTown = "Stara Zagora",
+                            PickUpDate = new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5155),
                             ToAddress = "Metro",
+                            ToCountry = "Bulgaria",
+                            ToTown = "Sofia",
                             Weight = 27.0
                         });
                 });
@@ -229,6 +265,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -241,6 +281,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Town")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("TruckCompanies");
@@ -249,18 +293,22 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "J.K Vasil Levski 23, Kazanlak",
+                            Address = "J.K Vasil Levski 23",
+                            Country = "Bulgaria",
                             Email = "expresslog@gmail.com",
                             Name = "Express Logistics",
-                            PhoneNumber = "0876038543"
+                            PhoneNumber = "0876038543",
+                            Town = "Kazanlak"
                         },
                         new
                         {
                             Id = 2,
-                            Address = "Stolipinovo 12, Plovdiv",
+                            Address = "Stolipinovo 12",
+                            Country = "Bulgaria",
                             Email = "fastfre@gmail.com",
                             Name = "Fast Freight",
-                            PhoneNumber = "08850923854"
+                            PhoneNumber = "08850923854",
+                            Town = "Plovdiv"
                         });
                 });
 
