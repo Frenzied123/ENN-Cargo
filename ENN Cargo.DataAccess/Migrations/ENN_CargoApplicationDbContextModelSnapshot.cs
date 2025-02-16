@@ -104,6 +104,9 @@ namespace ENN_Cargo.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CompanyStockId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -127,6 +130,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyStockId");
 
                     b.HasIndex("TruckCompany_Id");
 
@@ -208,12 +213,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 2, 2, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5149),
+                            DeliveryDate = new DateTime(2025, 2, 19, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6061),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
                             FromCountry = "Bulgaria",
                             FromTown = "Kazanlak",
-                            PickUpDate = new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5096),
+                            PickUpDate = new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6018),
                             ToAddress = "Kaufland",
                             ToCountry = "Bulgaria",
                             ToTown = "Plovdiv",
@@ -222,12 +227,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 2, 4, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5157),
+                            DeliveryDate = new DateTime(2025, 2, 21, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6067),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
                             FromCountry = "Bulgaria",
                             FromTown = "Stara Zagora",
-                            PickUpDate = new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5155),
+                            PickUpDate = new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6066),
                             ToAddress = "Metro",
                             ToCountry = "Bulgaria",
                             ToTown = "Sofia",
@@ -581,6 +586,10 @@ namespace ENN_Cargo.DataAccess.Migrations
 
             modelBuilder.Entity("ENN_Cargo.Models.Driver", b =>
                 {
+                    b.HasOne("ENN_Cargo.Models.CompanyStock", null)
+                        .WithMany("Drivers")
+                        .HasForeignKey("CompanyStockId");
+
                     b.HasOne("ENN_Cargo.Models.TruckCompany", "TruckCompany")
                         .WithMany("Drivers")
                         .HasForeignKey("TruckCompany_Id")
@@ -674,6 +683,8 @@ namespace ENN_Cargo.DataAccess.Migrations
             modelBuilder.Entity("ENN_Cargo.Models.CompanyStock", b =>
                 {
                     b.Navigation("CompanyStocks_Shipments");
+
+                    b.Navigation("Drivers");
                 });
 
             modelBuilder.Entity("ENN_Cargo.Models.Shipment", b =>

@@ -34,6 +34,7 @@ namespace ENN_Cargo.DataAccess
                 .WithMany(c => c.CompanyStocks_Shipments)
                 .HasForeignKey(cs => cs.CompanyStock_Id);
 
+
             modelBuilder.Entity<CompanyStocks_Shipments>()
                 .HasOne(cs => cs.Shipment)
                 .WithMany(s => s.CompanyStocks_Shipments)
@@ -56,6 +57,7 @@ namespace ENN_Cargo.DataAccess
                 .HasOne(d => d.TruckCompany)
                 .WithMany(tc => tc.Drivers)
                 .HasForeignKey(d => d.TruckCompany_Id);
+
 
             modelBuilder.Entity<Vehicle>()
                 .HasOne(v => v.TruckCompany)

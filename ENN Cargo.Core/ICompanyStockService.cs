@@ -1,4 +1,7 @@
 ﻿using ENN_Cargo.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ENN_Cargo.Core
 {
@@ -9,7 +12,8 @@ namespace ENN_Cargo.Core
         Task AddAsync(CompanyStock companyStock);
         Task UpdateAsync(CompanyStock companyStock);
         Task RemoveAsync(int id);
-        Task<IEnumerable<CompanyStock>> GetSortedCompanyStocksAsync(string sortOrder);
-        Task<IEnumerable<CompanyStock>> GetFilteredCompanyStocksAsync(string sortOrder, string countryFilter, string townFilter);
+        Task<IEnumerable<string>> GetAllCountriesAsync();
+        Task<IEnumerable<string>> GetAllTownsAsync();
+        Task<IEnumerable<string>> GetTownsByCountryAsync(string country);
     }
 }

@@ -251,11 +251,17 @@ namespace ENN_Cargo.DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Experience = table.Column<int>(type: "int", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TruckCompany_Id = table.Column<int>(type: "int", nullable: false)
+                    TruckCompany_Id = table.Column<int>(type: "int", nullable: false),
+                    CompanyStockId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Drivers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Drivers_CompanyStocks_CompanyStockId",
+                        column: x => x.CompanyStockId,
+                        principalTable: "CompanyStocks",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Drivers_TruckCompanies_TruckCompany_Id",
                         column: x => x.TruckCompany_Id,
@@ -325,8 +331,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                 columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "FromCountry", "FromTown", "PickUpDate", "ToAddress", "ToCountry", "ToTown", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 2, 2, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5149), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5096), "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
-                    { 2, new DateTime(2025, 2, 4, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5157), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 1, 30, 10, 13, 12, 398, DateTimeKind.Local).AddTicks(5155), "Metro", "Bulgaria", "Sofia", 27.0 }
+                    { 1, new DateTime(2025, 2, 19, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6061), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6018), "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
+                    { 2, new DateTime(2025, 2, 21, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6067), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6066), "Metro", "Bulgaria", "Sofia", 27.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -340,11 +346,11 @@ namespace ENN_Cargo.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Drivers",
-                columns: new[] { "Id", "Email", "Experience", "FirstName", "LastName", "PhoneNumber", "TruckCompany_Id" },
+                columns: new[] { "Id", "CompanyStockId", "Email", "Experience", "FirstName", "LastName", "PhoneNumber", "TruckCompany_Id" },
                 values: new object[,]
                 {
-                    { 1, "KKaloqnov@gmail.com", 5, "Kondio", "Kaloqnov", "08954032134", 1 },
-                    { 2, "JIvanov@gmail.com", 8, "Jelqzko", "Ivanov", "08756043245", 2 }
+                    { 1, null, "KKaloqnov@gmail.com", 5, "Kondio", "Kaloqnov", "08954032134", 1 },
+                    { 2, null, "JIvanov@gmail.com", 8, "Jelqzko", "Ivanov", "08756043245", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -399,6 +405,11 @@ namespace ENN_Cargo.DataAccess.Migrations
                 name: "IX_CompanyStocks_Shipments_Shipment_Id",
                 table: "CompanyStocks_Shipments",
                 column: "Shipment_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Drivers_CompanyStockId",
+                table: "Drivers",
+                column: "CompanyStockId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Drivers_TruckCompany_Id",

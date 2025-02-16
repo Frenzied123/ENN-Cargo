@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CRX8ZZfYO60=",
+  "dgSpecHash": "llAsaw2asT4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nuri2\\Desktop\\New folder (4)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
+  "projectFilePath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nuri2\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\nuri2\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

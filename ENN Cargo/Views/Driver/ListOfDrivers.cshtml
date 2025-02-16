@@ -1,5 +1,69 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ENN_Cargo.Models.DriverViewModel
+
+<h2 class="mb-4">Drivers</h2>
+
+<!-- Filters Form -->
+<form method="get" class="mb-4">
+    <div class="form-row">
+        <div class="col-md-3">
+            <label for="MinExperience">Min Experience:</label>
+            <input type="number" asp-for="MinExperience" class="form-control" value="@Model.MinExperience" />
+        </div>
+        <div class="col-md-3">
+            <label for="MaxExperience">Max Experience:</label>
+            <input type="number" asp-for="MaxExperience" class="form-control" value="@Model.MaxExperience" />
+        </div>
+        <div class="col-md-3">
+            <label for="SortByExperience">Sort by Experience:</label>
+            <select asp-for="SortByExperience" asp-items="Model.SortByExperienceOptions" class="form-control">
+                <option value="">--Select--</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="SortByTruckCompany">Sort by Truck Company:</label>
+            <select asp-for="SortByTruckCompany" asp-items="Model.SortByTruckCompanyOptions" class="form-control">
+                <option value="">--Select--</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+    <a href="@Url.Action("ListOfDrivers", "Driver")" class="btn btn-secondary mt-3">Clear Filters</a>
+</form>
+
+<!-- Drivers Table -->
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Experience</th>
+            <th>Phone Number</th>
+            <th>Truck Company</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var driver in Model.Drivers)
+        {
+            <tr>
+                <td>@driver.FirstName</td>
+                <td>@driver.LastName</td>
+                <td>@driver.Email</td>
+                <td>@driver.Experience</td>
+                <td>@driver.PhoneNumber</td>
+                <td>@driver.TruckCompany?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add Driver Button -->
+<a asp-action="AddDriver" class="btn btn-primary">Add a Driver</a>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this driver?");
+    }
+</script>

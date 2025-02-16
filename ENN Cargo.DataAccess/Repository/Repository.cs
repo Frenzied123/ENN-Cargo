@@ -22,6 +22,7 @@ namespace ENN_Cargo.DataAccess.Repository
         public async Task AddAsync(T entity)
         {
             await dbSet.AddAsync(entity);
+            await dbContext.SaveChangesAsync(); 
         }
 
         public async Task<IEnumerable<T>> AllByAsync(Expression<Func<T, bool>> predicate)
@@ -53,14 +54,16 @@ namespace ENN_Cargo.DataAccess.Repository
             return await dbSet.FirstOrDefaultAsync(filter);
         }
 
-        public async Task RemoveAsync(T entity)
-        {
-            dbContext.Remove(entity);
-        }
-
         public async Task UpdateAsync(T entity)
         {
-            dbContext.Update(entity);
+            dbSet.Update(entity);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync(T entity)
+        {
+            dbSet.Remove(entity);
+            await dbContext.SaveChangesAsync();
         }
     }
 }
