@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ENN Cargo.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b8ad580df27128b9f724bef512a319ac095cafd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82cdb9680cc3336bb4663dda287a4ecb63574985")]
 [assembly: System.Reflection.AssemblyProductAttribute("ENN Cargo.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ENN Cargo.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

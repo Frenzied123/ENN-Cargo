@@ -1,5 +1,122 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ENN_Cargo.Models.ShipmentViewModel
+
 @{
+    ViewData["Title"] = "Add Shipment";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="AddShipment" method="post">
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Weight"></label>
+        <input asp-for="Weight" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="Weight" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedFromCountry">From Country</label>
+        <select id="SelectedFromCountry" name="SelectedFromCountry" asp-for="SelectedFromCountry" asp-items="Model.FromCountries" class="form-control">
+            <option value="">Select a country</option>
+        </select>
+        <span asp-validation-for="SelectedFromCountry" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedFromTown">From Town</label>
+        <select id="SelectedFromTown" name="SelectedFromTown" asp-for="SelectedFromTown" class="form-control">
+            <option value="">Select a town</option>
+        </select>
+        <span asp-validation-for="SelectedFromTown" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FromAddress"></label>
+        <input asp-for="FromAddress" class="form-control" />
+        <span asp-validation-for="FromAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedToCountry">To Country</label>
+        <select id="SelectedToCountry" name="SelectedToCountry" asp-for="SelectedToCountry" asp-items="Model.ToCountries" class="form-control">
+            <option value="">Select a country</option>
+        </select>
+        <span asp-validation-for="SelectedToCountry" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedToTown">To Town</label>
+        <select id="SelectedToTown" name="SelectedToTown" asp-for="SelectedToTown" class="form-control">
+            <option value="">Select a town</option>
+        </select>
+        <span asp-validation-for="SelectedToTown" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ToAddress"></label>
+        <input asp-for="ToAddress" class="form-control" />
+        <span asp-validation-for="ToAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PickUpDate">Pick-up Date</label>
+        <input asp-for="PickUpDate" type="date" class="form-control" />
+        <span asp-validation-for="PickUpDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DeliveryDate">Delivery Date</label>
+        <input asp-for="DeliveryDate" type="date" class="form-control" />
+        <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedCompanyStockId">Company Stock</label>
+        <select asp-for="SelectedCompanyStockId" asp-items="Model.CompanyStocks" class="form-control">
+            <option value="">Select a Company Stock</option>
+        </select>
+        <span asp-validation-for="SelectedCompanyStockId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Shipment</button>
+</form>
+
+<a href="@Url.Action("ListOfShipments")">Back to Shipments List</a>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var predefinedTowns = @Html.Raw(Json.Serialize(Model.PredefinedTowns));
+
+            function updateTowns(countryDropdownId, townDropdownId) {
+                var selectedCountry = document.getElementById(countryDropdownId).value;
+                var townDropdown = document.getElementById(townDropdownId);
+                townDropdown.innerHTML = '<option value="">Select a town</option>';
+
+                if (predefinedTowns[selectedCountry]) {
+                    predefinedTowns[selectedCountry].forEach(function (town) {
+                        var option = document.createElement("option");
+                        option.value = town;
+                        option.text = town;
+                        townDropdown.appendChild(option);
+                    });
+                }
+            }
+
+            document.getElementById("SelectedFromCountry").addEventListener("change", function () {
+                updateTowns("SelectedFromCountry", "SelectedFromTown");
+            });
+
+            document.getElementById("SelectedToCountry").addEventListener("change", function () {
+                updateTowns("SelectedToCountry", "SelectedToTown");
+            });
+        });
+    </script>
 }

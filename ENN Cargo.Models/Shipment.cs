@@ -19,6 +19,7 @@ namespace ENN_Cargo.Models
         public string ToTown { get; set; }
         public DateTime? PickUpDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
+        public string Status { get; set; }
         public ICollection<CompanyStocks_Shipments> CompanyStocks_Shipments { get; set; }
         public ICollection<TruckCompanies_Shipments> TruckCompanies_Shipments { get; set; }
     }

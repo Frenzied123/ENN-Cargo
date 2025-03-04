@@ -1,5 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ENN_Cargo.Models.ShipmentViewModel
+
 @{
+    ViewData["Title"] = "Shipments List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="ListOfShipments" method="get">
+    <div class="form-group">
+        <label asp-for="SelectedFromCountry">From Country:</label>
+        <select asp-for="SelectedFromCountry" asp-items="Model.FromCountries" class="form-control" id="SelectedFromCountry">
+            <option value="">Select A Country</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedFromTown">From Town:</label>
+        <select asp-for="SelectedFromTown" asp-items="Model.FromTowns" class="form-control" id="SelectedFromTown">
+            <option value="">Select A Town</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedToCountry">To Country:</label>
+        <select asp-for="SelectedToCountry" asp-items="Model.ToCountries" class="form-control" id="SelectedToCountry">
+            <option value="">Select A Country</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedToTown">To Town:</label>
+        <select asp-for="SelectedToTown" asp-items="Model.ToTowns" class="form-control" id="SelectedToTown">
+            <option value="">Select A Town</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="MinWeight">Min Weight:</label>
+        <input type="number" asp-for="MinWeight" class="form-control" step="0.01" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MaxWeight">Max Weight:</label>
+        <input type="number" asp-for="MaxWeight" class="form-control" step="0.01" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PickUpDate">Pick-up Date (From):</label>
+        <input type="date" asp-for="PickUpDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DeliveryDate">Delivery Date (From):</label>
+        <input type="date" asp-for="DeliveryDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="@Url.Action("ListOfShipments", "Shipment")" class="btn btn-secondary mt-3">Clear Filters</a>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Weight</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shipment in Model.Shipments)
+        {
+            <tr>
+                <td>@shipment.Description</td>
+                <td>@shipment.Weight</td>
+                <td>@shipment.FromCountry, @shipment.FromTown</td>
+                <td>@shipment.ToCountry, @shipment.ToTown</td>
+                <td>@shipment.PickUpDate?.ToString("yyyy-MM-dd") - @shipment.DeliveryDate?.ToString("yyyy-MM-dd")</td>
+                <td>@shipment.Status</td>
+                <td>
+                    <a asp-controller="Shipment" asp-action="UpdateShipment" asp-route-id="@shipment.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@shipment.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this shipment?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("AddShipment")" class="btn btn-success">Add New Shipment</a>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var predefinedTowns = @Html.Raw(Json.Serialize(Model.PredefinedTowns));
+            updateTownsDropdown("From", document.getElementById("SelectedFromCountry").value);
+            updateTownsDropdown("To", document.getElementById("SelectedToCountry").value);
+
+            document.getElementById("SelectedFromCountry").addEventListener("change", function () {
+                updateTownsDropdown("From", this.value);
+            });
+
+            document.getElementById("SelectedToCountry").addEventListener("change", function () {
+                updateTownsDropdown("To", this.value);
+            });
+            function updateTownsDropdown(type, selectedCountry) {
+                var townsDropdown = document.getElementById("Selected" + type + "Town");
+                townsDropdown.innerHTML = '<option value="">Select A Town</option>';
+                if (predefinedTowns[selectedCountry]) {
+                    predefinedTowns[selectedCountry].forEach(function (town) {
+                        var option = document.createElement("option");
+                        option.value = town;
+                        option.text = town;
+                        if (town === "@Model.SelectedFromTown" && type === "From" || town === "@Model.SelectedToTown" && type === "To") {
+                            option.selected = true;
+                        }
+                        townsDropdown.appendChild(option);
+                    });
+                }
+            }
+        });
+    </script>
 }

@@ -16,22 +16,27 @@ namespace ENN_Cargo.Core
         {
             _vehicleRepository = vehicleRepository;
         }
-        public async Task<IEnumerable<Vehicle>> GetAllAsync()
+
+        public async Task<List<Vehicle>> GetAllAsync()
         {
-            return await _vehicleRepository.GetAllAsync();
+            return (await _vehicleRepository.AllWithIncludeAsync(v => v.TruckCompany)).ToList();
         }
+
         public async Task<Vehicle> GetByIdAsync(int id)
         {
             return await _vehicleRepository.GetByIdAsync(x => x.Id == id);
         }
+
         public async Task AddAsync(Vehicle vehicle)
         {
             await _vehicleRepository.AddAsync(vehicle);
         }
+
         public async Task UpdateAsync(Vehicle vehicle)
         {
             await _vehicleRepository.UpdateAsync(vehicle);
         }
+
         public async Task RemoveAsync(int id)
         {
             var vehicle = await GetByIdAsync(id);
@@ -40,6 +45,7 @@ namespace ENN_Cargo.Core
                 await _vehicleRepository.RemoveAsync(vehicle);
             }
         }
+
         public async Task<IEnumerable<Vehicle>> AllByAsync(Expression<Func<Vehicle, bool>> predicate)
         {
             return await _vehicleRepository.AllByAsync(predicate);

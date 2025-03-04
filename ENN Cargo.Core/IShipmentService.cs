@@ -8,7 +8,7 @@ namespace ENN_Cargo.Core
     {
         Task<IEnumerable<Shipment>> GetAllAsync();
         Task<Shipment> GetByIdAsync(int id);
-        Task AddAsync(Shipment shipment);
+        Task AddAsync(Shipment shipment,int companyStockId);
         Task UpdateAsync(Shipment shipment);
         Task RemoveAsync(int id);
         Task<IEnumerable<Shipment>> GetFilteredShipmentsAsync(double? minWeight, double? maxWeight,string fromCountry, string fromCity,string toCountry, string toCity,DateTime? pickUpDateFrom, DateTime? pickUpDateTo,DateTime? deliveryDateFrom, DateTime? deliveryDateTo);

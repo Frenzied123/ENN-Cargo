@@ -53,24 +53,6 @@ namespace ENN_Cargo.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyStocks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyStocks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Shipments",
                 columns: table => new
                 {
@@ -85,29 +67,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                     ToCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ToTown = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PickUpDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shipments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TruckCompanies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TruckCompanies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,6 +182,52 @@ namespace ENN_Cargo.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompanyStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyStocks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TruckCompanies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TruckCompanies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TruckCompanies_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CompanyStocks_Shipments",
                 columns: table => new
                 {
@@ -248,15 +259,20 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Experience = table.Column<int>(type: "int", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TruckCompany_Id = table.Column<int>(type: "int", nullable: false),
+                    TruckCompany_Id = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CompanyStockId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Drivers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Drivers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Drivers_CompanyStocks_CompanyStockId",
                         column: x => x.CompanyStockId,
@@ -266,8 +282,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                         name: "FK_Drivers_TruckCompanies_TruckCompany_Id",
                         column: x => x.TruckCompany_Id,
                         principalTable: "TruckCompanies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -300,10 +315,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Year = table.Column<int>(type: "int", nullable: false),
-                    LicensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LicensePlate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TruckCompany_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -319,38 +334,38 @@ namespace ENN_Cargo.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "CompanyStocks",
-                columns: new[] { "Id", "Address", "Country", "Email", "Name", "PhoneNumber", "Town" },
+                columns: new[] { "Id", "Address", "Country", "Name", "Town", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Boyana 56", "Bulgaria", "glassind@gmail.com", "Glass Industries", "0895038543", "Sofia" },
-                    { 2, "Medne Rudnik 23", "Bulgaria", "metalind@gmail.com", "Metal Industries", "0885037821", "Burgas" }
+                    { 1, "Boyana 56", "Bulgaria", "Glass Industries", "Sofia", null },
+                    { 2, "Medne Rudnik 23", "Bulgaria", "Metal Industries", "Burgas", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Shipments",
-                columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "FromCountry", "FromTown", "PickUpDate", "ToAddress", "ToCountry", "ToTown", "Weight" },
+                columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "FromCountry", "FromTown", "PickUpDate", "Status", "ToAddress", "ToCountry", "ToTown", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 2, 19, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6061), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6018), "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
-                    { 2, new DateTime(2025, 2, 21, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6067), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6066), "Metro", "Bulgaria", "Sofia", 27.0 }
+                    { 1, new DateTime(2025, 3, 6, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1779), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1737), "Available", "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
+                    { 2, new DateTime(2025, 3, 8, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1786), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1785), "Available", "Metro", "Bulgaria", "Sofia", 27.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "TruckCompanies",
-                columns: new[] { "Id", "Address", "Country", "Email", "Name", "PhoneNumber", "Town" },
+                columns: new[] { "Id", "Address", "Country", "Name", "Town", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "J.K Vasil Levski 23", "Bulgaria", "expresslog@gmail.com", "Express Logistics", "0876038543", "Kazanlak" },
-                    { 2, "Stolipinovo 12", "Bulgaria", "fastfre@gmail.com", "Fast Freight", "08850923854", "Plovdiv" }
+                    { 1, "J.K Vasil Levski 23", "Bulgaria", "Express Logistics", "Kazanlak", null },
+                    { 2, "Stolipinovo 12", "Bulgaria", "Fast Freight", "Plovdiv", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Drivers",
-                columns: new[] { "Id", "CompanyStockId", "Email", "Experience", "FirstName", "LastName", "PhoneNumber", "TruckCompany_Id" },
+                columns: new[] { "Id", "CompanyStockId", "Experience", "FirstName", "LastName", "TruckCompany_Id", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, "KKaloqnov@gmail.com", 5, "Kondio", "Kaloqnov", "08954032134", 1 },
-                    { 2, null, "JIvanov@gmail.com", 8, "Jelqzko", "Ivanov", "08756043245", 2 }
+                    { 1, null, 5, "Kondio", "Kaloqnov", 1, null },
+                    { 2, null, 8, "Jelqzko", "Ivanov", 2, null }
                 });
 
             migrationBuilder.InsertData(
@@ -402,6 +417,13 @@ namespace ENN_Cargo.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyStocks_UserId",
+                table: "CompanyStocks",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CompanyStocks_Shipments_Shipment_Id",
                 table: "CompanyStocks_Shipments",
                 column: "Shipment_Id");
@@ -415,6 +437,20 @@ namespace ENN_Cargo.DataAccess.Migrations
                 name: "IX_Drivers_TruckCompany_Id",
                 table: "Drivers",
                 column: "TruckCompany_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Drivers_UserId",
+                table: "Drivers",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TruckCompanies_UserId",
+                table: "TruckCompanies",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TruckCompanies_Shipments_Shipment_Id",
@@ -461,9 +497,6 @@ namespace ENN_Cargo.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "CompanyStocks");
 
             migrationBuilder.DropTable(
@@ -471,6 +504,9 @@ namespace ENN_Cargo.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "TruckCompanies");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

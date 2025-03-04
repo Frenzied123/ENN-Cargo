@@ -63,15 +63,30 @@ namespace ENN_Cargo.DataAccess
                 .HasOne(v => v.TruckCompany)
                 .WithMany(tc => tc.Vehicles)
                 .HasForeignKey(v => v.TruckCompany_Id);
+            modelBuilder.Entity<Driver>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<Driver>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<TruckCompany>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<TruckCompany>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CompanyStock>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<CompanyStock>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CompanyStock>().HasData(
-                new CompanyStock { Id = 1, Name = "Glass Industries", Email = "glassind@gmail.com", PhoneNumber = "0895038543", Address = "Boyana 56", Town = "Sofia" , Country = "Bulgaria" },
-                new CompanyStock { Id = 2, Name = "Metal Industries", Email = "metalind@gmail.com", PhoneNumber = "0885037821", Address = "Medne Rudnik 23", Town = "Burgas", Country = "Bulgaria" }
+                new CompanyStock { Id = 1, Name = "Glass Industries" ,Address = "Boyana 56", Town = "Sofia" , Country = "Bulgaria" },
+                new CompanyStock { Id = 2, Name = "Metal Industries", Address = "Medne Rudnik 23", Town = "Burgas", Country = "Bulgaria" }
             );
 
             modelBuilder.Entity<TruckCompany>().HasData(
-                new TruckCompany { Id = 1, Name = "Express Logistics", Email = "expresslog@gmail.com", PhoneNumber = "0876038543", Address = "J.K Vasil Levski 23", Town="Kazanlak",Country="Bulgaria" },
-                new TruckCompany { Id = 2, Name = "Fast Freight", Email = "fastfre@gmail.com", PhoneNumber = "08850923854", Address = "Stolipinovo 12",Town="Plovdiv",Country="Bulgaria" }
+                new TruckCompany { Id = 1, Name = "Express Logistics", Address = "J.K Vasil Levski 23", Town="Kazanlak",Country="Bulgaria" },
+                new TruckCompany { Id = 2, Name = "Fast Freight", Address = "Stolipinovo 12",Town="Plovdiv",Country="Bulgaria" }
             );
 
             modelBuilder.Entity<Vehicle>().HasData(
@@ -80,13 +95,13 @@ namespace ENN_Cargo.DataAccess
             );
 
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, FirstName = "Kondio", LastName = "Kaloqnov", Email = "KKaloqnov@gmail.com", Experience = 5, PhoneNumber = "08954032134", TruckCompany_Id = 1 },
-                new Driver { Id = 2, FirstName = "Jelqzko", LastName = "Ivanov", Email = "JIvanov@gmail.com", Experience = 8, PhoneNumber = "08756043245", TruckCompany_Id = 2 }
+                new Driver { Id = 1, FirstName = "Kondio", LastName = "Kaloqnov", Experience = 5, TruckCompany_Id = 1 },
+                new Driver { Id = 2, FirstName = "Jelqzko", LastName = "Ivanov",  Experience = 8, TruckCompany_Id = 2 }
             );
 
             modelBuilder.Entity<Shipment>().HasData(
-                new Shipment { Id = 1, Description = "Electronics", Weight = 24, FromAddress = "Sklad Kappa", FromTown="Kazanlak",FromCountry="Bulgaria", ToAddress = "Kaufland", ToTown = "Plovdiv", ToCountry = "Bulgaria", PickUpDate = DateTime.Now, DeliveryDate = DateTime.Now.AddDays(3) },
-                new Shipment { Id = 2, Description = "Furniture", Weight = 27, FromAddress = "Sklad Videnov",FromTown="Stara Zagora",FromCountry="Bulgaria", ToAddress = "Metro",ToTown="Sofia",ToCountry="Bulgaria", PickUpDate = DateTime.Now, DeliveryDate = DateTime.Now.AddDays(5) }
+                new Shipment { Id = 1, Description = "Electronics", Weight = 24, FromAddress = "Sklad Kappa", FromTown="Kazanlak",FromCountry="Bulgaria", ToAddress = "Kaufland", ToTown = "Plovdiv", ToCountry = "Bulgaria", PickUpDate = DateTime.Now, DeliveryDate = DateTime.Now.AddDays(3), Status = "Available" },
+                new Shipment { Id = 2, Description = "Furniture", Weight = 27, FromAddress = "Sklad Videnov",FromTown="Stara Zagora",FromCountry="Bulgaria", ToAddress = "Metro",ToTown="Sofia",ToCountry="Bulgaria", PickUpDate = DateTime.Now, DeliveryDate = DateTime.Now.AddDays(5), Status = "Available" }
             );
         }
     }

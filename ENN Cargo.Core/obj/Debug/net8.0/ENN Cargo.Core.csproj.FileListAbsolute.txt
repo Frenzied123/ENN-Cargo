@@ -137,3 +137,22 @@ C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Carg.4ED1D47E.Up2Date
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ref\ENN Cargo.Core.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Core.deps.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Core.runtimeconfig.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Core.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Core.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.DataAccess.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\bin\Debug\net8.0\ENN Cargo.Models.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.csproj.AssemblyReference.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.AssemblyInfoInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.AssemblyInfo.cs
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.csproj.CoreCompileInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Carg.4ED1D47E.Up2Date
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\refint\ENN Cargo.Core.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.genruntimeconfig.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ref\ENN Cargo.Core.dll

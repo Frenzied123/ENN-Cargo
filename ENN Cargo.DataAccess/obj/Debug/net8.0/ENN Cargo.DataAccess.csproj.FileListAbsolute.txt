@@ -123,3 +123,20 @@ C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\n
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.pdb
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ref\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.DataAccess.deps.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.DataAccess.runtimeconfig.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.DataAccess.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\bin\Debug\net8.0\ENN Cargo.Models.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.csproj.AssemblyReference.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.AssemblyInfoInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.AssemblyInfo.cs
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Carg.0142C9E2.Up2Date
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\refint\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.genruntimeconfig.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ref\ENN Cargo.DataAccess.dll

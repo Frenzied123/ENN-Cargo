@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ENN_Cargo.Models.VehicleViewModel
+<h1>@ViewData["Title"]</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="AddVehicle" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Brand">Brand</label>
+        <input name="Brand" asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Model">Model</label>
+        <input name="Model" asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year">Year</label>
+        <input name="Year" asp-for="Year" type="number" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LicensePlate">License Plate</label>
+        <input name="LicensePlate" asp-for="LicensePlate" class="form-control" />
+        <span asp-validation-for="LicensePlate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedTruckCompanyId">Truck Company</label>
+        <select name="SelectedTruckCompanyId" asp-for="SelectedTruckCompanyId" asp-items="@Model.TruckCompanies" class="form-control">
+            <option value="">Select a Truck Company</option>
+        </select>
+        <span asp-validation-for="SelectedTruckCompanyId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Vehicle</button>
+</form>
+
+<a href="@Url.Action("ListOfVehicles")" class="btn btn-secondary mt-3">Back to List</a>

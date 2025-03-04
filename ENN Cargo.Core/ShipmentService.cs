@@ -10,78 +10,81 @@ namespace ENN_Cargo.Core
 {
     public class ShipmentService : IShipmentService
     {
-        private readonly IRepository<Shipment> repository;
-        public ShipmentService(IRepository<Shipment> _repository)
+        private readonly IRepository<Shipment> _shipmentRepository;
+        private readonly IRepository<CompanyStocks_Shipments> _companyStocksShipmentsRepository;
+
+        public ShipmentService(IRepository<Shipment> shipmentRepository,
+                               IRepository<CompanyStocks_Shipments> companyStocksShipmentsRepository)
         {
-            repository = _repository;
+            _shipmentRepository = shipmentRepository;
+            _companyStocksShipmentsRepository = companyStocksShipmentsRepository;
         }
+
         public async Task<IEnumerable<Shipment>> GetAllAsync()
         {
-            return await repository.GetAllAsync();
+            return await _shipmentRepository.GetAllAsync();
         }
+
         public async Task<Shipment> GetByIdAsync(int id)
         {
-            return await repository.GetByIdAsync(x => x.Id == id);
+            return await _shipmentRepository.GetByIdAsync(x => x.Id == id);
         }
-        public async Task AddAsync(Shipment entity)
+
+        public async Task AddAsync(Shipment shipment, int companyStockId)
         {
-            await repository.AddAsync(entity);
+            if (shipment == null)
+                throw new ArgumentNullException(nameof(shipment));
+
+            await _shipmentRepository.AddAsync(shipment);
+
+            var shipmentCompanyStock = new CompanyStocks_Shipments
+            {
+                Shipment_Id = shipment.Id,
+                CompanyStock_Id = companyStockId
+            };
+
+            await _companyStocksShipmentsRepository.AddAsync(shipmentCompanyStock);
         }
-        public async Task UpdateAsync(Shipment entity)
+
+        public async Task UpdateAsync(Shipment shipment)
         {
-            await repository.UpdateAsync(entity);
+            await _shipmentRepository.UpdateAsync(shipment);
         }
+
         public async Task RemoveAsync(int id)
         {
-            var shipment = await repository.GetByIdAsync(x => x.Id == id);
+            var shipment = await _shipmentRepository.GetByIdAsync(x => x.Id == id);
             if (shipment != null)
             {
-                await repository.RemoveAsync(shipment);
+                await _shipmentRepository.RemoveAsync(shipment);
             }
         }
-        public async Task<IEnumerable<Shipment>> GetFilteredShipmentsAsync(double? minWeight, double? maxWeight,string fromCountry, string fromTown,string toCountry, string toTown,DateTime? pickUpDateFrom, DateTime? pickUpDateTo,DateTime? deliveryDateFrom, DateTime? deliveryDateTo)
+
+        public async Task<IEnumerable<Shipment>> GetFilteredShipmentsAsync(double? minWeight, double? maxWeight, string fromCountry, string fromTown, string toCountry, string toTown, DateTime? pickUpDateFrom, DateTime? pickUpDateTo, DateTime? deliveryDateFrom, DateTime? deliveryDateTo)
         {
-            var query = repository.GetAllAsync().Result.AsQueryable();
+            var query = (await _shipmentRepository.GetAllAsync()).AsQueryable();
+
             if (minWeight.HasValue)
-            {
                 query = query.Where(x => x.Weight >= minWeight);
-            }
             if (maxWeight.HasValue)
-            {
                 query = query.Where(x => x.Weight <= maxWeight);
-            }
             if (!string.IsNullOrEmpty(fromCountry))
-            {
-                query = query.Where(s => s.FromCountry == fromCountry);
-            }
+                query = query.Where(x => x.FromCountry == fromCountry);
             if (!string.IsNullOrEmpty(fromTown))
-            {
-                query = query.Where(s => s.FromTown == fromTown);
-            }
+                query = query.Where(x => x.FromTown == fromTown);
             if (!string.IsNullOrEmpty(toCountry))
-            {
-                query = query.Where(s => s.ToCountry == toCountry);
-            }
+                query = query.Where(x => x.ToCountry == toCountry);
             if (!string.IsNullOrEmpty(toTown))
-            {
-                query = query.Where(s => s.ToTown == toTown);
-            }
+                query = query.Where(x => x.ToTown == toTown);
             if (pickUpDateFrom.HasValue)
-            {
                 query = query.Where(x => x.PickUpDate >= pickUpDateFrom);
-            }
             if (pickUpDateTo.HasValue)
-            {
                 query = query.Where(x => x.PickUpDate <= pickUpDateTo);
-            }
             if (deliveryDateFrom.HasValue)
-            {
                 query = query.Where(x => x.DeliveryDate >= deliveryDateFrom);
-            }
             if (deliveryDateTo.HasValue)
-            {
                 query = query.Where(x => x.DeliveryDate <= deliveryDateTo);
-            }
+
             return query.ToList();
         }
     }

@@ -1,5 +1,74 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ENN_Cargo.Models.VehicleViewModel
+
 @{
+    ViewData["Title"] = "List of Vehicles";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="ListOfVehicles" method="get">
+    <div class="form-group">
+        <label asp-for="SelectedBrand">Brand:</label>
+        <select asp-for="SelectedBrand" asp-items="Model.Brands" class="form-control">
+            <option value="">All Brands</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedModel">Model:</label>
+        <select asp-for="SelectedModel" asp-items="Model.Models" class="form-control">
+            <option value="">All Models</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedYear">Year:</label>
+        <select asp-for="SelectedYear" asp-items="Model.Years" class="form-control">
+            <option value="">All Years</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedLicensePlateCountry">License Plate Country:</label>
+        <select asp-for="SelectedLicensePlateCountry" asp-items="Model.LicensePlateCountries" class="form-control">
+            <option value="">All Countries</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="@Url.Action("ListOfVehicles")" class="btn btn-secondary mt-3">Clear Filters</a>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>License Plate</th>
+            <th>Truck Company</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model.Vehicles)
+        {
+            <tr>
+                <td>@vehicle.Brand</td>
+                <td>@vehicle.Model</td>
+                <td>@vehicle.Year</td>
+                <td>@vehicle.LicensePlate</td>
+                <td>@(vehicle.TruckCompany?.Name ?? "N/A")</td>
+                <td>
+                    <a asp-action="UpdateVehicle" asp-route-id="@vehicle.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@vehicle.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this vehicle?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("AddVehicle")" class="btn btn-success">Add New Vehicle</a>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

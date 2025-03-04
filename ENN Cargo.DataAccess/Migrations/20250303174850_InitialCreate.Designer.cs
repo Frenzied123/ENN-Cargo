@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ENN_Cargo.DataAccess.Migrations
 {
     [DbContext(typeof(ENN_CargoApplicationDbContext))]
-    [Migration("20250216131032_InitialCreate")]
+    [Migration("20250303174850_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -41,15 +41,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -57,7 +49,14 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("CompanyStocks");
 
@@ -67,9 +66,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                             Id = 1,
                             Address = "Boyana 56",
                             Country = "Bulgaria",
-                            Email = "glassind@gmail.com",
                             Name = "Glass Industries",
-                            PhoneNumber = "0895038543",
                             Town = "Sofia"
                         },
                         new
@@ -77,9 +74,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                             Id = 2,
                             Address = "Medne Rudnik 23",
                             Country = "Bulgaria",
-                            Email = "metalind@gmail.com",
                             Name = "Metal Industries",
-                            PhoneNumber = "0885037821",
                             Town = "Burgas"
                         });
                 });
@@ -110,10 +105,6 @@ namespace ENN_Cargo.DataAccess.Migrations
                     b.Property<int?>("CompanyStockId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Experience")
                         .HasColumnType("int");
 
@@ -125,12 +116,11 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TruckCompany_Id")
+                    b.Property<int?>("TruckCompany_Id")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -138,27 +128,27 @@ namespace ENN_Cargo.DataAccess.Migrations
 
                     b.HasIndex("TruckCompany_Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
                     b.ToTable("Drivers");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Email = "KKaloqnov@gmail.com",
                             Experience = 5,
                             FirstName = "Kondio",
                             LastName = "Kaloqnov",
-                            PhoneNumber = "08954032134",
                             TruckCompany_Id = 1
                         },
                         new
                         {
                             Id = 2,
-                            Email = "JIvanov@gmail.com",
                             Experience = 8,
                             FirstName = "Jelqzko",
                             LastName = "Ivanov",
-                            PhoneNumber = "08756043245",
                             TruckCompany_Id = 2
                         });
                 });
@@ -193,6 +183,10 @@ namespace ENN_Cargo.DataAccess.Migrations
                     b.Property<DateTime?>("PickUpDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ToAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -216,12 +210,13 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 2, 19, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6061),
+                            DeliveryDate = new DateTime(2025, 3, 6, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1779),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
                             FromCountry = "Bulgaria",
                             FromTown = "Kazanlak",
-                            PickUpDate = new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6018),
+                            PickUpDate = new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1737),
+                            Status = "Available",
                             ToAddress = "Kaufland",
                             ToCountry = "Bulgaria",
                             ToTown = "Plovdiv",
@@ -230,12 +225,13 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 2, 21, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6067),
+                            DeliveryDate = new DateTime(2025, 3, 8, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1786),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
                             FromCountry = "Bulgaria",
                             FromTown = "Stara Zagora",
-                            PickUpDate = new DateTime(2025, 2, 16, 15, 10, 31, 247, DateTimeKind.Local).AddTicks(6066),
+                            PickUpDate = new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1785),
+                            Status = "Available",
                             ToAddress = "Metro",
                             ToCountry = "Bulgaria",
                             ToTown = "Sofia",
@@ -274,15 +270,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -290,7 +278,14 @@ namespace ENN_Cargo.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("TruckCompanies");
 
@@ -300,9 +295,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                             Id = 1,
                             Address = "J.K Vasil Levski 23",
                             Country = "Bulgaria",
-                            Email = "expresslog@gmail.com",
                             Name = "Express Logistics",
-                            PhoneNumber = "0876038543",
                             Town = "Kazanlak"
                         },
                         new
@@ -310,9 +303,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                             Id = 2,
                             Address = "Stolipinovo 12",
                             Country = "Bulgaria",
-                            Email = "fastfre@gmail.com",
                             Name = "Fast Freight",
-                            PhoneNumber = "08850923854",
                             Town = "Plovdiv"
                         });
                 });
@@ -326,15 +317,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Brand")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LicensePlate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TruckCompany_Id")
@@ -568,6 +556,16 @@ namespace ENN_Cargo.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ENN_Cargo.Models.CompanyStock", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithOne()
+                        .HasForeignKey("ENN_Cargo.Models.CompanyStock", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ENN_Cargo.Models.CompanyStocks_Shipments", b =>
                 {
                     b.HasOne("ENN_Cargo.Models.CompanyStock", "CompanyStock")
@@ -595,11 +593,16 @@ namespace ENN_Cargo.DataAccess.Migrations
 
                     b.HasOne("ENN_Cargo.Models.TruckCompany", "TruckCompany")
                         .WithMany("Drivers")
-                        .HasForeignKey("TruckCompany_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TruckCompany_Id");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithOne()
+                        .HasForeignKey("ENN_Cargo.Models.Driver", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("TruckCompany");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ENN_Cargo.Models.TruckCompanies_Shipments", b =>
@@ -619,6 +622,16 @@ namespace ENN_Cargo.DataAccess.Migrations
                     b.Navigation("Shipment");
 
                     b.Navigation("TruckCompany");
+                });
+
+            modelBuilder.Entity("ENN_Cargo.Models.TruckCompany", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithOne()
+                        .HasForeignKey("ENN_Cargo.Models.TruckCompany", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ENN_Cargo.Models.Vehicle", b =>

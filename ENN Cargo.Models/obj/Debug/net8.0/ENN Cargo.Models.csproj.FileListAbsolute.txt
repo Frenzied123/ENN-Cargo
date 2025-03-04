@@ -102,3 +102,17 @@ C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.pdb
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ref\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\bin\Debug\net8.0\ENN Cargo.Models.deps.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\bin\Debug\net8.0\ENN Cargo.Models.runtimeconfig.json
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\bin\Debug\net8.0\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\bin\Debug\net8.0\ENN Cargo.Models.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.csproj.AssemblyReference.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.AssemblyInfoInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.AssemblyInfo.cs
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.csproj.CoreCompileInputs.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\refint\ENN Cargo.Models.dll
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.pdb
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ENN Cargo.Models.genruntimeconfig.cache
+C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo.Models\obj\Debug\net8.0\ref\ENN Cargo.Models.dll

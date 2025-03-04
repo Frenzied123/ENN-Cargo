@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using ENN_Cargo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ENN_Cargo.Controllers
@@ -12,12 +13,12 @@ namespace ENN_Cargo.Controllers
         {
             _logger = logger;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
-
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

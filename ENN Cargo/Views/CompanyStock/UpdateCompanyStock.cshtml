@@ -4,65 +4,55 @@
 
 <form asp-action="UpdateCompanyStock" asp-controller="CompanyStock" method="post" class="p-4 border rounded shadow-sm">
     @Html.AntiForgeryToken()
-
     <input type="hidden" asp-for="Id" />
-
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input type="text" asp-for="Name" class="form-control" required />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="Email">Email</label>
         <input type="email" asp-for="Email" class="form-control" required />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number</label>
         <input type="text" asp-for="PhoneNumber" class="form-control" required />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="Address">Address</label>
         <input type="text" asp-for="Address" class="form-control" required />
         <span asp-validation-for="Address" class="text-danger"></span>
     </div>
-
-    <!-- Country dropdown -->
     <div class="form-group">
         <label for="SelectedCountry">Country</label>
         <select asp-for="SelectedCountry" class="form-control" id="SelectedCountry">
             <option value="">Select a country</option>
             @foreach (var country in Model.CountryList)
             {
-                <option value="@country.Value" selected="@(Model.SelectedCountry == country.Value ? "selected" : null)">@country.Text</option>
+                <option value="@country.Value" selected="@(country.Value == Model.SelectedCountry ? "selected" : null)">@country.Text</option>
             }
         </select>
         <span asp-validation-for="SelectedCountry" class="text-danger"></span>
     </div>
-
-    <!-- Town dropdown -->
     <div class="form-group">
         <label for="SelectedTown">Town</label>
         <select asp-for="SelectedTown" class="form-control" id="SelectedTown">
             <option value="">Select a town</option>
-            @foreach (var town in Model.TownList)
-            {
-                <option value="@town.Value" selected="@(Model.SelectedTown == town.Value ? "selected" : null)" data-country="@town.Group">@town.Text</option>
-            }
         </select>
         <span asp-validation-for="SelectedTown" class="text-danger"></span>
     </div>
-
+    <div class="form-group">
+        <label for="CustomTown">Or enter a custom town:</label>
+        <input type="text" id="CustomTown" name="CustomTown" class="form-control" value="@Model.CustomTown" />
+        <span asp-validation-for="CustomTown" class="text-danger"></span>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
     <script>
         const predefinedTowns = {
             "USA": ["New York", "Los Angeles"],
@@ -71,12 +61,10 @@
             "France": ["Paris", "Lyon"],
             "UK": ["London", "Manchester"]
         };
-
         $(document).ready(function () {
             $('#SelectedCountry').change(function () {
                 var country = $(this).val();
                 var townSelect = $('#SelectedTown');
-
                 townSelect.empty().append('<option value="">Select a town</option>');
 
                 if (country && predefinedTowns[country]) {
@@ -85,6 +73,17 @@
                     });
                 }
             });
+            $('#CustomTown').on('input', function () {
+                if ($(this).val().trim() !== '') {
+                    $('#SelectedTown').val('');
+                }
+            });
+            $('#SelectedTown').change(function () {
+                if ($(this).val() !== '') {
+                    $('#CustomTown').val('');
+                }
+            });
+            $('#SelectedCountry').trigger('change');
         });
     </script>
 }

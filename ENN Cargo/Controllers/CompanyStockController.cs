@@ -1,5 +1,6 @@
 ﻿using ENN_Cargo.Core;
 using ENN_Cargo.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
@@ -15,53 +16,59 @@ namespace ENN_Cargo.Controllers
         {
             _companyStockService = companyStockService;
         }
-
+        [HttpGet]
         public async Task<IActionResult> ListOfCompaniesStock()
         {
             var companyStocks = await _companyStockService.GetAllAsync();
-            var model = companyStocks.Select(cs => new CompanyStockViewModel
+            var model = companyStocks?.Select(cs => new CompanyStockViewModel
             {
                 Id = cs.Id,
                 Name = cs.Name,
-                Email = cs.Email,
-                PhoneNumber = cs.PhoneNumber,
+                Email = cs.User?.Email,
+                PhoneNumber = cs.User?.PhoneNumber,
                 Address = cs.Address,
                 SelectedCountry = cs.Country,
                 SelectedTown = cs.Town
-            }).ToList();
-
+            }).ToList() ?? new List<CompanyStockViewModel>();
             return View(model);
         }
+        [HttpGet]
         public async Task<IActionResult> AddCompanyStock()
         {
             var model = await PopulateDropdowns(new CompanyStockViewModel());
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCompanyStock(CompanyStockViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!string.IsNullOrEmpty(model.Name) &&
+                !string.IsNullOrEmpty(model.Email) &&
+                !string.IsNullOrEmpty(model.PhoneNumber) &&
+                !string.IsNullOrEmpty(model.Address) &&
+                !string.IsNullOrEmpty(model.SelectedCountry) &&
+                !string.IsNullOrEmpty(model.SelectedTown))
             {
-                model = await PopulateDropdowns(model);
-                return View(model);
+                var companyStock = new CompanyStock
+                {
+                    Name = model.Name,
+                    Address = model.Address,
+                    Country = model.SelectedCountry,
+                    Town = model.SelectedTown,
+                    User = new IdentityUser
+                    {
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Email
+                    }
+                };
+                await _companyStockService.AddAsync(companyStock);
+                return RedirectToAction("ListOfCompaniesStock");
             }
-
-            var companyStock = new CompanyStock
-            {
-                Name = model.Name,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                Address = model.Address,
-                Country = model.SelectedCountry,
-                Town = model.SelectedTown
-            };
-
-            await _companyStockService.AddAsync(companyStock);
-            return RedirectToAction(nameof(ListOfCompaniesStock));
+            model = await PopulateDropdowns(model);
+            return View(model);
         }
-
+        [HttpGet]
         public async Task<IActionResult> UpdateCompanyStock(int id)
         {
             var companyStock = await _companyStockService.GetByIdAsync(id);
@@ -69,48 +76,53 @@ namespace ENN_Cargo.Controllers
             {
                 return NotFound();
             }
-
             var model = await PopulateDropdowns(new CompanyStockViewModel
             {
                 Id = companyStock.Id,
                 Name = companyStock.Name,
-                Email = companyStock.Email,
-                PhoneNumber = companyStock.PhoneNumber,
+                Email = companyStock.User.Email,
+                PhoneNumber = companyStock.User.PhoneNumber,
                 Address = companyStock.Address,
                 SelectedCountry = companyStock.Country,
                 SelectedTown = companyStock.Town
             });
-
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCompanyStock(CompanyStockViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (model.Id.HasValue &&
+                !string.IsNullOrEmpty(model.Name) &&
+                !string.IsNullOrEmpty(model.Email) &&
+                !string.IsNullOrEmpty(model.PhoneNumber) &&
+                !string.IsNullOrEmpty(model.Address) &&
+                !string.IsNullOrEmpty(model.SelectedCountry) &&
+                !string.IsNullOrEmpty(model.SelectedTown))
             {
-                model = await PopulateDropdowns(model);
-                return View(model);
+                var stock = await _companyStockService.GetByIdAsync(model.Id.Value);
+                if (stock == null)
+                {
+                    return NotFound();
+                }
+                stock.Name = model.Name;
+                stock.Address = model.Address;
+                stock.Country = model.SelectedCountry;
+                stock.Town = model.SelectedTown;
+                if (stock.User == null)
+                {
+                    stock.User = new IdentityUser { UserName = model.Email };
+                }
+                stock.User.Email = model.Email;
+                stock.User.PhoneNumber = model.PhoneNumber;
+                await _companyStockService.UpdateAsync(stock);
+                return RedirectToAction("ListOfCompaniesStock");
             }
-
-            var stock = await _companyStockService.GetByIdAsync(model.Id.Value);
-            if (stock == null)
-            {
-                return NotFound();
-            }
-
-            stock.Name = model.Name;
-            stock.Email = model.Email;
-            stock.PhoneNumber = model.PhoneNumber;
-            stock.Address = model.Address;
-            stock.Country = model.SelectedCountry;
-            stock.Town = model.SelectedTown;
-
-            await _companyStockService.UpdateAsync(stock);
-            return RedirectToAction(nameof(ListOfCompaniesStock));
+            model = await PopulateDropdowns(model);
+            return View(model);
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var companyStock = await _companyStockService.GetByIdAsync(id);
@@ -118,22 +130,10 @@ namespace ENN_Cargo.Controllers
             {
                 return NotFound();
             }
-            return View(companyStock);
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var companyStock = await _companyStockService.GetByIdAsync(id);
-            if (companyStock != null)
-            {
-                await _companyStockService.RemoveAsync(companyStock.Id);
-                return RedirectToAction(nameof(ListOfCompaniesStock));
-            }
-            return NotFound();
+            await _companyStockService.RemoveAsync(id);
+            return RedirectToAction("ListOfCompaniesStock");
         }
-
         [HttpGet]
         public async Task<IActionResult> GetTownsByCountry(string country)
         {
@@ -144,23 +144,14 @@ namespace ENN_Cargo.Controllers
 
             var towns = await _companyStockService.GetTownsByCountryAsync(country);
             var townList = towns.Select(t => new SelectListItem { Value = t, Text = t }).ToList();
-
             return PartialView("_TownDropdown", townList);
         }
         private async Task<CompanyStockViewModel> PopulateDropdowns(CompanyStockViewModel model)
         {
             var countryList = await _companyStockService.GetAllCountriesAsync();
-            model.CountryList = countryList
-                .Select(c => new SelectListItem { Value = c, Text = c })
-                .Prepend(new SelectListItem { Value = "", Text = "Select a country", Selected = true })
-                .ToList();
-
+            model.CountryList = countryList.Select(c => new SelectListItem { Value = c, Text = c }).Prepend(new SelectListItem { Value = "", Text = "Select a country", Selected = true }).ToList();
             model.TownList = !string.IsNullOrEmpty(model.SelectedCountry)
-                ? (await _companyStockService.GetTownsByCountryAsync(model.SelectedCountry))
-                    .Select(t => new SelectListItem { Value = t, Text = t, Selected = t == model.SelectedTown })
-                    .ToList()
-                : new List<SelectListItem>();
-
+           ? (await _companyStockService.GetTownsByCountryAsync(model.SelectedCountry)).Select(t => new SelectListItem { Value = t, Text = t, Selected = t == model.SelectedTown }).ToList(): new List<SelectListItem>();
             return model;
         }
     }

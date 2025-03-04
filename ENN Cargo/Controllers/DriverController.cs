@@ -3,6 +3,7 @@ using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 public class DriverController : Controller
 {
@@ -14,178 +15,150 @@ public class DriverController : Controller
         _driverService = driverService;
         _truckCompanyService = truckCompanyService;
     }
-
-    public async Task<IActionResult> ListOfDrivers(int? minExperience, int? maxExperience, string sortByExperience, string sortByTruckCompany)
+    [HttpGet]
+    public async Task<IActionResult> ListOfDrivers(int? minExperience, int? maxExperience, string sortByExperience, string sortByTruckCompany, int? selectedTruckCompanyId)
     {
-        var driversList = await _driverService.GetAllDriversAsync();
-        if (minExperience.HasValue)
+        var drivers = await _driverService.GetFilteredDriversAsync(
+            minExperience,
+            maxExperience,
+            sortByExperience,
+            sortByTruckCompany,
+            selectedTruckCompanyId
+        );
+        var model = new DriverViewModel
         {
-            driversList = driversList.Where(d => d.Experience >= minExperience.Value).ToList();
-        }
-        if (maxExperience.HasValue)
-        {
-            driversList = driversList.Where(d => d.Experience <= maxExperience.Value).ToList();
-        }
-        if (!string.IsNullOrEmpty(sortByExperience))
-        {
-            if (sortByExperience == "Low-High")
+            Drivers = drivers?.Select(d => new DriverViewModel.DriverItem
             {
-                driversList = driversList.OrderBy(d => d.Experience).ToList();
-            }
-            else if (sortByExperience == "High-Low")
-            {
-                driversList = driversList.OrderByDescending(d => d.Experience).ToList();
-            }
-        }
-        if (!string.IsNullOrEmpty(sortByTruckCompany))
-        {
-            if (sortByTruckCompany == "A-Z")
-            {
-                driversList = driversList.OrderBy(d => d.TruckCompany.Name).ToList();
-            }
-            else if (sortByTruckCompany == "Z-A")
-            {
-                driversList = driversList.OrderByDescending(d => d.TruckCompany.Name).ToList();
-            }
-        }
-        var viewModel = new DriverViewModel
-        {
-            Drivers = driversList.ToList(),
+                Id = d.Id,
+                FirstName = d.FirstName,
+                LastName = d.LastName, 
+                Email = d.User?.Email,
+                Experience = d.Experience,
+                PhoneNumber = d.User?.PhoneNumber,
+                TruckCompany = d.TruckCompany != null ? new TruckCompany { Id = d.TruckCompany.Id, Name = d.TruckCompany.Name } : null
+            }).ToList() ?? new List<DriverViewModel.DriverItem>(),
             MinExperience = minExperience,
             MaxExperience = maxExperience,
             SortByExperience = sortByExperience,
             SortByTruckCompany = sortByTruckCompany,
-            SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }),
-            SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" })
+            SelectedTruckCompanyId = selectedTruckCompanyId,
+            TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name", selectedTruckCompanyId),
+            SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }, sortByExperience),
+            SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" }, sortByTruckCompany)
         };
 
-        return View(viewModel);
-    }
-    [HttpPost]
-    public async Task<IActionResult> ListOfDrivers(DriverViewModel model)
-    {
-        model.TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name");
-
-        var drivers = await _driverService.GetFilteredDriversAsync(
-            model.MinExperience,
-            model.MaxExperience,
-            model.SortByExperience,
-            model.SortByTruckCompany,
-            model.SelectedTruckCompanyId
-        );
-
-        model.Drivers = drivers.ToList();
         return View(model);
     }
-
     [HttpGet]
     public async Task<IActionResult> AddDriver()
     {
         var truckCompanies = await _truckCompanyService.GetAllAsync();
         var model = new DriverViewModel
         {
-        TruckCompanyList = new SelectList(truckCompanies, "Id", "Name"),
-        SortingOptions = new SelectList(new List<string> { "A-Z", "Z-A", "Low-High", "High-Low" }),
-        SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }),
-        SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" })
+            TruckCompanyList = new SelectList(truckCompanies, "Id", "Name"),
+            SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }),
+            SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" })
         };
         return View(model);
     }
-
-
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddDriver(DriverViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!string.IsNullOrEmpty(model.FirstName) &&
+            !string.IsNullOrEmpty(model.LastName) &&
+            !string.IsNullOrEmpty(model.Email) &&
+            model.Experience >= 0 &&
+            !string.IsNullOrEmpty(model.PhoneNumber))
         {
             var driver = new Driver
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Email = model.Email,
                 Experience = model.Experience,
-                PhoneNumber = model.PhoneNumber,
-                TruckCompany_Id = model.SelectedTruckCompanyId ?? 0
+                TruckCompany_Id = model.SelectedTruckCompanyId ?? 0,
+                User = new IdentityUser
+                {
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    UserName = model.Email
+                }
             };
-
             await _driverService.AddAsync(driver);
             return RedirectToAction("ListOfDrivers");
         }
-
-        model.TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name");
+        model.TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name", model.SelectedTruckCompanyId);
+        model.SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" });
+        model.SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" });
         return View(model);
     }
+    [HttpGet]
     public async Task<IActionResult> UpdateDriver(int id)
     {
-        var driver = await _driverService.GetDriverByIdAsync(id);
+        var driver = await _driverService.GetByIdAsync(id);
         if (driver == null)
         {
             return NotFound();
         }
-
         var viewModel = new DriverViewModel
         {
             Id = driver.Id,
             FirstName = driver.FirstName,
             LastName = driver.LastName,
-            Email = driver.Email,
+            Email = driver.User.Email,
             Experience = driver.Experience,
-            PhoneNumber = driver.PhoneNumber,
+            PhoneNumber = driver.User.PhoneNumber,
             SelectedTruckCompanyId = driver.TruckCompany_Id,
-            TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name")
+            TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name", driver.TruckCompany_Id),
+            SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }),
+            SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" })
         };
-
         return View(viewModel);
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateDriver(DriverViewModel model)
     {
-        if (!ModelState.IsValid)
+        if (model.Id.HasValue &&
+            !string.IsNullOrEmpty(model.FirstName) &&
+            !string.IsNullOrEmpty(model.LastName) &&
+            !string.IsNullOrEmpty(model.Email) &&
+            model.Experience >= 0 &&
+            !string.IsNullOrEmpty(model.PhoneNumber))
         {
-            model.TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name");
-            return View(model);
+            var driver = await _driverService.GetByIdAsync(model.Id.Value);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            driver.FirstName = model.FirstName;
+            driver.LastName = model.LastName;
+            driver.Experience = model.Experience;
+            driver.TruckCompany_Id = model.SelectedTruckCompanyId ?? 0;
+            if (driver.User == null)
+            {
+                driver.User = new IdentityUser { UserName = model.Email };
+            }
+            driver.User.Email = model.Email;
+            driver.User.PhoneNumber = model.PhoneNumber;
+            await _driverService.UpdateAsync(driver);
+            return RedirectToAction("ListOfDrivers");
         }
-
-        var driver = await _driverService.GetDriverByIdAsync(model.Id.Value);
-        if (driver == null)
-        {
-            return NotFound();
-        }
-
-        driver.FirstName = model.FirstName;
-        driver.LastName = model.LastName;
-        driver.Email = model.Email;
-        driver.Experience = model.Experience;
-        driver.PhoneNumber = model.PhoneNumber;
-        driver.TruckCompany_Id = model.SelectedTruckCompanyId ?? 0;
-
-        await _driverService.UpdateAsync(driver);
-        return RedirectToAction(nameof(ListOfDrivers));
+        model.TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name", model.SelectedTruckCompanyId);
+        model.SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" });
+        model.SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" });
+        return View(model);
     }
-
-    public async Task<IActionResult> Delete(int id)
-    {
-        var driver = await _driverService.GetDriverByIdAsync(id);
-        if (driver == null)
-        {
-            return NotFound();
-        }
-
-        return View(driver);
-    }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var driver = await _driverService.GetDriverByIdAsync(id);
-        if (driver != null)
+        var driver = await _driverService.GetByIdAsync(id);
+        if (driver == null)
         {
-            await _driverService.RemoveAsync(id);
-            return RedirectToAction(nameof(ListOfDrivers));
+            return NotFound();
         }
-        return NotFound();
+        await _driverService.RemoveAsync(id);
+        return RedirectToAction("ListOfDrivers");
     }
 }

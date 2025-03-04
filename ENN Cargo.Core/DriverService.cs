@@ -1,20 +1,51 @@
 ﻿using ENN_Cargo.Core;
 using ENN_Cargo.DataAccess;
+using ENN_Cargo.DataAccess.Repository.IRepository;
 using ENN_Cargo.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class DriverService : IDriverService
 {
-    private readonly ENN_CargoApplicationDbContext _context;
+    private readonly IRepository<Driver> _driverRepository;
 
-    public DriverService(ENN_CargoApplicationDbContext context)
+    public DriverService(IRepository<Driver> driverRepository)
     {
-        _context = context;
+        _driverRepository = driverRepository;
     }
 
-    public async Task<IEnumerable<Driver>> GetAllDriversAsync()
+    public async Task<IEnumerable<Driver>> GetAllAsync()
     {
-        return await _context.Drivers.Include(d => d.TruckCompany).ToListAsync();
+        return await _driverRepository.AllWithIncludeAsync(d => d.User, d => d.TruckCompany);
+    }
+
+    public async Task<Driver> GetByIdAsync(int id)
+    {
+        return await _driverRepository.GetByIdAsync(x => x.Id == id);
+    }
+
+    public async Task AddAsync(Driver driver)
+    {
+        if (driver == null)
+            throw new ArgumentNullException(nameof(driver));
+
+        await _driverRepository.AddAsync(driver);
+    }
+
+    public async Task UpdateAsync(Driver driver)
+    {
+        if (driver == null)
+            throw new ArgumentNullException(nameof(driver));
+
+        await _driverRepository.UpdateAsync(driver);
+    }
+
+    public async Task RemoveAsync(int id)
+    {
+        var driver = await _driverRepository.GetByIdAsync(x => x.Id == id);
+        if (driver != null)
+        {
+            await _driverRepository.RemoveAsync(driver);
+        }
     }
 
     public async Task<IEnumerable<Driver>> GetFilteredDriversAsync(
@@ -24,53 +55,32 @@ public class DriverService : IDriverService
         string sortByTruckCompany,
         int? truckCompanyId)
     {
-        IQueryable<Driver> query = _context.Drivers.Include(d => d.TruckCompany);
+        var drivers = await _driverRepository.AllWithIncludeAsync(d => d.User, d => d.TruckCompany);
+        var query = drivers.AsQueryable();
 
         if (minExperience.HasValue)
             query = query.Where(d => d.Experience >= minExperience.Value);
-
         if (maxExperience.HasValue)
             query = query.Where(d => d.Experience <= maxExperience.Value);
-
         if (truckCompanyId.HasValue)
             query = query.Where(d => d.TruckCompany_Id == truckCompanyId.Value);
-        if (sortByExperience == "Low-High")
-            query = query.OrderBy(d => d.Experience);
-        else if (sortByExperience == "High-Low")
-            query = query.OrderByDescending(d => d.Experience);
 
-        if (sortByTruckCompany == "A-Z")
-            query = query.OrderBy(d => d.TruckCompany.Name);
-        else if (sortByTruckCompany == "Z-A")
-            query = query.OrderByDescending(d => d.TruckCompany.Name);
-
-        return await query.ToListAsync();
-    }
-
-    public async Task<Driver> GetDriverByIdAsync(int id)
-    {
-        return await _context.Drivers.Include(d => d.TruckCompany).FirstOrDefaultAsync(d => d.Id == id);
-    }
-
-    public async Task AddAsync(Driver driver)
-    {
-        _context.Drivers.Add(driver);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Driver driver)
-    {
-        _context.Drivers.Update(driver);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task RemoveAsync(int id)
-    {
-        var driver = await _context.Drivers.FindAsync(id);
-        if (driver != null)
+        if (!string.IsNullOrEmpty(sortByExperience))
         {
-            _context.Drivers.Remove(driver);
-            await _context.SaveChangesAsync();
+            if (sortByExperience == "Low-High")
+                query = query.OrderBy(d => d.Experience);
+            else if (sortByExperience == "High-Low")
+                query = query.OrderByDescending(d => d.Experience);
         }
+
+        if (!string.IsNullOrEmpty(sortByTruckCompany))
+        {
+            if (sortByTruckCompany == "A-Z")
+                query = query.OrderBy(d => d.TruckCompany != null ? d.TruckCompany.Name : string.Empty);
+            else if (sortByTruckCompany == "Z-A")
+                query = query.OrderByDescending(d => d.TruckCompany != null ? d.TruckCompany.Name : string.Empty);
+        }
+
+        return query.ToList();
     }
 }

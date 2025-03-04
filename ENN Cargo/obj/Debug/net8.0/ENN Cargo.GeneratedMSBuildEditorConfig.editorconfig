@@ -17,101 +17,121 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ENN_Cargo
 build_property.RootNamespace = ENN_Cargo
-build_property.ProjectDir = C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo\
+build_property.ProjectDir = C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\nuri2\Desktop\New folder (7)\ENN-Cargo\ENN Cargo
+build_property.MSBuildProjectDirectory = C:\Users\nuri2\Desktop\New folder (10)\ENN Cargo\ENN-Cargo\ENN Cargo
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/CompanyStock/AddCompanyStock.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Account/RegisterForDrivers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3RlckZvckRyaXZlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Account/RegisterForStockCompanies.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3RlckZvclN0b2NrQ29tcGFuaWVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Account/RegisterForTruckCompanies.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3RlckZvclRydWNrQ29tcGFuaWVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/CompanyStock/AddCompanyStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueVN0b2NrXEFkZENvbXBhbnlTdG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/CompanyStock/ListOfCompaniesStock.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/CompanyStock/ListOfCompaniesStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueVN0b2NrXExpc3RPZkNvbXBhbmllc1N0b2NrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/CompanyStock/UpdateCompanyStock.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/CompanyStock/UpdateCompanyStock.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFueVN0b2NrXFVwZGF0ZUNvbXBhbnlTdG9jay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Driver/AddDriver.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Driver/AddDriver.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyXEFkZERyaXZlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Driver/ListOfDrivers.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Driver/ListOfDrivers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyXExpc3RPZkRyaXZlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Driver/UpdateDriver.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Driver/UpdateDriver.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyXFVwZGF0ZURyaXZlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Home/Index.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Home/Privacy.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shared/Error.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shipment/AddShipment.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shipment/AddShipment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpcG1lbnRcQWRkU2hpcG1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shipment/ListOfShipments.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shipment/ListOfShipments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpcG1lbnRcTGlzdE9mU2hpcG1lbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shipment/UpdateShipment.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shipment/UpdateShipment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpcG1lbnRcVXBkYXRlU2hpcG1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/TruckCompany/AddTruckCompany.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/TruckCompany/AddTruckCompany.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJ1Y2tDb21wYW55XEFkZFRydWNrQ29tcGFueS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/TruckCompany/ListOfTruckCompanies.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/TruckCompany/ListOfTruckCompanies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJ1Y2tDb21wYW55XExpc3RPZlRydWNrQ29tcGFuaWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/TruckCompany/UpdateTruckCompany.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/TruckCompany/UpdateTruckCompany.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJ1Y2tDb21wYW55XFVwZGF0ZVRydWNrQ29tcGFueS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Vehicle/AddVehicle.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Vehicle/AddVehicle.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZVxBZGRWZWhpY2xlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Vehicle/ListOfVehicles.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Vehicle/ListOfVehicles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZVxMaXN0T2ZWZWhpY2xlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Vehicle/UpdateVehicle.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Vehicle/UpdateVehicle.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWNsZVxVcGRhdGVWZWhpY2xlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/_ViewImports.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/_ViewStart.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/nuri2/Desktop/New folder (7)/ENN-Cargo/ENN Cargo/Views/Shared/_Layout.cshtml]
+[C:/Users/nuri2/Desktop/New folder (10)/ENN Cargo/ENN-Cargo/ENN Cargo/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ivxtitcifi

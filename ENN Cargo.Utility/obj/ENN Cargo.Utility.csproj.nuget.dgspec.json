@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {}
+    "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
+    "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj",
+        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj",
         "projectName": "ENN Cargo.Core",
-        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj",
+        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj",
         "packagesPath": "C:\\Users\\nuri2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\obj\\",
+        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
-                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj"
+              "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj"
               }
             }
           }
@@ -107,14 +107,14 @@
         }
       }
     },
-    "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
+    "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj",
         "projectName": "ENN Cargo.DataAccess",
-        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj",
+        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\ENN Cargo.DataAccess.csproj",
         "packagesPath": "C:\\Users\\nuri2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.DataAccess\\obj\\",
+        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -135,8 +135,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
-                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj"
+              "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
+                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj"
               }
             }
           }
@@ -210,14 +210,14 @@
         }
       }
     },
-    "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
+    "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj",
+        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj",
         "projectName": "ENN Cargo.Models",
-        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj",
+        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\ENN Cargo.Models.csproj",
         "packagesPath": "C:\\Users\\nuri2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Models\\obj\\",
+        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -309,14 +309,14 @@
         }
       }
     },
-    "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {
+    "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
+        "projectUniqueName": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
         "projectName": "ENN Cargo.Utility",
-        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
+        "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\ENN Cargo.Utility.csproj",
         "packagesPath": "C:\\Users\\nuri2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Utility\\obj\\",
+        "outputPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Utility\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -337,8 +337,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
-                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (7)\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj"
+              "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj": {
+                "projectPath": "C:\\Users\\nuri2\\Desktop\\New folder (10)\\ENN Cargo\\ENN-Cargo\\ENN Cargo.Core\\ENN Cargo.Core.csproj"
               }
             }
           }
