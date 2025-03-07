@@ -26,8 +26,9 @@
         </div>
     </div>
     <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
-    <a href="@Url.Action("ListOfDrivers", "Driver")" class="btn btn-secondary mt-3">Clear Filters</a>
+    <a asp-controller="Driver" asp-action="ListOfDrivers" class="btn btn-secondary mt-3">Clear Filters</a>
 </form>
+
 <table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>
@@ -37,13 +38,17 @@
             <th>Experience</th>
             <th>Phone Number</th>
             <th>Truck Company</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Action</th>
+            }
         </tr>
     </thead>
     <tbody>
-        @if (Model?.Drivers == null || !Model.Drivers.Any()) 
+        @if (Model?.Drivers == null || !Model.Drivers.Any())
         {
             <tr>
-                <td colspan="6">No drivers found.</td>
+                <td colspan="@(User.IsInRole("Admin") ? 7 : 6)">No drivers found.</td>
             </tr>
         }
         else
@@ -53,18 +58,53 @@
                 <tr>
                     <td>@driver.FirstName</td>
                     <td>@driver.LastName</td>
-                    <td>@driver.Email</td> 
+                    <td>@driver.Email</td>
                     <td>@driver.Experience</td>
-                    <td>@driver.PhoneNumber</td> 
+                    <td>@driver.PhoneNumber</td>
                     <td>@driver.TruckCompany?.Name</td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-controller="Driver" asp-action="UpdateDriver" asp-route-id="@driver.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <form method="post" asp-controller="Driver" asp-action="Delete" asp-route-id="@driver.Id" class="d-inline" onsubmit="return deleteItem(this, 'driver');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         }
     </tbody>
 </table>
-<a asp-action="AddDriver" class="btn btn-primary">Add a Driver</a>
-<script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this driver?");
-    }
-</script>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Driver" asp-action="AddDriver" class="btn btn-primary">Add a Driver</a>
+}
+
+@section Scripts {
+    <script>
+        function deleteItem(form, itemType) {
+            if (confirm(`Are you sure you want to delete this ${itemType}?`)) {
+                event.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $(form).closest('tr').remove();
+                        } else {
+                            alert(response.message || `Error deleting ${itemType}.`);
+                        }
+                    },
+                    error: function() {
+                        alert(`Error deleting ${itemType}. Please try again.`);
+                    }
+                });
+                return false;
+            }
+            return false;
+        }
+    </script>
+}

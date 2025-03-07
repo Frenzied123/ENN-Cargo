@@ -4,9 +4,11 @@ using ENN_Cargo.Core;
 using ENN_Cargo.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ENN_Cargo.Controllers
 {
+    [Authorize]
     public class VehicleController : Controller
     {
         private readonly IVehicleService _vehicleService;
@@ -42,6 +44,7 @@ namespace ENN_Cargo.Controllers
             return View(model);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]      
         public async Task<IActionResult> AddVehicle()
         {
             var truckCompanies = await _truckCompanyService.GetAllAsync();
@@ -53,6 +56,7 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]      
         public async Task<IActionResult> AddVehicle(VehicleViewModel model)
         { 
             bool needsManualBind = model.Brand == null || model.Model == null || !model.Year.HasValue || model.LicensePlate == null || !model.SelectedTruckCompanyId.HasValue;
@@ -90,6 +94,7 @@ namespace ENN_Cargo.Controllers
             return View(model);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]      
         public async Task<IActionResult> UpdateVehicle(int id)
         {
             var vehicle = await _vehicleService.GetByIdAsync(id);
@@ -111,6 +116,7 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]     
         public async Task<IActionResult> UpdateVehicle(int id, VehicleViewModel model) 
         {
             if (string.IsNullOrEmpty(model.Brand) || string.IsNullOrEmpty(model.Model) || !model.Year.HasValue || string.IsNullOrEmpty(model.LicensePlate) || !model.SelectedTruckCompanyId.HasValue)
@@ -151,14 +157,23 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            var vehicle = await _vehicleService.GetByIdAsync(id);
-            if (vehicle == null)
-                return NotFound();
-
-            await _vehicleService.RemoveAsync(id);
-            return RedirectToAction("ListOfVehicles");
+            try
+            {
+                var vehicle = await _vehicleService.GetByIdAsync(id);
+                if (vehicle == null)
+                {
+                    return Json(new { success = false, message = "Vehicle not found" });
+                }
+                await _vehicleService.RemoveAsync(id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error deleting vehicle: {ex.Message}" });
+            }
         }
         [HttpGet]
         public async Task<IActionResult> ListByTruckCompany(int truckCompanyId)

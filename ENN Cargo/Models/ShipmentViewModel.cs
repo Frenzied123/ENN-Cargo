@@ -8,7 +8,7 @@ namespace ENN_Cargo.Models
 {
     public class ShipmentViewModel
     {
-        public int? Id { get; set; } // Nullable, only used for Update
+        public int? Id { get; set; }         
         [Required(ErrorMessage = "Description is required.")]
         public string? Description { get; set; }
         [Required(ErrorMessage = "Weight is required.")]

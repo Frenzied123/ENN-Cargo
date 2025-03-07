@@ -1,5 +1,6 @@
 ﻿using ENN_Cargo.Core;
 using ENN_Cargo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ENN_Cargo.Controllers
 {
+    [Authorize]
     public class CompanyStockController : Controller
     {
         private readonly ICompanyStockService _companyStockService;
@@ -33,42 +35,49 @@ namespace ENN_Cargo.Controllers
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> AddCompanyStock()
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddCompanyStock()
         {
-            var model = await PopulateDropdowns(new CompanyStockViewModel());
-            return View(model);
+            return View(new RegisterForCompanyStock());
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCompanyStock(CompanyStockViewModel model)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddCompanyStock(RegisterForCompanyStock model, [FromServices] UserManager<IdentityUser> userManager)
         {
-            if (!string.IsNullOrEmpty(model.Name) &&
-                !string.IsNullOrEmpty(model.Email) &&
-                !string.IsNullOrEmpty(model.PhoneNumber) &&
-                !string.IsNullOrEmpty(model.Address) &&
-                !string.IsNullOrEmpty(model.SelectedCountry) &&
-                !string.IsNullOrEmpty(model.SelectedTown))
+            if (ModelState.IsValid)
             {
-                var companyStock = new CompanyStock
+                var user = new IdentityUser
                 {
-                    Name = model.Name,
-                    Address = model.Address,
-                    Country = model.SelectedCountry,
-                    Town = model.SelectedTown,
-                    User = new IdentityUser
-                    {
-                        Email = model.Email,
-                        PhoneNumber = model.PhoneNumber,
-                        UserName = model.Email
-                    }
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber
                 };
-                await _companyStockService.AddAsync(companyStock);
-                return RedirectToAction("ListOfCompaniesStock");
+
+                var result = await userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    var companyStock = new CompanyStock
+                    {
+                        Name = model.Name,
+                        Address = model.Address,
+                        Country = model.Country,
+                        Town = model.Town,
+                        UserId = user.Id
+                    };
+                    await _companyStockService.AddAsync(companyStock);
+                    return RedirectToAction("ListOfCompaniesStock");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            model = await PopulateDropdowns(model);
             return View(model);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCompanyStock(int id)
         {
             var companyStock = await _companyStockService.GetByIdAsync(id);
@@ -80,8 +89,8 @@ namespace ENN_Cargo.Controllers
             {
                 Id = companyStock.Id,
                 Name = companyStock.Name,
-                Email = companyStock.User.Email,
-                PhoneNumber = companyStock.User.PhoneNumber,
+                Email = companyStock.User?.Email ?? string.Empty,                 
+                PhoneNumber = companyStock.User?.PhoneNumber ?? string.Empty,                 
                 Address = companyStock.Address,
                 SelectedCountry = companyStock.Country,
                 SelectedTown = companyStock.Town
@@ -90,6 +99,7 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]         
         public async Task<IActionResult> UpdateCompanyStock(CompanyStockViewModel model)
         {
             if (model.Id.HasValue &&
@@ -123,16 +133,16 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var companyStock = await _companyStockService.GetByIdAsync(id);
             if (companyStock == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Company stock not found" });
             }
-
             await _companyStockService.RemoveAsync(id);
-            return RedirectToAction("ListOfCompaniesStock");
+            return Json(new { success = true });
         }
         [HttpGet]
         public async Task<IActionResult> GetTownsByCountry(string country)

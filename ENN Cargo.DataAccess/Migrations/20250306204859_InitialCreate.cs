@@ -3,15 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
+#pragma warning disable CA1814 
 namespace ENN_Cargo.DataAccess.Migrations
 {
-    /// <inheritdoc />
-    public partial class InitialCreate : Migration
+        public partial class InitialCreate : Migration
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
+                protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
@@ -346,8 +343,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                 columns: new[] { "Id", "DeliveryDate", "Description", "FromAddress", "FromCountry", "FromTown", "PickUpDate", "Status", "ToAddress", "ToCountry", "ToTown", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 3, 6, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1779), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1737), "Available", "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
-                    { 2, new DateTime(2025, 3, 8, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1786), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 3, 3, 19, 48, 50, 6, DateTimeKind.Local).AddTicks(1785), "Available", "Metro", "Bulgaria", "Sofia", 27.0 }
+                    { 1, new DateTime(2025, 3, 9, 22, 48, 49, 647, DateTimeKind.Local).AddTicks(7060), "Electronics", "Sklad Kappa", "Bulgaria", "Kazanlak", new DateTime(2025, 3, 6, 22, 48, 49, 647, DateTimeKind.Local).AddTicks(6992), "Available", "Kaufland", "Bulgaria", "Plovdiv", 24.0 },
+                    { 2, new DateTime(2025, 3, 11, 22, 48, 49, 647, DateTimeKind.Local).AddTicks(7073), "Furniture", "Sklad Videnov", "Bulgaria", "Stara Zagora", new DateTime(2025, 3, 6, 22, 48, 49, 647, DateTimeKind.Local).AddTicks(7070), "Available", "Metro", "Bulgaria", "Sofia", 27.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -463,8 +460,7 @@ namespace ENN_Cargo.DataAccess.Migrations
                 column: "TruckCompany_Id");
         }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
+                protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

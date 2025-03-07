@@ -1927,7 +1927,7 @@
         },
         "runtime": {
           "ENN Cargo.Core.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1943,7 +1943,7 @@
         },
         "runtime": {
           "ENN Cargo.DataAccess.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1958,7 +1958,7 @@
         },
         "runtime": {
           "ENN Cargo.Models.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1973,7 +1973,7 @@
         },
         "runtime": {
           "ENN Cargo.Utility.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }

@@ -3,7 +3,9 @@ using ENN_Cargo.DataAccess.Repository.IRepository;
 using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
+[Authorize]
 public class ShipmentController : Controller
 {
     private readonly IShipmentService _shipmentService;
@@ -65,6 +67,7 @@ public class ShipmentController : Controller
         if (model.DeliveryDate.HasValue) shipments = shipments.Where(s => s.DeliveryDate >= model.DeliveryDate).ToList();
         return shipments;
     }
+    [HttpGet]
     public async Task<IActionResult> AddShipment()
     {
         var model = await PopulateDropdowns(new ShipmentViewModel());
@@ -115,6 +118,7 @@ public class ShipmentController : Controller
         return RedirectToAction(nameof(ListOfShipments));
     }
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateShipment(int id)
     {
         var shipment = await _shipmentService.GetByIdAsync(id);
@@ -143,10 +147,9 @@ public class ShipmentController : Controller
             CompanyStocks = new SelectList(companyStocks, "Id", "Name", existingAssignment?.CompanyStock_Id),
             PredefinedTowns = PredefinedTowns
         };
-        return View(model);
-    }
+        return View(model);     }
     [HttpPost]
-    public async Task<IActionResult> UpdateShipment(ShipmentViewModel model)
+    [Authorize(Roles = "Admin")]     public async Task<IActionResult> UpdateShipment(ShipmentViewModel model)
     {
         if (model.Shipment?.Id > 0 &&
             !string.IsNullOrEmpty(model.Description) &&
@@ -181,7 +184,7 @@ public class ShipmentController : Controller
         model = await PopulateDropdowns(model);
         return View(model);
     }
-    private async Task UpdateCompanyStockAssignment(int? companyStockId, int shipmentId)
+    [Authorize(Roles = "Admin")]     private async Task UpdateCompanyStockAssignment(int? companyStockId, int shipmentId)
     {
         var existingAssignment = (await _companyStocksShipmentsRepository.GetAllAsync()).FirstOrDefault(cs => cs.Shipment_Id == shipmentId);
         if (existingAssignment != null)
@@ -189,8 +192,7 @@ public class ShipmentController : Controller
             if (companyStockId.HasValue)
                 existingAssignment.CompanyStock_Id = companyStockId.Value;
             else
-                await _companyStocksShipmentsRepository.RemoveAsync(existingAssignment); // Optionally remove if no company stock is selected
-        }
+                await _companyStocksShipmentsRepository.RemoveAsync(existingAssignment);         }
         else if (companyStockId.HasValue)
         {
             await _companyStocksShipmentsRepository.AddAsync(new CompanyStocks_Shipments { Shipment_Id = shipmentId, CompanyStock_Id = companyStockId.Value });
@@ -235,5 +237,18 @@ public class ShipmentController : Controller
         { "Romania", new List<string> { "Bucharest", "Cluj-Napoca", "Timisoara" } }
     };
         return predefinedTowns.ContainsKey(country) ? predefinedTowns[country] : new List<string>();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var shipment = await _shipmentService.GetByIdAsync(id);
+        if (shipment == null)
+        {
+            return Json(new { success = false, message = "Shipment not found" });
+        }
+        await _shipmentService.RemoveAsync(id);
+        return Json(new { success = true });
     }
 }

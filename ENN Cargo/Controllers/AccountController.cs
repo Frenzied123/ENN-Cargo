@@ -18,6 +18,7 @@ namespace ENN_Cargo.Controllers
 
         public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager,ITruckCompanyService truckCompanyService,IDriverService driverService,ICompanyStockService companyStockService)
         {
+
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;

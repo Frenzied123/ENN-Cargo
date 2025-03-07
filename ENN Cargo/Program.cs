@@ -7,12 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ENN_CargoApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("ENN Cargo.DataAccess"))); // Fixed space in assembly name
-builder.Services.AddRazorPages();
+        b => b.MigrationsAssembly("ENN Cargo.DataAccess"))); builder.Services.AddRazorPages();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ICompanyStockService, CompanyStockService>();
 builder.Services.AddScoped<IDriverService, DriverService>();
@@ -31,7 +29,6 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -43,7 +40,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// Seed roles and admin
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

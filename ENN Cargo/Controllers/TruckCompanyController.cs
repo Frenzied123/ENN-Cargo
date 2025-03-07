@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ENN_Cargo.Controllers
 {
+    [Authorize]
     public class TruckCompanyController : Controller
     {
         private readonly ITruckCompanyService _truckCompanyService;
@@ -76,39 +78,50 @@ namespace ENN_Cargo.Controllers
             return View(truckCompany);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddTruckCompany()
         {
-            var viewModel = new TruckCompanyViewModel
-            {
-                Countries = new SelectList(GetCountries()),
-                Towns = new SelectList(Enumerable.Empty<string>())
-            };
-            return View(viewModel);
+            return View(new RegisterForTruckCompany());
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTruckCompany(TruckCompanyViewModel model)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddTruckCompany(RegisterForTruckCompany model, [FromServices] UserManager<IdentityUser> userManager)
         {
             if (ModelState.IsValid)
             {
-                var truckCompany = new TruckCompany
+                var user = new IdentityUser
                 {
-                    Name = model.Name,
-                    Address = model.Address,
-                    Country = model.SelectedCountry,
-                    Town = model.SelectedTown,
-                    User = new IdentityUser
-                    {
-                        Email = model.Email,
-                        PhoneNumber = model.PhoneNumber,
-                        UserName = model.Email
-                    }
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber
                 };
-                await _truckCompanyService.AddAsync(truckCompany);
-                return RedirectToAction("ListOfTruckCompanies");
+
+                var result = await userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    var truckCompany = new TruckCompany
+                    {
+                        Name = model.Name,
+                        Address = model.Address,
+                        Country = model.Country,
+                        Town = model.Town,
+                        UserId = user.Id
+                    };
+                    await _truckCompanyService.AddAsync(truckCompany);
+                    return RedirectToAction("ListOfTruckCompanies");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            model.Countries = new SelectList(GetCountries());
-            model.Towns = new SelectList(GetCitiesByCountry(model.SelectedCountry));
+            else
+            {
+                                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                Console.WriteLine("ModelState Errors: " + string.Join(", ", errors));
+            }
             return View(model);
         }
         [HttpGet]
@@ -117,6 +130,7 @@ namespace ENN_Cargo.Controllers
             return Content($"Add Driver for Truck Company ID: {truckCompanyId} - Coming Soon!");
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateTruckCompany(int id)
         {
             var truckCompany = await _truckCompanyService.GetByIdAsync(id);
@@ -124,18 +138,17 @@ namespace ENN_Cargo.Controllers
             var viewModel = new TruckCompanyViewModel
             {
                 Name = truckCompany.Name,
-                Email = truckCompany.User.Email,
-                Address = truckCompany.Address,
+                Email = truckCompany.User?.Email ?? string.Empty,                 Address = truckCompany.Address,
                 SelectedCountry = truckCompany.Country,
                 SelectedTown = truckCompany.Town,
-                PhoneNumber = truckCompany.User.PhoneNumber,
-                Countries = new SelectList(GetCountries(), truckCompany.Country),
+                PhoneNumber = truckCompany.User?.PhoneNumber ?? string.Empty,                 Countries = new SelectList(GetCountries(), truckCompany.Country),
                 Towns = new SelectList(GetCitiesByCountry(truckCompany.Country), truckCompany.Town)
             };
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]      
         public async Task<IActionResult> UpdateTruckCompany(int id, TruckCompanyViewModel model)
         {
             if (!string.IsNullOrEmpty(model.Name) &&
@@ -169,15 +182,16 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var truckCompany = await _truckCompanyService.GetByIdAsync(id);
             if (truckCompany == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Truck company not found" });
             }
             await _truckCompanyService.RemoveAsync(id);
-            return RedirectToAction("ListOfTruckCompanies");
+            return Json(new { success = true });
         }
     }
 }

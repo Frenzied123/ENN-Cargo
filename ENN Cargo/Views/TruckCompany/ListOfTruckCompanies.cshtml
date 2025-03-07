@@ -6,41 +6,45 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-action="ListOfTruckCompanies" method="get">
-    <div class="form-group">
-        <label asp-for="MinDrivers">Min Drivers:</label>
-        <input asp-for="MinDrivers" type="number" class="form-control" />
+<form asp-controller="TruckCompany" asp-action="ListOfTruckCompanies" method="get" class="mb-4">
+    <div class="form-row">
+        <div class="col-md-3">
+            <label asp-for="MinDrivers">Min Drivers:</label>
+            <input asp-for="MinDrivers" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="MaxDrivers">Max Drivers:</label>
+            <input asp-for="MaxDrivers" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="MinVehicles">Min Vehicles:</label>
+            <input asp-for="MinVehicles" type="number" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="MaxVehicles">Max Vehicles:</label>
+            <input asp-for="MaxVehicles" type="number" class="form-control" />
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="MaxDrivers">Max Drivers:</label>
-        <input asp-for="MaxDrivers" type="number" class="form-control" />
+    <div class="form-row mt-3">
+        <div class="col-md-6">
+            <label asp-for="SelectedCountry">Country:</label>
+            <select id="SelectedCountry" asp-for="SelectedCountry" asp-items="Model.Countries" class="form-control">
+                <option value="">Select a Country</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="SelectedTown">Town:</label>
+            <select id="SelectedTown" asp-for="SelectedTown" asp-items="Model.Towns" class="form-control">
+                <option value="">Select a Town</option>
+            </select>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="MinVehicles">Min Vehicles:</label>
-        <input asp-for="MinVehicles" type="number" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="MaxVehicles">Max Vehicles:</label>
-        <input asp-for="MaxVehicles" type="number" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="SelectedCountry">Country:</label>
-        <select id="SelectedCountry" asp-for="SelectedCountry" asp-items="Model.Countries" class="form-control">
-            <option value="">Select a Country</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label asp-for="SelectedTown">Town:</label>
-        <select id="SelectedTown" asp-for="SelectedTown" asp-items="Model.Towns" class="form-control">
-            <option value="">Select a Town</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Filter</button>
-    <a href="@Url.Action("ListOfTruckCompanies")" class="btn btn-secondary mt-3">Clear Filters</a>
+    <button type="submit" class="btn btn-primary mt-3">Filter</button>
+    <a asp-controller="TruckCompany" asp-action="ListOfTruckCompanies" class="btn btn-secondary mt-3">Clear Filters</a>
 </form>
 
-<table class="table">
-    <thead>
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
         <tr>
             <th>Name</th>
             <th>Email</th>
@@ -50,14 +54,17 @@
             <th>Phone Number</th>
             <th>Drivers</th>
             <th>Vehicles</th>
-            <th>Actions</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Action</th>
+            }
         </tr>
     </thead>
     <tbody>
         @if (Model?.TruckCompanies == null || !Model.TruckCompanies.Any())
         {
             <tr>
-                <td colspan="9">No truck companies found.</td>
+                <td colspan="@(User.IsInRole("Admin") ? 9 : 8)">No truck companies found.</td>
             </tr>
         }
         else
@@ -66,26 +73,34 @@
             {
                 <tr>
                     <td>@company.Name</td>
-                    <td>@company.Email</td> 
+                    <td>@company.Email</td>
                     <td>@company.Address</td>
                     <td>@company.Country</td>
                     <td>@company.Town</td>
-                    <td>@company.PhoneNumber</td> 
+                    <td>@company.PhoneNumber</td>
                     <td>@(company.Drivers?.Count ?? 0)</td>
                     <td>@(company.Vehicles?.Count ?? 0)</td>
-                    <td>
-                        <a asp-action="UpdateTruckCompany" asp-route-id="@company.Id" class="btn btn-warning btn-sm">Edit</a>
-                        <form asp-action="Delete" asp-route-id="@company.Id" method="post" style="display:inline;">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this truck company?');">Delete</button>
-                        </form>
-                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-controller="TruckCompany" asp-action="UpdateTruckCompany" asp-route-id="@company.Id" class="btn btn-warning btn-sm">Edit</a>
+                            <form method="post" asp-controller="TruckCompany" asp-action="Delete" asp-route-id="@company.Id" class="d-inline" onsubmit="deleteItem(event, this, 'truck company'); return false;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         }
     </tbody>
 </table>
-<a href="@Url.Action("AddTruckCompany")" class="btn btn-success">Add New Truck Company</a>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="TruckCompany" asp-action="AddTruckCompany" class="btn btn-success">Add New Truck Company</a>
+}
+
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
@@ -96,13 +111,14 @@
                 "USA": []
             };
             updateTownsDropdown("@Model.SelectedCountry");
+
             document.getElementById("SelectedCountry").addEventListener("change", function () {
                 updateTownsDropdown(this.value);
             });
+
             function updateTownsDropdown(selectedCountry) {
                 var townDropdown = document.getElementById("SelectedTown");
                 townDropdown.innerHTML = '<option value="">Select a Town</option>';
-
                 if (predefinedTowns[selectedCountry]) {
                     predefinedTowns[selectedCountry].forEach(function (town) {
                         var option = document.createElement("option");
@@ -114,5 +130,25 @@
                 }
             }
         });
+
+        function deleteItem(event, form, itemType) {
+            event.preventDefault();             if (confirm(`Are you sure you want to delete this ${itemType}?`)) {
+                $.ajax({
+                    url: form.action,
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $(form).closest('tr').remove();
+                        } else {
+                            alert(response.message || `Error deleting ${itemType}.`);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert(`Error deleting ${itemType}: ${xhr.responseText || 'Unknown error'}`);
+                    }
+                });
+            }
+        }
     </script>
 }
