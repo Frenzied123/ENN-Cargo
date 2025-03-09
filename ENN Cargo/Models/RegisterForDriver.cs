@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ENN_Cargo.Models
+﻿using System.ComponentModel.DataAnnotations;namespace ENN_Cargo.Models
 {
     public class RegisterForDriver
     {

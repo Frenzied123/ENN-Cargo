@@ -2388,7 +2388,6 @@ C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\ENN Cargo.MvcApplica
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\ENN Cargo.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\ENN Cargo.RazorAssemblyInfo.cache
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\ENN Cargo.RazorAssemblyInfo.cs
-C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\ENN Cargo.sourcelink.json
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\scopedcss\bundle\ENN Cargo.styles.css
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo\obj\Debug\net8.0\scopedcss\projectbundle\ENN Cargo.bundle.scp.css

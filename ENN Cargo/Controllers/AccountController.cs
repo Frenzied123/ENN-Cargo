@@ -3,9 +3,7 @@ using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Protocol;
-
-namespace ENN_Cargo.Controllers
+using NuGet.Protocol;namespace ENN_Cargo.Controllers
 {
     public class AccountController : Controller
     {
@@ -14,12 +12,8 @@ namespace ENN_Cargo.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITruckCompanyService _truckCompanyService;
         private readonly IDriverService _driverService;
-        private readonly ICompanyStockService _companyStockService;
-
-        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager,ITruckCompanyService truckCompanyService,IDriverService driverService,ICompanyStockService companyStockService)
-        {
-
-            _userManager = userManager;
+        private readonly ICompanyStockService _companyStockService;        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager,ITruckCompanyService truckCompanyService,IDriverService driverService,ICompanyStockService companyStockService)
+        {            _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _truckCompanyService = truckCompanyService;

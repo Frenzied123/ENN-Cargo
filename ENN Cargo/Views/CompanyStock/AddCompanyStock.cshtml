@@ -1,8 +1,4 @@
-﻿@model ENN_Cargo.Models.RegisterForCompanyStock
-
-<h2 class="mb-4">Add Company Stock</h2>
-
-<form asp-action="AddCompanyStock" method="post">
+﻿@model ENN_Cargo.Models.RegisterForCompanyStock<h2 class="mb-4">Add Company Stock</h2><form asp-action="AddCompanyStock" method="post">
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" class="form-control" />
@@ -45,9 +41,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Add Company Stock</button>
     <a asp-action="ListOfCompaniesStock" class="btn btn-secondary">Cancel</a>
-</form>
-
-@section Scripts {
+</form>@section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         const predefinedTowns = {
@@ -56,16 +50,10 @@
             "Germany": ["Berlin", "Munich"],
             "France": ["Paris", "Lyon"],
             "UK": ["London", "Manchester"]
-        };
-
-        $(document).ready(function () {
+        };        $(document).ready(function () {
             $('#SelectedCountry').change(function () {
                 var country = $(this).val();
-                var townSelect = $('#SelectedTown');
-
-                townSelect.empty().append('<option value="">Select a town</option>');
-
-                if (country && predefinedTowns[country]) {
+                var townSelect = $('#SelectedTown');                townSelect.empty().append('<option value="">Select a town</option>');                if (country && predefinedTowns[country]) {
                     predefinedTowns[country].forEach(function (town) {
                         townSelect.append($('<option></option>').attr('value', town).text(town));
                     });

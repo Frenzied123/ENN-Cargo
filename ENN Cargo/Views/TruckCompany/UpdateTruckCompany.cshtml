@@ -1,54 +1,36 @@
-﻿@model ENN_Cargo.Models.TruckCompanyViewModel
-
-@{
+﻿@model ENN_Cargo.Models.TruckCompanyViewModel@{
     ViewData["Title"] = "Update Truck Company";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="UpdateTruckCompany" method="post">
+}<h1>@ViewData["Title"]</h1><form asp-action="UpdateTruckCompany" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
+    </div>    <div class="form-group">
         <label asp-for="Email">Email</label>
         <input asp-for="Email" type="email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
+    </div>    <div class="form-group">
         <label asp-for="Address">Address</label>
         <input asp-for="Address" class="form-control" />
         <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
+    </div>    <div class="form-group">
         <label asp-for="SelectedCountry">Country</label>
         <select id="SelectedCountry" asp-for="SelectedCountry" asp-items="Model.Countries" class="form-control">
             <option value="">Select a Country</option>
         </select>
         <span asp-validation-for="SelectedCountry" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
+    </div>    <div class="form-group">
         <label asp-for="SelectedTown">Town</label>
         <select id="SelectedTown" asp-for="SelectedTown" asp-items="Model.Towns" class="form-control">
             <option value="">Select a Town</option>
         </select>
         <span asp-validation-for="SelectedTown" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
+    </div>    <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number</label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update Truck Company</button>
+    </div>    <button type="submit" class="btn btn-primary">Update Truck Company</button>
 </form>
 <a href="@Url.Action("ListOfTruckCompanies")" class="btn btn-secondary mt-3">Back to List</a>
 @section Scripts {

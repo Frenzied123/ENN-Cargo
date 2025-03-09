@@ -5,16 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
-using System.Threading.Tasks;
-
-namespace ENN_Cargo.Controllers
+using System.Threading.Tasks;namespace ENN_Cargo.Controllers
 {
     [Authorize]
     public class CompanyStockController : Controller
     {
-        private readonly ICompanyStockService _companyStockService;
-
-        public CompanyStockController(ICompanyStockService companyStockService)
+        private readonly ICompanyStockService _companyStockService;        public CompanyStockController(ICompanyStockService companyStockService)
         {
             _companyStockService = companyStockService;
         }
@@ -39,9 +35,7 @@ namespace ENN_Cargo.Controllers
         public IActionResult AddCompanyStock()
         {
             return View(new RegisterForCompanyStock());
-        }
-
-        [HttpPost]
+        }        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddCompanyStock(RegisterForCompanyStock model, [FromServices] UserManager<IdentityUser> userManager)
@@ -53,9 +47,7 @@ namespace ENN_Cargo.Controllers
                     UserName = model.Email,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber
-                };
-
-                var result = await userManager.CreateAsync(user, model.Password);
+                };                var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var companyStock = new CompanyStock
@@ -150,9 +142,7 @@ namespace ENN_Cargo.Controllers
             if (string.IsNullOrEmpty(country))
             {
                 return PartialView("_TownDropdown", new List<SelectListItem>());
-            }
-
-            var towns = await _companyStockService.GetTownsByCountryAsync(country);
+            }            var towns = await _companyStockService.GetTownsByCountryAsync(country);
             var townList = towns.Select(t => new SelectListItem { Value = t, Text = t }).ToList();
             return PartialView("_TownDropdown", townList);
         }

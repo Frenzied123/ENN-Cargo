@@ -1,12 +1,6 @@
-﻿@model ENN_Cargo.Models.VehicleViewModel
-
-@{
+﻿@model ENN_Cargo.Models.VehicleViewModel@{
     ViewData["Title"] = "List of Vehicles";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<form asp-controller="Vehicle" asp-action="ListOfVehicles" method="get" class="mb-4">
+}<h1>@ViewData["Title"]</h1><form asp-controller="Vehicle" asp-action="ListOfVehicles" method="get" class="mb-4">
     <div class="form-row">
         <div class="col-md-3">
             <label asp-for="SelectedBrand">Brand:</label>
@@ -35,9 +29,7 @@
     </div>
     <button type="submit" class="btn btn-primary mt-3">Filter</button>
     <a asp-controller="Vehicle" asp-action="ListOfVehicles" class="btn btn-secondary mt-3">Clear Filters</a>
-</form>
-
-<table class="table table-bordered table-striped">
+</form><table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>
             <th>Brand</th>
@@ -81,14 +73,10 @@
             }
         }
     </tbody>
-</table>
-
-@if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
+</table>@if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
 {
     <a asp-controller="Vehicle" asp-action="AddVehicle" class="btn btn-success">Add New Vehicle</a>
-}
-
-@section Scripts {
+}@section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         function deleteItem(form, itemType) {

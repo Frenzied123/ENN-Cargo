@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-
-namespace ENN_Cargo.Models
+using System.Collections.Generic;namespace ENN_Cargo.Models
 {
     public class DriverViewModel
     {

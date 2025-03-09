@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-
 namespace ENN_Cargo.Controllers
 {
     [Authorize]
@@ -28,7 +27,6 @@ namespace ENN_Cargo.Controllers
             var filteredTruckCompanies = await _truckCompanyService.GetFilteredTruckCompaniesAsync(
                 minDrivers, maxDrivers, minVehicles, maxVehicles, selectedCountry, selectedTown
             );
-
             var model = new TruckCompanyViewModel
             {
                 TruckCompanies = filteredTruckCompanies?.Select(tc => new TruckCompanyViewModel.TruckCompanyItem
@@ -52,7 +50,6 @@ namespace ENN_Cargo.Controllers
                 Countries = new SelectList(GetCountries(), selectedCountry),
                 Towns = new SelectList(GetCitiesByCountry(selectedCountry), selectedTown)
             };
-
             return View(model);
         }
         private IEnumerable<string> GetCountries()
@@ -83,7 +80,6 @@ namespace ENN_Cargo.Controllers
         {
             return View(new RegisterForTruckCompany());
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -97,7 +93,6 @@ namespace ENN_Cargo.Controllers
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber
                 };
-
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

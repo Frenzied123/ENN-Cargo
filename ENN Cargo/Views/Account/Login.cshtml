@@ -1,39 +1,255 @@
 ﻿@model ENN_Cargo.Models.LoginViewModel
-
 @{
     ViewData["Title"] = "Login";
+    var userType = Context.Request.Query["userType"].ToString();
 }
-
-<h2>Login</h2>
-
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
+@{
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENN Cargo Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
+        .login-side {
+            background-color: #0056a4;
+            color: white;
+            width: 30%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        .image-side {
+            width: 70%;
+            background-image: url('/api/placeholder/800/600');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .logo {
+            margin: 20px 0 40px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .login-box {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            width: 80%;
+            max-width: 350px;
+            color: #333;
+        }
+
+        .login-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0056a4;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .forgot-password a {
+                color: #0056a4;
+                text-decoration: none;
+            }
+
+        .service-logos {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .service-logo {
+            height: 30px;
+            margin: 0 5px;
+        }
+
+        .registration-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .registration-link {
+            display: block;
+            margin: 10px 0;
+            color: white;
+            text-decoration: none;
+        }
+
+            .registration-link svg {
+                margin-left: 5px;
+            }
+
+        .support-section {
+            margin-top: auto;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .support-link {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 72%;
+            background: white;
+            border-radius: 3px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            .language-selector svg {
+                margin-right: 5px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .language-selector span {
+                font-size: 14px;
+                font-weight: bold;
+                color: #0056a4;
+                line-height: 1;
+            }
+
+        .alert {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .checkbox-label {
+            margin-left: 5px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-side">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNzAiPgogICAgPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0yNSAxMEwxMCAxMEwxMCAyNUwyNSA0MEw0MCAyNUw0MCAxMEwyNSAxMFpNNzAgMTBMNTUgMTBMNTUgMjVMNzAgNDBMODUgMjVMODUgMTBMNzAgMTBaTTExNSAxMEwxMDAgMTBMMTAwIDI1TDExNSA0MEwxMzAgMjVMMTMwIDEwTDExNSAxMFpNMTYwIDEwTDE0NSAxMEwxNDUgMjVMMTYwIDQwTDE3NSAyNUwxNzUgMTBMMTYwIDEwWk0yMDUgMTBMMTkwIDEwTDE5MCAyNUwyMDUgNDBMMjIwIDI1TDIyMCAxMEwyMDUgMTBaTTI1MCAxMEwyMzUgMTBMMjM1IDI1LD>IyNTAgNDBMMjY1IDI1TDI2NSAxMEwyNTAgMTBaIi8+CiAgICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIzNSIgcj0iMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iNCIvPgogICAgPHRleHQgeD0iNSIgeT0iNjAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjIwIj5MS1cgV0FMVEVSPC90ZXh0Pgo8L3N2Zz4=" alt="ENN Cargo" class="logo">
+        <div class="language-selector">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span>EN</span>
+        </div>
+        <div class="login-box">
+            <h2 class="login-title">Login</h2>
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            <form asp-action="Login" method="post">
+                <input asp-for="Email" class="input-field" placeholder="E-mail address" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Password" class="input-field" placeholder="Password" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <div style="margin-bottom: 15px;">
+                    <input asp-for="RememberMe" type="checkbox" id="RememberMe" />
+                    <label for="RememberMe" class="checkbox-label">Remember Me</label>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <div class="forgot-password">
+                <a href="#">Forgotten your password?</a>
+            </div>
+            <div class="service-logos">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMzAiPgogICAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2U0MDUxMCIgcng9IjMiIHJ5PSIzIi8+CiAgICA8dGV4dCB4PSI1IiB5PSIyMCIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMTQiPkxPQURTIFRPREFZPC90ZXh0Pgo8L3N2Zz4=" alt="Loads Today" class="service-logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMzAiPgogICAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iIzAwNTZhNCIgcng9IjMiIHJ5PSIzIi8+CiAgICA8dGV4dCB4PSI1IiB5PSIyMCIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMTQiPkNPTk5FQ1Q8L3RleHQ+Cjwvc3ZnPg==" alt="Connect" class="service-logo">
+            </div>
+        </div>
+        <div class="registration-section">
+            <h3>You don't have an account yet?</h3>
+            <a asp-controller="Account" asp-action="RegisterForTruckCompanies" class="registration-link">
+                Registration for customers
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+            <a asp-controller="Account" asp-action="RegisterForStockCompanies" class="registration-link">
+                Registration for carriers
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+            <a asp-controller="Account" asp-action="RegisterForDrivers" class="registration-link">
+                Registration for drivers
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+        <div class="support-section">
+            <p>Got questions or experiencing technical problems?</p>
+            <a href="#" class="support-link">Ask for support</a>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Password">Password</label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+    <div class="image-side">
     </div>
-    <div class="form-group">
-        <label asp-for="RememberMe">Remember Me</label>
-        <input asp-for="RememberMe" type="checkbox" />
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

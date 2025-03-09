@@ -5,7 +5,6 @@ using ENN_Cargo.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-
 namespace ENN_Cargo.Controllers
 {
     [Authorize]
@@ -13,7 +12,6 @@ namespace ENN_Cargo.Controllers
     {
         private readonly IVehicleService _vehicleService;
         private readonly ITruckCompanyService _truckCompanyService;
-
         public VehicleController(IVehicleService vehicleService, ITruckCompanyService truckCompanyService)
         {
             _vehicleService = vehicleService;
@@ -44,7 +42,7 @@ namespace ENN_Cargo.Controllers
             return View(model);
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]      
+        [Authorize(Roles = "TruckCompany,Admin")]
         public async Task<IActionResult> AddVehicle()
         {
             var truckCompanies = await _truckCompanyService.GetAllAsync();
@@ -56,7 +54,7 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]      
+        [Authorize(Roles = "TruckCompany,Admin")]
         public async Task<IActionResult> AddVehicle(VehicleViewModel model)
         { 
             bool needsManualBind = model.Brand == null || model.Model == null || !model.Year.HasValue || model.LicensePlate == null || !model.SelectedTruckCompanyId.HasValue;
@@ -94,7 +92,8 @@ namespace ENN_Cargo.Controllers
             return View(model);
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]      
+        [Authorize(Roles = "TruckCompany,Admin")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateVehicle(int id)
         {
             var vehicle = await _vehicleService.GetByIdAsync(id);
@@ -111,12 +110,11 @@ namespace ENN_Cargo.Controllers
                 SelectedTruckCompanyId = vehicle.TruckCompany_Id, 
                 TruckCompanies = new SelectList(truckCompanies, "Id", "Name", vehicle.TruckCompany_Id)
             };
-
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]     
+        [Authorize(Roles = "TruckCompany,Admin")]     
         public async Task<IActionResult> UpdateVehicle(int id, VehicleViewModel model) 
         {
             if (string.IsNullOrEmpty(model.Brand) || string.IsNullOrEmpty(model.Model) || !model.Year.HasValue || string.IsNullOrEmpty(model.LicensePlate) || !model.SelectedTruckCompanyId.HasValue)
@@ -130,7 +128,6 @@ namespace ENN_Cargo.Controllers
                 ModelState.Clear(); 
                 TryValidateModel(model); 
             }
-
             if (ModelState.IsValid)
             {
                 var vehicle = await _vehicleService.GetByIdAsync(id);
@@ -147,7 +144,6 @@ namespace ENN_Cargo.Controllers
                 vehicle.Year = model.Year.Value;
                 vehicle.LicensePlate = model.LicensePlate ?? throw new ArgumentNullException("LicensePlate cannot be null.");
                 vehicle.TruckCompany_Id = model.SelectedTruckCompanyId.Value;
-
                 await _vehicleService.UpdateAsync(vehicle);
                 Console.WriteLine("Vehicle updated successfully!");
                 return RedirectToAction("ListOfVehicles");
@@ -157,7 +153,7 @@ namespace ENN_Cargo.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "TruckCompany,Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -1,8 +1,4 @@
-﻿@model ENN_Cargo.Models.CompanyStockViewModel
-
-<h2 class="mb-4">Update Company Stock</h2>
-
-<form asp-action="UpdateCompanyStock" asp-controller="CompanyStock" method="post" class="p-4 border rounded shadow-sm">
+﻿@model ENN_Cargo.Models.CompanyStockViewModel<h2 class="mb-4">Update Company Stock</h2><form asp-action="UpdateCompanyStock" asp-controller="CompanyStock" method="post" class="p-4 border rounded shadow-sm">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
@@ -49,9 +45,7 @@
         <span asp-validation-for="CustomTown" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
-</form>
-
-@section Scripts {
+</form>@section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         const predefinedTowns = {
@@ -65,9 +59,7 @@
             $('#SelectedCountry').change(function () {
                 var country = $(this).val();
                 var townSelect = $('#SelectedTown');
-                townSelect.empty().append('<option value="">Select a town</option>');
-
-                if (country && predefinedTowns[country]) {
+                townSelect.empty().append('<option value="">Select a town</option>');                if (country && predefinedTowns[country]) {
                     predefinedTowns[country].forEach(function (town) {
                         townSelect.append($('<option></option>').attr('value', town).text(town));
                     });

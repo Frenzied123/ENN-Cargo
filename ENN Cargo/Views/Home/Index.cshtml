@@ -15,44 +15,29 @@
             --light-gray: #f5f5f5;
             --medium-gray: #e0e0e0;
             --dark-gray: #333;
-        }
-
-        * {
+        }        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        body {
+        }        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--dark-gray);
             line-height: 1.6;
-        }
-
-        img {
+        }        img {
             max-width: 100%;
-        }
-
-        .container {
+        }        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
-        }
-
-        /* Top user type bar */
-        .user-type-bar {
+        }        .user-type-bar {
             background-color: #f0f0f0;
             padding: 10px 0;
             text-align: right;
-        }
-
-            .user-type-bar .container {
+        }            .user-type-bar .container {
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
-            }
-
-        .user-type-button {
+            }        .user-type-button {
             display: inline-flex;
             align-items: center;
             background-color: var(--primary-color);
@@ -63,84 +48,54 @@
             border: none;
             cursor: pointer;
             font-weight: 500;
-        }
-
-            .user-type-button:hover {
+        }            .user-type-button:hover {
                 background-color: #004d8c;
-            }
-
-        .language-selector {
+            }        .language-selector {
             margin-left: 20px;
             padding: 8px 15px;
             background-color: white;
             border: 1px solid #ddd;
             cursor: pointer;
-        }
-
-        /* Main header with logo and navigation */
-        .main-header {
+        }        .main-header {
             background-color: var(--primary-color);
             padding: 20px 0;
             color: white;
-        }
-
-            .main-header .container {
+        }            .main-header .container {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-        .logo {
+            }        .logo {
             display: flex;
             align-items: center;
-        }
-
-            .logo img {
+        }            .logo img {
                 max-height: 50px;
-            }
-
-        .logo-text {
+            }        .logo-text {
             font-size: 1.8rem;
             font-weight: bold;
             color: white;
             margin-left: 10px;
-        }
-
-        .slogan {
+        }        .slogan {
             color: white;
             font-size: 1rem;
             margin-left: 10px;
             font-style: italic;
-        }
-
-        .connect-login {
+        }        .connect-login {
             display: flex;
             align-items: center;
             font-weight: 500;
             cursor: pointer;
-        }
-
-        .search-icon, .lock-icon {
+        }        .search-icon, .lock-icon {
             margin-left: 15px;
             font-size: 1.2rem;
-        }
-
-        /* Main navigation */
-        .main-nav {
+        }        .main-nav {
             background-color: white;
             border-bottom: 1px solid #ddd;
-        }
-
-            .main-nav .container {
+        }            .main-nav .container {
                 display: flex;
                 justify-content: space-between;
-            }
-
-        .nav-links {
+            }        .nav-links {
             display: flex;
-        }
-
-            .nav-links a {
+        }            .nav-links a {
                 text-decoration: none;
                 color: var(--dark-gray);
                 padding: 15px 20px;
@@ -148,13 +103,9 @@
                 display: block;
                 border-right: 1px solid #eee;
                 font-size: 0.9rem;
-            }
-
-                .nav-links a:hover {
+            }                .nav-links a:hover {
                     background-color: #f5f5f5;
-                }
-
-        .enquiry-button {
+                }        .enquiry-button {
             background-color: var(--accent-color);
             color: var(--dark-gray);
             padding: 15px 25px;
@@ -163,14 +114,9 @@
             display: flex;
             align-items: center;
             font-size: 0.9rem;
-        }
-
-            .enquiry-button:hover {
+        }            .enquiry-button:hover {
                 background-color: #e0a500;
-            }
-
-        /* Hero section */
-        .hero {
+            }        .hero {
             position: relative;
             height: 500px;
             background-image: url('/api/placeholder/1200/500');
@@ -178,22 +124,16 @@
             background-position: center;
             display: flex;
             align-items: center;
-        }
-
-        .hero-content {
+        }        .hero-content {
             max-width: 500px;
             padding: 40px;
             margin-left: 40px;
             color: white;
-        }
-
-            .hero-content h1 {
+        }            .hero-content h1 {
                 font-size: 2.5rem;
                 font-weight: bold;
                 margin-bottom: 20px;
-            }
-
-        .hero-button {
+            }        .hero-button {
             display: inline-block;
             background-color: rgba(255, 255, 255, 0.2);
             border: 1px solid white;
@@ -202,60 +142,39 @@
             text-decoration: none;
             margin-top: 20px;
             transition: background-color 0.3s;
-        }
-
-            .hero-button:hover {
+        }            .hero-button:hover {
                 background-color: rgba(255, 255, 255, 0.3);
-            }
-
-        /* Services section */
-        .services-section {
+            }        .services-section {
             padding: 60px 0;
             background-color: white;
-        }
-
-        .section-title {
+        }        .section-title {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 40px;
             color: var(--primary-color);
-        }
-
-        .services-grid {
+        }        .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-        }
-
-        .service-card {
+        }        .service-card {
             text-align: center;
             padding: 20px;
             transition: transform 0.3s;
-        }
-
-            .service-card:hover {
+        }            .service-card:hover {
                 transform: translateY(-5px);
-            }
-
-            .service-card img {
+            }            .service-card img {
                 width: 150px;
                 height: 150px;
                 object-fit: contain;
                 margin-bottom: 20px;
-            }
-
-            .service-card h3 {
+            }            .service-card h3 {
                 font-size: 1.3rem;
                 margin-bottom: 15px;
                 color: var(--primary-color);
-            }
-
-            .service-card p {
+            }            .service-card p {
                 margin-bottom: 20px;
                 color: #666;
-            }
-
-        .btn {
+            }        .btn {
             display: inline-block;
             background-color: var(--primary-color);
             color: white;
@@ -263,257 +182,164 @@
             text-decoration: none;
             border-radius: 0;
             transition: background-color 0.3s;
-        }
-
-            .btn:hover {
+        }            .btn:hover {
                 background-color: #004d8c;
-            }
-
-        /* Stats section */
-        .stats-section {
+            }        .stats-section {
             background-color: var(--light-gray);
             padding: 60px 0;
-        }
-
-        .stats-grid {
+        }        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 30px;
-        }
-
-        .stat-card {
+        }        .stat-card {
             text-align: center;
             padding: 20px;
-        }
-
-            .stat-card .number {
+        }            .stat-card .number {
                 font-size: 3rem;
                 font-weight: bold;
                 color: var(--primary-color);
                 margin-bottom: 10px;
-            }
-
-            .stat-card .label {
+            }            .stat-card .label {
                 font-size: 1.1rem;
                 color: #666;
-            }
-
-        /* Testimonials section */
-        .testimonials-section {
+            }        .testimonials-section {
             padding: 60px 0;
             background-color: white;
-        }
-
-        .testimonial {
+        }        .testimonial {
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
-        }
-
-        .testimonial-text {
+        }        .testimonial-text {
             font-size: 1.3rem;
             font-style: italic;
             margin-bottom: 20px;
             position: relative;
             padding: 0 40px;
-        }
-
-            .testimonial-text::before,
+        }            .testimonial-text::before,
             .testimonial-text::after {
                 content: '"';
                 font-size: 4rem;
                 color: var(--medium-gray);
                 position: absolute;
                 opacity: 0.5;
-            }
-
-            .testimonial-text::before {
+            }            .testimonial-text::before {
                 top: -20px;
                 left: 0;
-            }
-
-            .testimonial-text::after {
+            }            .testimonial-text::after {
                 bottom: -40px;
                 right: 0;
-            }
-
-        .testimonial-author {
+            }        .testimonial-author {
             font-weight: bold;
             color: var(--primary-color);
-        }
-
-        /* News section */
-        .news-section {
+        }        .news-section {
             padding: 60px 0;
             background-color: var(--light-gray);
-        }
-
-        .news-grid {
+        }        .news-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-        }
-
-        .news-card {
+        }        .news-card {
             background-color: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             overflow: hidden;
-        }
-
-            .news-card img {
+        }            .news-card img {
                 width: 100%;
                 height: 200px;
                 object-fit: cover;
-            }
-
-        .news-content {
+            }        .news-content {
             padding: 20px;
-        }
-
-        .news-date {
+        }        .news-date {
             color: #999;
             font-size: 0.9rem;
             margin-bottom: 10px;
-        }
-
-        .news-title {
+        }        .news-title {
             color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 1.2rem;
-        }
-
-        .news-excerpt {
+        }        .news-excerpt {
             margin-bottom: 15px;
             font-size: 0.9rem;
-        }
-
-        .read-more {
+        }        .read-more {
             display: inline-block;
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             font-size: 0.9rem;
-        }
-
-            .read-more:hover {
+        }            .read-more:hover {
                 text-decoration: underline;
-            }
-
-        /* Contact section */
-        .contact-section {
+            }        .contact-section {
             padding: 60px 0;
             background-color: white;
-        }
-
-        .contact-grid {
+        }        .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-        }
-
-        .contact-info h3 {
+        }        .contact-info h3 {
             color: var(--primary-color);
             margin-bottom: 20px;
             font-size: 1.5rem;
-        }
-
-        .contact-detail {
+        }        .contact-detail {
             margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
-        }
-
-        .contact-icon {
+        }        .contact-icon {
             margin-right: 10px;
             color: var(--primary-color);
             font-size: 1.2rem;
-        }
-
-        .contact-form .form-group {
+        }        .contact-form .form-group {
             margin-bottom: 20px;
-        }
-
-        .contact-form label {
+        }        .contact-form label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
-        }
-
-        .contact-form input,
+        }        .contact-form input,
         .contact-form textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
-        }
-
-        .contact-form textarea {
+        }        .contact-form textarea {
             height: 120px;
-        }
-
-        .submit-btn {
+        }        .submit-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 12px 25px;
             cursor: pointer;
             font-weight: 500;
-        }
-
-            .submit-btn:hover {
+        }            .submit-btn:hover {
                 background-color: #004d8c;
-            }
-
-        /* Footer */
-        .footer {
+            }        .footer {
             background-color: var(--dark-gray);
             color: white;
             padding: 60px 0 20px;
-        }
-
-        .footer-grid {
+        }        .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 40px;
             margin-bottom: 40px;
-        }
-
-        .footer-col h4 {
+        }        .footer-col h4 {
             color: var(--accent-color);
             margin-bottom: 20px;
             font-size: 1.2rem;
-        }
-
-        .footer-col p {
+        }        .footer-col p {
             margin-bottom: 15px;
             color: #ccc;
             font-size: 0.9rem;
-        }
-
-        .footer-col ul {
+        }        .footer-col ul {
             list-style: none;
-        }
-
-            .footer-col ul li {
+        }            .footer-col ul li {
                 margin-bottom: 10px;
-            }
-
-                .footer-col ul li a {
+            }                .footer-col ul li a {
                     color: #ccc;
                     text-decoration: none;
                     font-size: 0.9rem;
-                }
-
-                    .footer-col ul li a:hover {
+                }                    .footer-col ul li a:hover {
                         color: white;
-                    }
-
-        .social-icons {
+                    }        .social-icons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
-        }
-
-        .social-icon {
+        }        .social-icon {
             width: 40px;
             height: 40px;
             background-color: #444;
@@ -522,60 +348,37 @@
             justify-content: center;
             border-radius: 50%;
             transition: background-color 0.3s;
-        }
-
-            .social-icon:hover {
+        }            .social-icon:hover {
                 background-color: var(--primary-color);
-            }
-
-        .copyright {
+            }        .copyright {
             text-align: center;
             padding-top: 20px;
             border-top: 1px solid #444;
             color: #999;
             font-size: 0.9rem;
-        }
-
-        /* Media queries */
-        @@media (max-width: 992px) {
+        }        @@media (max-width: 992px) {
             .services-grid, .stats-grid, .news-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
+            }            .footer-grid {
                 grid-template-columns: 1fr 1fr;
             }
-        }
-
-        @@media (max-width: 768px) {
+        }        @@media (max-width: 768px) {
             .user-type-bar .container, .main-header .container, .main-nav .container, .contact-grid {
                 flex-direction: column;
-            }
-
-            .user-type-bar .container {
+            }            .user-type-bar .container {
                 justify-content: center;
-            }
-
-            .nav-links {
+            }            .nav-links {
                 flex-direction: column;
                 width: 100%;
-            }
-
-                .nav-links a {
+            }                .nav-links a {
                     border-right: none;
                     border-bottom: 1px solid #eee;
-                }
-
-            .hero-content {
+                }            .hero-content {
                 margin-left: 0;
                 padding: 20px;
-            }
-
-            .services-grid, .stats-grid, .news-grid, .contact-grid {
+            }            .services-grid, .stats-grid, .news-grid, .contact-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
+            }            .footer-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -584,16 +387,13 @@
 <body>
     <!-- Top bar with user types -->
     <div class="user-type-bar">
-        energía
         <div class="container">
             <button class="user-type-button">I am a customer</button>
             <button class="user-type-button">I am a carrier</button>
             <button class="user-type-button">I am a driver</button>
             <div class="language-selector">EN ▼</div>
         </div>
-    </div>
-
-    <!-- Main header with logo -->
+    </div>    <!-- Main header with logo -->
     <header class="main-header">
         <div class="container">
             <div class="logo">
@@ -606,9 +406,7 @@
                 <span class="search-icon">🔍</span>
             </div>
         </div>
-    </header>
-
-    <!-- Main navigation -->
+    </header>    <!-- Main navigation -->
     <nav class="main-nav">
         <div class="container">
             <div class="nav-links">
@@ -620,17 +418,13 @@
             </div>
             <a href="#" class="enquiry-button">📧 ENQUIRY</a>
         </div>
-    </nav>
-
-    <!-- Hero section -->
+    </nav>    <!-- Hero section -->
     <section class="hero">
         <div class="hero-content">
             <h1>The driving force for your business</h1>
             <a href="#" class="hero-button">Find out more →</a>
         </div>
-    </section>
-
-    <!-- Services section -->
+    </section>    <!-- Services section -->
     <section class="services-section">
         <div class="container">
             <h2 class="section-title">Our Transport Solutions</h2>
@@ -655,9 +449,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Stats section -->
+    </section>    <!-- Stats section -->
     <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
@@ -679,9 +471,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Testimonials section -->
+    </section>    <!-- Testimonials section -->
     <section class="testimonials-section">
         <div class="container">
             <h2 class="section-title">What Our Clients Say</h2>
@@ -692,9 +482,7 @@
                 <div class="testimonial-author">John Doe, Logistics Manager at Example Corp</div>
             </div>
         </div>
-    </section>
-
-    <!-- News section -->
+    </section>    <!-- News section -->
     <section class="news-section">
         <div class="container">
             <h2 class="section-title">Latest News</h2>
@@ -728,9 +516,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Contact section -->
+    </section>    <!-- Contact section -->
     <section class="contact-section">
         <div class="container">
             <h2 class="section-title">Contact Us</h2>
@@ -783,9 +569,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
+    </section>    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -835,9 +619,7 @@
                 <p>© 2025 ENN Cargo. All rights reserved.</p>
             </div>
         </div>
-    </footer>
-
-    <script>
+    </footer>    <script>
                 document.getElementById('connect-login').addEventListener('click', function() {
             window.location.href = '@Url.Action("Login", "Account")';
         });

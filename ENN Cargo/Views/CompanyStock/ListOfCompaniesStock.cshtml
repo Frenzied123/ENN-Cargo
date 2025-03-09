@@ -1,6 +1,4 @@
-﻿@model IEnumerable<ENN_Cargo.Models.CompanyStockViewModel>
-
-<h2 class="mb-4">Company Stocks</h2>
+﻿@model IEnumerable<ENN_Cargo.Models.CompanyStockViewModel><h2 class="mb-4">Company Stocks</h2>
 <table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>
@@ -47,14 +45,10 @@
             }
         }
     </tbody>
-</table>
-
-@if (User.IsInRole("Admin"))
+</table>@if (User.IsInRole("Admin"))
 {
     <a asp-controller="CompanyStock" asp-action="AddCompanyStock" class="btn btn-primary">Add a Stock Company</a>
-}
-
-@section Scripts {
+}@section Scripts {
     <script>
         function deleteItem(form, itemType) {
             if (confirm(`Are you sure you want to delete this ${itemType}?`)) {

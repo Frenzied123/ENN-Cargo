@@ -1,12 +1,6 @@
-﻿@model ENN_Cargo.Models.RegisterForTruckCompany
-
-@{
+﻿@model ENN_Cargo.Models.RegisterForTruckCompany@{
     ViewData["Title"] = "Add Truck Company";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="AddTruckCompany" method="post">
+}<h1>@ViewData["Title"]</h1><form asp-action="AddTruckCompany" method="post">
     <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" class="form-control" />
@@ -49,11 +43,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Add Truck Company</button>
     <a asp-action="ListOfTruckCompanies" class="btn btn-secondary">Cancel</a>
-</form>
-
-<a href="@Url.Action("ListOfTruckCompanies")" class="btn btn-secondary mt-3">Back to List</a>
-
-@section Scripts {
+</form><a href="@Url.Action("ListOfTruckCompanies")" class="btn btn-secondary mt-3">Back to List</a>@section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -61,14 +51,10 @@
                 "Bulgaria": ["Sofia", "Kazanlak"],
                 "Germany": ["Berlin", "Munich"],
                 "USA": []
-            };
-
-            document.getElementById("SelectedCountry").addEventListener("change", function () {
+            };            document.getElementById("SelectedCountry").addEventListener("change", function () {
                 var selectedCountry = this.value;
                 var townDropdown = document.getElementById("SelectedTown");
-                townDropdown.innerHTML = '<option value="">Select a Town</option>';
-
-                if (predefinedTowns[selectedCountry]) {
+                townDropdown.innerHTML = '<option value="">Select a Town</option>';                if (predefinedTowns[selectedCountry]) {
                     predefinedTowns[selectedCountry].forEach(function (town) {
                         var option = document.createElement("option");
                         option.value = town;

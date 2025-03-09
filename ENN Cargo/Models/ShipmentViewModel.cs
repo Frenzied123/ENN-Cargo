@@ -2,9 +2,7 @@
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace ENN_Cargo.Models
+using System.ComponentModel.DataAnnotations;namespace ENN_Cargo.Models
 {
     public class ShipmentViewModel
     {

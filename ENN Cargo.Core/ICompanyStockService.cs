@@ -1,9 +1,7 @@
 ﻿using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace ENN_Cargo.Core
+using System.Threading.Tasks;namespace ENN_Cargo.Core
 {
     public interface ICompanyStockService
     {

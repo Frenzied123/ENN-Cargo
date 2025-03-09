@@ -4,15 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
-
-[Authorize]
+using Microsoft.AspNetCore.Authorization;[Authorize]
 public class DriverController : Controller
 {
     private readonly IDriverService _driverService;
-    private readonly ITruckCompanyService _truckCompanyService;
-
-    public DriverController(IDriverService driverService, ITruckCompanyService truckCompanyService)
+    private readonly ITruckCompanyService _truckCompanyService;    public DriverController(IDriverService driverService, ITruckCompanyService truckCompanyService)
     {
         _driverService = driverService;
         _truckCompanyService = truckCompanyService;
@@ -47,9 +43,7 @@ public class DriverController : Controller
             TruckCompanyList = new SelectList(await _truckCompanyService.GetAllAsync(), "Id", "Name", selectedTruckCompanyId),
             SortByExperienceOptions = new SelectList(new List<string> { "Low-High", "High-Low" }, sortByExperience),
             SortByTruckCompanyOptions = new SelectList(new List<string> { "A-Z", "Z-A" }, sortByTruckCompany)
-        };
-
-        return View(model);
+        };        return View(model);
     }
     [HttpGet]
     [Authorize(Roles = "Admin")]     

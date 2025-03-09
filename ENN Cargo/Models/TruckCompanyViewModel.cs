@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-
-namespace ENN_Cargo.Models
+using System.Collections.Generic;namespace ENN_Cargo.Models
 {
     public class TruckCompanyViewModel
     {

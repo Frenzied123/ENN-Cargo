@@ -1,12 +1,6 @@
-﻿@model ENN_Cargo.Models.RegisterForDriver
-
-@{
+﻿@model ENN_Cargo.Models.RegisterForDriver@{
     ViewData["Title"] = "Add Driver";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<form asp-action="RegisterForDrivers" method="post">
+}<h1>@ViewData["Title"]</h1><form asp-action="RegisterForDrivers" method="post">
     <div class="form-group">
         <label asp-for="FirstName">FirstName</label>
         <input asp-for="FirstName" class="form-control" />
@@ -41,7 +35,5 @@
         <label asp-for="PhoneNumber">Phone Number</label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Register</button>
+    </div>    <button type="submit" class="btn btn-primary">Register</button>
 </form>

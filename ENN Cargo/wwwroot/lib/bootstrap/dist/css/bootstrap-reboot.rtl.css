@@ -6,15 +6,11 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-@media (prefers-reduced-motion: no-preference) {
+}@media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
   }
-}
-
-body {
+}body {
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -25,167 +21,113 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-hr {
+}hr {
   margin: 1rem 0;
   color: inherit;
   background-color: currentColor;
   border: 0;
   opacity: 0.25;
-}
-
-hr:not([size]) {
+}hr:not([size]) {
   height: 1px;
-}
-
-h6, h5, h4, h3, h2, h1 {
+}h6, h5, h4, h3, h2, h1 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
-}
-
-h1 {
+}h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
 @media (min-width: 1200px) {
   h1 {
     font-size: 2.5rem;
   }
-}
-
-h2 {
+}h2 {
   font-size: calc(1.325rem + 0.9vw);
 }
 @media (min-width: 1200px) {
   h2 {
     font-size: 2rem;
   }
-}
-
-h3 {
+}h3 {
   font-size: calc(1.3rem + 0.6vw);
 }
 @media (min-width: 1200px) {
   h3 {
     font-size: 1.75rem;
   }
-}
-
-h4 {
+}h4 {
   font-size: calc(1.275rem + 0.3vw);
 }
 @media (min-width: 1200px) {
   h4 {
     font-size: 1.5rem;
   }
-}
-
-h5 {
+}h5 {
   font-size: 1.25rem;
-}
-
-h6 {
+}h6 {
   font-size: 1rem;
-}
-
-p {
+}p {
   margin-top: 0;
   margin-bottom: 1rem;
-}
-
-abbr[title],
+}abbr[title],
 abbr[data-bs-original-title] {
   -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
   cursor: help;
   -webkit-text-decoration-skip-ink: none;
   text-decoration-skip-ink: none;
-}
-
-address {
+}address {
   margin-bottom: 1rem;
   font-style: normal;
   line-height: inherit;
-}
-
-ol,
+}ol,
 ul {
   padding-right: 2rem;
-}
-
-ol,
+}ol,
 ul,
 dl {
   margin-top: 0;
   margin-bottom: 1rem;
-}
-
-ol ol,
+}ol ol,
 ul ul,
 ol ul,
 ul ol {
   margin-bottom: 0;
-}
-
-dt {
+}dt {
   font-weight: 700;
-}
-
-dd {
+}dd {
   margin-bottom: 0.5rem;
   margin-right: 0;
-}
-
-blockquote {
+}blockquote {
   margin: 0 0 1rem;
-}
-
-b,
+}b,
 strong {
   font-weight: bolder;
-}
-
-small {
+}small {
   font-size: 0.875em;
-}
-
-mark {
+}mark {
   padding: 0.2em;
   background-color: #fcf8e3;
-}
-
-sub,
+}sub,
 sup {
   position: relative;
   font-size: 0.75em;
   line-height: 0;
   vertical-align: baseline;
-}
-
-sub {
+}sub {
   bottom: -0.25em;
-}
-
-sup {
+}sup {
   top: -0.5em;
-}
-
-a {
+}a {
   color: #0d6efd;
   text-decoration: underline;
 }
 a:hover {
   color: #0a58ca;
-}
-
-a:not([href]):not([class]), a:not([href]):not([class]):hover {
+}a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
   text-decoration: none;
-}
-
-pre,
+}pre,
 code,
 kbd,
 samp {
@@ -193,9 +135,7 @@ samp {
   font-size: 1em;
   direction: ltr ;
   unicode-bidi: bidi-override;
-}
-
-pre {
+}pre {
   display: block;
   margin-top: 0;
   margin-bottom: 1rem;
@@ -206,18 +146,14 @@ pre code {
   font-size: inherit;
   color: inherit;
   word-break: normal;
-}
-
-code {
+}code {
   font-size: 0.875em;
   color: #d63384;
   word-wrap: break-word;
 }
 a > code {
   color: inherit;
-}
-
-kbd {
+}kbd {
   padding: 0.2rem 0.4rem;
   font-size: 0.875em;
   color: #fff;
@@ -228,35 +164,23 @@ kbd kbd {
   padding: 0;
   font-size: 1em;
   font-weight: 700;
-}
-
-figure {
+}figure {
   margin: 0 0 1rem;
-}
-
-img,
+}img,
 svg {
   vertical-align: middle;
-}
-
-table {
+}table {
   caption-side: bottom;
   border-collapse: collapse;
-}
-
-caption {
+}caption {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   color: #6c757d;
   text-align: right;
-}
-
-th {
+}th {
   text-align: inherit;
   text-align: -webkit-match-parent;
-}
-
-thead,
+}thead,
 tbody,
 tfoot,
 tr,
@@ -265,21 +189,13 @@ th {
   border-color: inherit;
   border-style: solid;
   border-width: 0;
-}
-
-label {
+}label {
   display: inline-block;
-}
-
-button {
+}button {
   border-radius: 0;
-}
-
-button:focus:not(:focus-visible) {
+}button:focus:not(:focus-visible) {
   outline: 0;
-}
-
-input,
+}input,
 button,
 select,
 optgroup,
@@ -288,29 +204,19 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-}
-
-button,
+}button,
 select {
   text-transform: none;
-}
-
-[role=button] {
+}[role=button] {
   cursor: pointer;
-}
-
-select {
+}select {
   word-wrap: normal;
 }
 select:disabled {
   opacity: 1;
-}
-
-[list]::-webkit-calendar-picker-indicator {
+}[list]::-webkit-calendar-picker-indicator {
   display: none;
-}
-
-button,
+}button,
 [type=button],
 [type=reset],
 [type=submit] {
@@ -321,25 +227,17 @@ button:not(:disabled),
 [type=reset]:not(:disabled),
 [type=submit]:not(:disabled) {
   cursor: pointer;
-}
-
-::-moz-focus-inner {
+}::-moz-focus-inner {
   padding: 0;
   border-style: none;
-}
-
-textarea {
+}textarea {
   resize: vertical;
-}
-
-fieldset {
+}fieldset {
   min-width: 0;
   padding: 0;
   margin: 0;
   border: 0;
-}
-
-legend {
+}legend {
   float: right;
   width: 100%;
   padding: 0;
@@ -354,9 +252,7 @@ legend {
 }
 legend + * {
   clear: right;
-}
-
-::-webkit-datetime-edit-fields-wrapper,
+}::-webkit-datetime-edit-fields-wrapper,
 ::-webkit-datetime-edit-text,
 ::-webkit-datetime-edit-minute,
 ::-webkit-datetime-edit-hour-field,
@@ -364,18 +260,12 @@ legend + * {
 ::-webkit-datetime-edit-month-field,
 ::-webkit-datetime-edit-year-field {
   padding: 0;
-}
-
-::-webkit-inner-spin-button {
+}::-webkit-inner-spin-button {
   height: auto;
-}
-
-[type=search] {
+}[type=search] {
   outline-offset: -2px;
   -webkit-appearance: textfield;
-}
-
-[type="tel"],
+}[type="tel"],
 [type="url"],
 [type="email"],
 [type="number"] {
@@ -383,39 +273,22 @@ legend + * {
 }
 ::-webkit-search-decoration {
   -webkit-appearance: none;
-}
-
-::-webkit-color-swatch-wrapper {
+}::-webkit-color-swatch-wrapper {
   padding: 0;
-}
-
-::file-selector-button {
+}::file-selector-button {
   font: inherit;
-}
-
-::-webkit-file-upload-button {
+}::-webkit-file-upload-button {
   font: inherit;
   -webkit-appearance: button;
-}
-
-output {
+}output {
   display: inline-block;
-}
-
-iframe {
+}iframe {
   border: 0;
-}
-
-summary {
+}summary {
   display: list-item;
   cursor: pointer;
-}
-
-progress {
+}progress {
   vertical-align: baseline;
-}
-
-[hidden] {
+}[hidden] {
   display: none !important;
 }
-/*# sourceMappingURL=bootstrap-reboot.rtl.css.map */

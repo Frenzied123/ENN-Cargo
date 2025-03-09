@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using ENN_Cargo.Models;
-
-namespace ENN_Cargo.Core
+using ENN_Cargo.Models;namespace ENN_Cargo.Core
 {
     public interface IVehicleService
     {
