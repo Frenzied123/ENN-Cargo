@@ -1,4 +1,5 @@
-﻿using ENN_Cargo.Core;
+﻿using CloudinaryDotNet;
+using ENN_Cargo.Core;
 using ENN_Cargo.DataAccess;
 using ENN_Cargo.DataAccess.Repository;
 using ENN_Cargo.DataAccess.Repository.IRepository;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<ITruckCompanyService, TruckCompanyService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddRazorPages();var app = builder.Build();if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -72,7 +74,15 @@ else
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
-app.UseAuthorization();using (var scope = app.Services.CreateScope())
+app.UseAuthorization();
+var cloudinarySettings = builder.Configuration
+                         .GetSection("Cloudinary")
+                         .Get<CloudinarySettings>();
+var account = new Account(cloudinarySettings.CloudName,
+cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
+var cloudinary = new Cloudinary(account);
+builder.Services.AddSingleton(cloudinary);
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
