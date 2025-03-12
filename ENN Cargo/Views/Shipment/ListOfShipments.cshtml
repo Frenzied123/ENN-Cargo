@@ -62,7 +62,7 @@
             <th>Pick Up Date</th>
             <th>Delivery Date</th>
             <th>Status</th>
-            @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
+            @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") && Model.Status == "Available")
             {
                 <th>Action</th>
             }

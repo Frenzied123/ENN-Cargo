@@ -175,3 +175,4 @@ C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\refint\ENN Carg
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.pdb
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ref\ENN Cargo.Core.dll
+C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Core\obj\Debug\net8.0\ENN Cargo.Core.sourcelink.json

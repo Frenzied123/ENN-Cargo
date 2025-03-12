@@ -133,10 +133,12 @@ namespace ENN_Cargo.Controllers
             var viewModel = new TruckCompanyViewModel
             {
                 Name = truckCompany.Name,
-                Email = truckCompany.User?.Email ?? string.Empty,                 Address = truckCompany.Address,
+                Email = truckCompany.User?.Email ?? string.Empty,                 
+                Address = truckCompany.Address,
                 SelectedCountry = truckCompany.Country,
                 SelectedTown = truckCompany.Town,
-                PhoneNumber = truckCompany.User?.PhoneNumber ?? string.Empty,                 Countries = new SelectList(GetCountries(), truckCompany.Country),
+                PhoneNumber = truckCompany.User?.PhoneNumber ?? string.Empty,                
+                Countries = new SelectList(GetCountries(), truckCompany.Country),
                 Towns = new SelectList(GetCitiesByCountry(truckCompany.Country), truckCompany.Town)
             };
             return View(viewModel);

@@ -157,3 +157,4 @@ C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\refint\EN
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.pdb
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ref\ENN Cargo.DataAccess.dll
+C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.DataAccess\obj\Debug\net8.0\ENN Cargo.DataAccess.sourcelink.json

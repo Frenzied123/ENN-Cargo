@@ -193,3 +193,4 @@ C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Utility\obj\Debug\net8.0\refint\ENN C
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Utility\obj\Debug\net8.0\ENN Cargo.Utility.pdb
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Utility\obj\Debug\net8.0\ENN Cargo.Utility.genruntimeconfig.cache
 C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Utility\obj\Debug\net8.0\ref\ENN Cargo.Utility.dll
+C:\Users\nuri2\Desktop\ENN-Cargo\ENN Cargo.Utility\obj\Debug\net8.0\ENN Cargo.Utility.sourcelink.json
