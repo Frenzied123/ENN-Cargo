@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace ENN_Cargo.Core
 {
-    class CloudinaryService
+    public class CloudinaryService
     {
         private readonly Cloudinary _cloudinary;
         public CloudinaryService(IConfiguration config)
         {
             var account = new Account(
-            config["Cloudinary:CloudName"],
-            config["Cloudinary:ApiKey"],
-            config["Cloudinary:ApiSecret"]);
+            config["Cloudinary:dyonctb8p"],
+            config["Cloudinary:949719712889866"],
+            config["Cloudinary:ZRQxZrSw83_u4DaGOOkn-1JCHAE"]);
             _cloudinary = new Cloudinary(account);
         }
         public async Task<string> UploadImageAsync(IFormFile file)

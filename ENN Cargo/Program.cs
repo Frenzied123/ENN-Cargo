@@ -6,7 +6,7 @@ using ENN_Cargo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;var builder = WebApplication.CreateBuilder(args);builder.Services.AddControllersWithViews();
+using System.Security.Claims;using ENN_Cargo.Utility;var builder = WebApplication.CreateBuilder(args);builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ENN_CargoApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("ENN Cargo.DataAccess")));
@@ -34,7 +34,12 @@ builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<ITruckCompanyService, TruckCompanyService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<CloudinaryService>();
-builder.Services.AddRazorPages();var app = builder.Build();if (app.Environment.IsDevelopment())
+builder.Services.AddRazorPages();var cloudinarySettings = builder.Configuration
+                         .GetSection("Cloudinary")
+                         .Get<CloudinarySettings>();
+var account = new Account(cloudinarySettings.CloudName,
+cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
+var cloudinary = new Cloudinary(account);builder.Services.AddSingleton(cloudinary);var app = builder.Build();if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseExceptionHandler(errorApp =>
@@ -67,7 +72,7 @@ else
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Middleware Exception: {ex.Message}\n{ex.StackTrace}");
+        Console.WriteLine($"Middleware Exception: {ex.Message}\n{ex.StackTrace}"    );
         throw;
     }
 });app.UseHttpsRedirection();
@@ -75,13 +80,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-var cloudinarySettings = builder.Configuration
-                         .GetSection("Cloudinary")
-                         .Get<CloudinarySettings>();
-var account = new Account(cloudinarySettings.CloudName,
-cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
-var cloudinary = new Cloudinary(account);
-builder.Services.AddSingleton(cloudinary);
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
