@@ -18,7 +18,12 @@ using System.Threading.Tasks;namespace ENN_Cargo.Models
         public DateTime? PickUpDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
         public string Status { get; set; }
-        public int? DriverId { get; set; }         public Driver Driver { get; set; }         public int? VehicleId { get; set; }         public Vehicle Vehicle { get; set; }
+        public int? DriverId { get; set; }         
+        public Driver Driver { get; set; }        
+        public int? VehicleId { get; set; }         
+        public Vehicle Vehicle { get; set; }
+        public int? PendingRequest_Id { get; set; }
+        public PendingRequest? PendingRequest { get; set; }
         public ICollection<CompanyStocks_Shipments> CompanyStocks_Shipments { get; set; }
         public ICollection<TruckCompanies_Shipments> TruckCompanies_Shipments { get; set; }
     }

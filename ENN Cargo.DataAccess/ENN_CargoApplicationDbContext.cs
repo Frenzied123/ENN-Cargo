@@ -19,6 +19,7 @@ namespace ENN_Cargo.DataAccess
         public DbSet<TruckCompanies_Shipments> TruckCompanies_Shipments { get; set; }
         public DbSet<TruckCompany> TruckCompanies { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<PendingRequest> PendingRequests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -65,6 +66,31 @@ namespace ENN_Cargo.DataAccess
                 .WithOne()
                 .HasForeignKey<CompanyStock>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<PendingRequest>()
+                 .HasMany<Driver>()
+                 .WithOne(d => d.PendingRequest)
+                 .HasForeignKey(d => d.PendingRequest_Id)
+                 .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PendingRequest>()
+                .HasMany<TruckCompany>()
+                .WithOne(tc => tc.PendingRequest)
+                .HasForeignKey(tc => tc.PendingRequest_Id)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PendingRequest>()
+                .HasMany<CompanyStock>()
+                .WithOne(cs => cs.PendingRequest)
+                .HasForeignKey(cs => cs.PendingRequest_Id)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PendingRequest>()
+                .HasMany<Shipment>()
+                .WithOne(s => s.PendingRequest)
+                .HasForeignKey(s => s.PendingRequest_Id)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<PendingRequest>()
+                .HasMany<Vehicle>()
+                .WithOne(v => v.PendingRequest)
+                .HasForeignKey(v => v.PendingRequest_Id)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<CompanyStock>().HasData(
                 new CompanyStock { Id = 1, Name = "Glass Industries" ,Address = "Boyana 56", Town = "Sofia" , Country = "Bulgaria" },
                 new CompanyStock { Id = 2, Name = "Metal Industries", Address = "Medne Rudnik 23", Town = "Burgas", Country = "Bulgaria" }

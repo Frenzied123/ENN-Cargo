@@ -23,5 +23,7 @@ namespace ENN_Cargo.Models
         public ICollection<Driver>? Drivers { get; set; }
         public string? UserId { get; set; }
         public IdentityUser? User { get; set; }
+        public int? PendingRequest_Id { get; set; }
+        public PendingRequest? PendingRequest { get; set; }
     }
 }

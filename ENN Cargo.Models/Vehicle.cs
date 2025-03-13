@@ -13,5 +13,7 @@ using System.Threading.Tasks;namespace ENN_Cargo.Models
         public string?   LicensePlate { get; set; }
         public int TruckCompany_Id { get; set; }
         public TruckCompany TruckCompany { get; set; }
+        public int? PendingRequest_Id { get; set; }
+        public PendingRequest? PendingRequest { get; set; }
     }
 }
