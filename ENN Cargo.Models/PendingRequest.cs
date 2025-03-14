@@ -12,7 +12,6 @@ namespace ENN_Cargo.Models
         public string Type { get; set; } 
         public string Status { get; set; } = "Pending";
         public string UserId { get; set; }
-        public string Data { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

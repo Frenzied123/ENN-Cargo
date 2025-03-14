@@ -1,0 +1,16 @@
+﻿@model ENN_Cargo.Models.PendingApprovalViewModel
+
+@{
+    ViewData["Title"] = "Pending Approval";
+}
+
+<h2>Request Submitted</h2>
+
+<div class="alert alert-info">
+    @Model.Message
+</div>
+
+<p>
+    You’ll be notified once an admin reviews your request. Return to the
+    <a asp-controller="@Model.BackController" asp-action="@Model.BackAction">main page</a>.
+</p>

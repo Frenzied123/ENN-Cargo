@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ENN Cargo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a131f72dcde0627e90ac15155430c745ae1f49b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05cf1ff3d48d2906af069374e1cdcb6f9fda8f72")]
 [assembly: System.Reflection.AssemblyProductAttribute("ENN Cargo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ENN Cargo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

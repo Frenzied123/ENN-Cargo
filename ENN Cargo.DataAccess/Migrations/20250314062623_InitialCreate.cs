@@ -61,7 +61,6 @@ namespace ENN_Cargo.DataAccess.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -405,8 +404,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                 columns: new[] { "Id", "DeliveryDate", "Description", "DriverId", "FromAddress", "FromCountry", "FromTown", "PendingRequest_Id", "PickUpDate", "Status", "ToAddress", "ToCountry", "ToTown", "VehicleId", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 3, 16, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3220), "Electronics", null, "Sklad Kappa", "Bulgaria", "Kazanlak", null, new DateTime(2025, 3, 13, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3170), "Available", "Kaufland", "Bulgaria", "Plovdiv", null, 24.0 },
-                    { 2, new DateTime(2025, 3, 18, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3227), "Furniture", null, "Sklad Videnov", "Bulgaria", "Stara Zagora", null, new DateTime(2025, 3, 13, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3226), "Available", "Metro", "Bulgaria", "Sofia", null, 27.0 }
+                    { 1, new DateTime(2025, 3, 17, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5599), "Electronics", null, "Sklad Kappa", "Bulgaria", "Kazanlak", null, new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5546), "Available", "Kaufland", "Bulgaria", "Plovdiv", null, 24.0 },
+                    { 2, new DateTime(2025, 3, 19, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5607), "Furniture", null, "Sklad Videnov", "Bulgaria", "Stara Zagora", null, new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5606), "Available", "Metro", "Bulgaria", "Sofia", null, 27.0 }
                 });
 
             migrationBuilder.InsertData(

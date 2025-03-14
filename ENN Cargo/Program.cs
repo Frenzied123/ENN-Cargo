@@ -33,6 +33,7 @@ builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IShipmentService, ShipmentService>();
 builder.Services.AddScoped<ITruckCompanyService, TruckCompanyService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IPendingRequest, PendingRequestService>();
 builder.Services.AddScoped<CloudinaryService>();
 builder.Services.AddRazorPages();var cloudinarySettings = builder.Configuration
                          .GetSection("Cloudinary")

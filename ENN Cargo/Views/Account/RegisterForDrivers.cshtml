@@ -1,25 +1,21 @@
-﻿@model ENN_Cargo.Models.RegisterForDriver@{
-    ViewData["Title"] = "Add Driver";
-}<h1>@ViewData["Title"]</h1><form asp-action="RegisterForDrivers" method="post">
+﻿@model ENN_Cargo.Models.RegisterForDriver
+@{
+    ViewData["Title"] = "Register Driver";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="RegisterForDrivers" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="FirstName">FirstName</label>
+        <label asp-for="FirstName">First Name</label>
         <input asp-for="FirstName" class="form-control" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="LastName">LastName</label>
+        <label asp-for="LastName">Last Name</label>
         <input asp-for="LastName" class="form-control" />
         <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password">Password</label>
-        <input asp-for="Password" type="text" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword">ConfirmedPassword</label>
-        <input asp-for="ConfirmPassword" type="text" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Email">Email</label>
@@ -27,13 +23,28 @@
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Experience">Experience</label>
-        <input asp-for="Experience" class="form-control" />
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Confirm Password</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Experience">Experience (Years)</label>
+        <input asp-for="Experience" type="number" class="form-control" />
         <span asp-validation-for="Experience" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number</label>
-        <input asp-for="PhoneNumber" class="form-control" />
+        <input asp-for="PhoneNumber" type="tel" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>    <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

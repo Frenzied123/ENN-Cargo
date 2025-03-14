@@ -171,10 +171,6 @@ namespace ENN_Cargo.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -264,12 +260,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 3, 16, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3220),
+                            DeliveryDate = new DateTime(2025, 3, 17, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5599),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
                             FromCountry = "Bulgaria",
                             FromTown = "Kazanlak",
-                            PickUpDate = new DateTime(2025, 3, 13, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3170),
+                            PickUpDate = new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5546),
                             Status = "Available",
                             ToAddress = "Kaufland",
                             ToCountry = "Bulgaria",
@@ -279,12 +275,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 3, 18, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3227),
+                            DeliveryDate = new DateTime(2025, 3, 19, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5607),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
                             FromCountry = "Bulgaria",
                             FromTown = "Stara Zagora",
-                            PickUpDate = new DateTime(2025, 3, 13, 9, 37, 37, 157, DateTimeKind.Local).AddTicks(3226),
+                            PickUpDate = new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5606),
                             Status = "Available",
                             ToAddress = "Metro",
                             ToCountry = "Bulgaria",

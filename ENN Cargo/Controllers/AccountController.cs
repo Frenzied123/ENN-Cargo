@@ -12,24 +12,38 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITruckCompanyService _truckCompanyService;
         private readonly IDriverService _driverService;
-        private readonly ICompanyStockService _companyStockService;        public AccountController(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager,ITruckCompanyService truckCompanyService,IDriverService driverService,ICompanyStockService companyStockService)
-        {            _userManager = userManager;
+        private readonly ICompanyStockService _companyStockService;
+        private readonly IPendingRequest _pendingRequestService;
+
+        public AccountController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            ITruckCompanyService truckCompanyService,
+            IDriverService driverService,
+            ICompanyStockService companyStockService,
+            IPendingRequest pendingRequestService)
+        {
+            _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _truckCompanyService = truckCompanyService;
             _driverService = driverService;
             _companyStockService = companyStockService;
+            _pendingRequestService = pendingRequestService;
         }
+
         [HttpGet]
-        public async Task<IActionResult>Login()
+        public IActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
-            { 
+            {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
@@ -47,113 +61,118 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             }
             return View(model);
         }
+
         public IActionResult Register() => View();
         [HttpGet]
-        public async Task<IActionResult> RegisterForTruckCompanies()
+        public IActionResult RegisterForTruckCompanies()
         {
             return View();
         }
+
         [HttpGet]
-        public async Task<IActionResult> RegisterForStockCompanies()
+        public IActionResult RegisterForStockCompanies()
         {
             return View();
         }
+
         [HttpGet]
-        public async Task<IActionResult> RegisterForDrivers()
+        public IActionResult RegisterForDrivers()
         {
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> RegisterForTruckCompanies(RegisterForTruckCompany model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var truckCompany = new TruckCompany
-                    {
-                        Name = model.Name,
-                        Address = model.Address,
-                        Country = model.Country,
-                        Town = model.Town,
-                        UserId = user.Id
-                    };
-                  await _truckCompanyService.AddAsync(truckCompany);
-                  await _userManager.AddToRoleAsync(user, "TruckCompany"); 
-                  await _signInManager.SignInAsync(user, isPersistent: false);                   
-                  return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return View(model);
             }
-            return View(model);
+
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
+            {
+                ModelState.AddModelError("Email", "This email is already registered.");
+                return View(model);
+            }
+
+            var tempUserId = Guid.NewGuid().ToString();
+            var request = new PendingRequest
+            {
+                Type = $"TruckCompanyRegistration: Email={model.Email}, Password={model.Password}, Name={model.Name}, Phone={model.PhoneNumber}, Address={model.Address}, Country={model.Country}, Town={model.Town}",
+                UserId = tempUserId
+            };
+            await _pendingRequestService.AddPendingRequestAsync(request);
+            return View("PendingApproval", new PendingApprovalViewModel
+            {
+                BackAction = "Login",
+                BackController = "Account",
+                Message = "Your truck company registration is waiting for admin approval."
+            });
         }
+
         [HttpPost]
         public async Task<IActionResult> RegisterForStockCompanies(RegisterForCompanyStock model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var companyStock = new CompanyStock
-                    {
-                        Name = model.Name,
-                        Address = model.Address,
-                        Town = model.Town,
-                        Country = model.Country,
-                        UserId = user.Id
-                    };
-                  await _companyStockService.AddAsync(companyStock);
-                  await _userManager.AddToRoleAsync(user, "ShipmentCompany");
-                  await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return View(model);
             }
-            return View(model);
+
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
+            {
+                ModelState.AddModelError("Email", "This email is already registered.");
+                return View(model);
+            }
+
+            var tempUserId = Guid.NewGuid().ToString();
+            var request = new PendingRequest
+            {
+                Type = $"ShipmentCompanyRegistration: Email={model.Email}, Password={model.Password}, Name={model.Name}, Phone={model.PhoneNumber}, Address={model.Address}, Country={model.Country}, Town={model.Town}",
+                UserId = tempUserId
+            };
+            await _pendingRequestService.AddPendingRequestAsync(request);
+            return View("PendingApproval", new PendingApprovalViewModel
+            {
+                BackAction = "Login",
+                BackController = "Account",
+                Message = "Your stock company registration is waiting for admin approval."
+            });
         }
+
         [HttpPost]
         public async Task<IActionResult> RegisterForDrivers(RegisterForDriver model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var driver = new Driver
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Experience = model.Experience,
-                        UserId = user.Id 
-                    };
-                  await _driverService.AddAsync(driver);
-                  await _userManager.AddToRoleAsync(user, "Driver");
-                  await _signInManager.SignInAsync(user, isPersistent: false);
-                  return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return View(model);
             }
-            return View(model);
+
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
+            {
+                ModelState.AddModelError("Email", "This email is already registered.");
+                return View(model);
+            }
+
+            var tempUserId = Guid.NewGuid().ToString();
+            var request = new PendingRequest
+            {
+                Type = $"DriverRegistration: Email={model.Email}, Password={model.Password}, Name={model.FirstName} {model.LastName}, Phone={model.PhoneNumber}, Experience={model.Experience}",
+                UserId = tempUserId
+            };
+            await _pendingRequestService.AddPendingRequestAsync(request);
+            return View("PendingApproval", new PendingApprovalViewModel
+            {
+                BackAction = "Login",
+                BackController = "Account",
+                Message = "Your driver registration is waiting for admin approval."
+            });
         }
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
         public IActionResult AccessDenied()
         {
             return View();

@@ -4,41 +4,51 @@ using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;[Authorize]
+using Microsoft.AspNetCore.Identity;
+[Authorize]
 public class ShipmentController : Controller
 {
     private readonly IShipmentService _shipmentService;
     private readonly ICompanyStockService _companyStockService;
-    private readonly ITruckCompanyService _truckCompanyService;   
-    private readonly IDriverService _driverService;               
-    private readonly IVehicleService _vehicleService;          
+    private readonly ITruckCompanyService _truckCompanyService;
+    private readonly IDriverService _driverService;
+    private readonly IVehicleService _vehicleService;
     private readonly IRepository<CompanyStock> _companyStockRepository;
     private readonly IRepository<CompanyStocks_Shipments> _companyStocksShipmentsRepository;
-    private readonly UserManager<IdentityUser> _userManager;    private static readonly Dictionary<string, List<string>> PredefinedTowns = new()
-    {
-        { "Bulgaria", new() { "Sofia", "Plovdiv", "Varna" } },
-        { "Turkey", new() { "Istanbul", "Ankara", "Izmir" } },
-        { "Romania", new() { "Bucharest", "Cluj-Napoca", "Timisoara" } }
-    };
-    private static readonly List<string> PredefinedCountries = new() { "Bulgaria", "Turkey", "Romania" };    public ShipmentController(
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IPendingRequest _pendingRequestService;
+
+    private static readonly Dictionary<string, List<string>> PredefinedTowns = new()
+        {
+            { "Bulgaria", new() { "Sofia", "Plovdiv", "Varna" } },
+            { "Turkey", new() { "Istanbul", "Ankara", "Izmir" } },
+            { "Romania", new() { "Bucharest", "Cluj-Napoca", "Timisoara" } }
+        };
+    private static readonly List<string> PredefinedCountries = new() { "Bulgaria", "Turkey", "Romania" };
+
+    public ShipmentController(
         IShipmentService shipmentService,
         ICompanyStockService companyStockService,
-        ITruckCompanyService truckCompanyService,      
-        IDriverService driverService,               
-        IVehicleService vehicleService,             
+        ITruckCompanyService truckCompanyService,
+        IDriverService driverService,
+        IVehicleService vehicleService,
         IRepository<CompanyStock> companyStockRepository,
         IRepository<CompanyStocks_Shipments> companyStocksShipmentsRepository,
-        UserManager<IdentityUser> userManager)
+        UserManager<IdentityUser> userManager,
+        IPendingRequest pendingRequestService)
     {
         _shipmentService = shipmentService;
         _companyStockService = companyStockService;
-        _truckCompanyService = truckCompanyService;       
-        _driverService = driverService;                
-        _vehicleService = vehicleService;              
+        _truckCompanyService = truckCompanyService;
+        _driverService = driverService;
+        _vehicleService = vehicleService;
         _companyStockRepository = companyStockRepository;
         _companyStocksShipmentsRepository = companyStocksShipmentsRepository;
         _userManager = userManager;
-    }    [HttpGet]
+        _pendingRequestService = pendingRequestService;
+    }
+
+    [HttpGet]
     public async Task<IActionResult> ListOfShipments(ShipmentViewModel model)
     {
         var shipments = (await _shipmentService.GetAllAsync()).ToList();
@@ -58,8 +68,11 @@ public class ShipmentController : Controller
                 : Enumerable.Empty<string>(),
             model.SelectedToTown
         );
-        model.PredefinedTowns = PredefinedTowns;        return View(model);
-    }    private static List<Shipment> ApplyFilters(ShipmentViewModel model, List<Shipment> shipments)
+        model.PredefinedTowns = PredefinedTowns;
+        return View(model);
+    }
+
+    private static List<Shipment> ApplyFilters(ShipmentViewModel model, List<Shipment> shipments)
     {
         if (model.MinWeight.HasValue) shipments = shipments.Where(s => s.Weight >= model.MinWeight).ToList();
         if (model.MaxWeight.HasValue) shipments = shipments.Where(s => s.Weight <= model.MaxWeight).ToList();
@@ -70,13 +83,17 @@ public class ShipmentController : Controller
         if (model.PickUpDate.HasValue) shipments = shipments.Where(s => s.PickUpDate >= model.PickUpDate).ToList();
         if (model.DeliveryDate.HasValue) shipments = shipments.Where(s => s.DeliveryDate >= model.DeliveryDate).ToList();
         return shipments;
-    }    [HttpGet]
+    }
+
+    [HttpGet]
     [Authorize(Roles = "Admin,ShipmentCompany")]
     public async Task<IActionResult> AddShipment()
     {
         var model = await PopulateDropdowns(new ShipmentViewModel());
         return View(model);
-    }    [HttpPost]
+    }
+
+    [HttpPost]
     [Authorize(Roles = "Admin,ShipmentCompany")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddShipment(ShipmentViewModel model)
@@ -92,52 +109,65 @@ public class ShipmentController : Controller
             model.PickUpDate.HasValue &&
             model.DeliveryDate.HasValue)
         {
-            var shipment = new Shipment
+            var user = await _userManager.GetUserAsync(User);
+            var companyStocks = await _companyStockService.GetAllAsync();
+            var companyStock = User.IsInRole("Admin")
+                ? await _companyStockService.GetByIdAsync(model.SelectedCompanyStockId.GetValueOrDefault())
+                : companyStocks.FirstOrDefault(cs => cs.UserId == user.Id);
+
+            if (companyStock == null)
             {
-                Description = model.Description,
-                Weight = model.Weight,
-                FromCountry = model.SelectedFromCountry,
-                FromTown = model.SelectedFromTown,
-                FromAddress = model.FromAddress,
-                ToCountry = model.SelectedToCountry,
-                ToTown = model.SelectedToTown,
-                ToAddress = model.ToAddress,
-                PickUpDate = model.PickUpDate.Value,
-                DeliveryDate = model.DeliveryDate.Value,
-                Status = "Available"             };
-            await _shipmentService.AddAsync(shipment, model.SelectedCompanyStockId.GetValueOrDefault());
+                TempData["Error"] = "No company stock found.";
+                model = await PopulateDropdowns(model);
+                return View(model);
+            }
+
+            var request = new PendingRequest
+            {
+                Type = $"ShipmentCreation: Description={model.Description}, Weight={model.Weight}, From={model.SelectedFromTown}, to={model.SelectedToTown}, Pickup={model.PickUpDate.Value:yyyy-MM-dd}, Delivery={model.DeliveryDate.Value:yyyy-MM-dd}, CompanyStockId={companyStock.Id}, FromCountry={model.SelectedFromCountry}, ToCountry={model.SelectedToCountry}, FromAddress={model.FromAddress}, ToAddress={model.ToAddress}",
+                UserId = user.Id
+            };
+            await _pendingRequestService.AddPendingRequestAsync(request);
             return RedirectToAction("ListOfShipments");
         }
+
         model = await PopulateDropdowns(model);
         return View(model);
-    }    [HttpGet]
+    }
+
+    [HttpGet]
     [Authorize(Roles = "TruckCompany,Admin")]
     public async Task<IActionResult> AssignShipment(int id)
     {
         var shipment = await _shipmentService.GetByIdAsync(id);
-            if (shipment.Status != "Available")
-            {
-                return NotFound($"Shipment with ID {id} is not Available.");
-            }            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return Unauthorized("User not authenticated.");
-            }            var allTruckCompanies = await _truckCompanyService.GetAllAsync();
-            var currentTruckCompany = allTruckCompanies.FirstOrDefault(tc => tc.UserId == user.Id);
-            if (!User.IsInRole("Admin") && currentTruckCompany == null)
-            {
-                return Unauthorized("No truck company associated with this user.");
-            }            var allDrivers = await _driverService.GetAllAsync();            var allVehicles = await _vehicleService.GetAllAsync();            var model = new AssignShipmentViewModel
-            {
-                ShipmentId = id,
-                DriverOptions = User.IsInRole("Admin")
-                    ? allDrivers.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList()
-                    : allDrivers.Where(d => d.TruckCompany_Id == currentTruckCompany?.Id).Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList(),
-                VehicleOptions = User.IsInRole("Admin")
-                    ? allVehicles.Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList()
-                    : allVehicles.Where(v => v.TruckCompany_Id == currentTruckCompany?.Id).Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList()
-            };            return View(model);
-        }    [HttpPost]
+        if (shipment?.Status != "Available")
+            return NotFound($"Shipment with ID {id} is not Available.");
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+            return Unauthorized("User not authenticated.");
+
+        var allTruckCompanies = await _truckCompanyService.GetAllAsync();
+        var currentTruckCompany = allTruckCompanies.FirstOrDefault(tc => tc.UserId == user.Id);
+        if (!User.IsInRole("Admin") && currentTruckCompany == null)
+            return Unauthorized("No truck company associated with this user.");
+
+        var allDrivers = await _driverService.GetAllAsync();
+        var allVehicles = await _vehicleService.GetAllAsync();
+        var model = new AssignShipmentViewModel
+        {
+            ShipmentId = id,
+            DriverOptions = User.IsInRole("Admin")
+                ? allDrivers.Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList()
+                : allDrivers.Where(d => d.TruckCompany_Id == currentTruckCompany?.Id).Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList(),
+            VehicleOptions = User.IsInRole("Admin")
+                ? allVehicles.Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList()
+                : allVehicles.Where(v => v.TruckCompany_Id == currentTruckCompany?.Id).Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList()
+        };
+        return View(model);
+    }
+
+    [HttpPost]
     [Authorize(Roles = "TruckCompany,Admin")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignShipment(AssignShipmentViewModel model)
@@ -145,37 +175,31 @@ public class ShipmentController : Controller
         var user = await _userManager.GetUserAsync(User);
         var allTruckCompanies = await _truckCompanyService.GetAllAsync();
         var currentTruckCompany = allTruckCompanies.FirstOrDefault(tc => tc.UserId == user.Id);
-                ModelState.Remove("DriverOptions");
-        ModelState.Remove("VehicleOptions");        if (!ModelState.IsValid)
+        ModelState.Remove("DriverOptions");
+        ModelState.Remove("VehicleOptions");
+
+        if (!ModelState.IsValid)
         {
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            {
-                ModelState.AddModelError("", error.ErrorMessage);
-            }                        model.DriverOptions = User.IsInRole("Admin")
-                ? (await _driverService.GetAllAsync())
-                    .Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" })
-                    .ToList()
-                : (await _driverService.GetAllAsync())
-                    .Where(d => d.TruckCompany_Id == currentTruckCompany?.Id)
-                    .Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" })
-                    .ToList();            model.VehicleOptions = User.IsInRole("Admin")
-                ? (await _vehicleService.GetAllAsync())
-                    .Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate })
-                    .ToList()
-                : (await _vehicleService.GetAllAsync())
-                    .Where(v => v.TruckCompany_Id == currentTruckCompany?.Id)
-                    .Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate })
-                    .ToList();            return View(model);
-        }        var shipment = await _shipmentService.GetByIdAsync(model.ShipmentId);
-        if (shipment == null || shipment.Status != "Available")
-        {
-            return NotFound();
-        }        if (!User.IsInRole("Admin") && currentTruckCompany == null)
-        {
-            return Unauthorized();
+            model.DriverOptions = User.IsInRole("Admin")
+                ? (await _driverService.GetAllAsync()).Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList()
+                : (await _driverService.GetAllAsync()).Where(d => d.TruckCompany_Id == currentTruckCompany?.Id).Select(d => new SelectListItem { Value = d.Id.ToString(), Text = $"{d.FirstName} {d.LastName}" }).ToList();
+            model.VehicleOptions = User.IsInRole("Admin")
+                ? (await _vehicleService.GetAllAsync()).Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList()
+                : (await _vehicleService.GetAllAsync()).Where(v => v.TruckCompany_Id == currentTruckCompany?.Id).Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.LicensePlate }).ToList();
+            return View(model);
         }
-        await _shipmentService.AssignShipmentAsync(model.ShipmentId, model.DriverId, model.VehicleId, currentTruckCompany?.Id ?? 0);        return RedirectToAction("ListOfShipments");
+
+        var shipment = await _shipmentService.GetByIdAsync(model.ShipmentId);
+        if (shipment == null || shipment.Status != "Available")
+            return NotFound();
+
+        if (!User.IsInRole("Admin") && currentTruckCompany == null)
+            return Unauthorized();
+
+        await _shipmentService.AssignShipmentAsync(model.ShipmentId, model.DriverId, model.VehicleId, currentTruckCompany?.Id ?? 0);
+        return RedirectToAction("ListOfShipments");
     }
+
     [HttpGet]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateShipment(int id)
@@ -207,7 +231,9 @@ public class ShipmentController : Controller
             PredefinedTowns = PredefinedTowns
         };
         return View(model);
-    }    [HttpPost]
+    }
+
+    [HttpPost]
     [Authorize(Roles = "Admin")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateShipment(ShipmentViewModel model)
@@ -244,7 +270,8 @@ public class ShipmentController : Controller
         }
         model = await PopulateDropdowns(model);
         return View(model);
-    }    [Authorize(Roles = "Admin")]
+    }
+
     private async Task UpdateCompanyStockAssignment(int? companyStockId, int shipmentId)
     {
         var existingAssignment = (await _companyStocksShipmentsRepository.GetAllAsync()).FirstOrDefault(cs => cs.Shipment_Id == shipmentId);
@@ -259,7 +286,9 @@ public class ShipmentController : Controller
         {
             await _companyStocksShipmentsRepository.AddAsync(new CompanyStocks_Shipments { Shipment_Id = shipmentId, CompanyStock_Id = companyStockId.Value });
         }
-    }    private async Task<ShipmentViewModel> PopulateDropdowns(ShipmentViewModel model)
+    }
+
+    private async Task<ShipmentViewModel> PopulateDropdowns(ShipmentViewModel model)
     {
         model.PredefinedTowns = PredefinedTowns;
         model.FromCountries = new SelectList(PredefinedCountries);
@@ -279,24 +308,24 @@ public class ShipmentController : Controller
         var companyStocks = await _companyStockRepository.GetAllAsync();
         model.CompanyStocks = new SelectList(companyStocks, "Id", "Name", model.SelectedCompanyStockId);
         return model;
-    }    [HttpGet]
+    }
+
+    [HttpGet]
     public IActionResult GetTowns(string country)
     {
         if (string.IsNullOrEmpty(country) || !PredefinedTowns.ContainsKey(country))
-        {
             return Json(new List<string>());
-        }
         return Json(PredefinedTowns[country]);
-    }    [HttpPost]
+    }
+
+    [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var shipment = await _shipmentService.GetByIdAsync(id);
         if (shipment == null)
-        {
             return Json(new { success = false, message = "Shipment not found" });
-        }
         await _shipmentService.RemoveAsync(id);
         return Json(new { success = true });
     }
