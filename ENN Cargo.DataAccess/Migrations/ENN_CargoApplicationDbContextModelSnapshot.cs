@@ -260,12 +260,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 3, 17, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5599),
+                            DeliveryDate = new DateTime(2025, 3, 22, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7709),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
                             FromCountry = "Bulgaria",
                             FromTown = "Kazanlak",
-                            PickUpDate = new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5546),
+                            PickUpDate = new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7653),
                             Status = "Available",
                             ToAddress = "Kaufland",
                             ToCountry = "Bulgaria",
@@ -275,12 +275,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 3, 19, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5607),
+                            DeliveryDate = new DateTime(2025, 3, 24, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7717),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
                             FromCountry = "Bulgaria",
                             FromTown = "Stara Zagora",
-                            PickUpDate = new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5606),
+                            PickUpDate = new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7716),
                             Status = "Available",
                             ToAddress = "Metro",
                             ToCountry = "Bulgaria",

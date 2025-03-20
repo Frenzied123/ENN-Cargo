@@ -1,20 +1,21 @@
-﻿    @{
-        Layout = null;
-    }
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewData["Title"] - ENN Cargo</title>
-        <style>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENN Cargo - The European Transport Organisation</title>
+    <style>
         :root {
-            --primary-color: #0066b3;
-            --secondary-color: #e30613;
-            --accent-color: #f7b500;
+            --primary-color: #003781; /* LKW Walter blue */
+            --secondary-color: #e30613; /* Red accent */
+            --accent-color: #009fe3; /* Light blue */
             --light-gray: #f5f5f5;
             --medium-gray: #e0e0e0;
             --dark-gray: #333;
+            --white: #ffffff;
         }
 
         * {
@@ -24,10 +25,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Helvetica Neue', Arial, sans-serif; /* LKW Walter uses a clean sans-serif font */
             color: var(--dark-gray);
             line-height: 1.6;
             width: 100%;
+            overflow-x: hidden;
         }
 
         img {
@@ -36,92 +38,149 @@
 
         .container {
             width: 100%;
-            max-width: 100%;
-            padding: 0 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .user-type-bar {
-            background-color: #f0f0f0;
-            padding: 10px 0;
-            text-align: right;
-            width: 100%;
-        }
+        /* Language selector in header */
 
-            .user-type-bar .container {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-            }
-
-        .user-type-button {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 8px 15px;
-            margin-left: 10px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-            .user-type-button:hover {
-                background-color: #004d8c;
-            }
-
+        /* Language selector - LKW Walter style */
         .language-selector {
             position: relative;
-            cursor: pointer;
+            margin-right: 20px;
+            display: inline-block;
         }
 
-        .language-current {
+        .language-switch {
             display: flex;
             align-items: center;
-            padding: 8px 15px;
-            background-color: white;
-            border: 1px solid #ddd;
-        }
-
-        .language-dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: white;
-            min-width: 120px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1000;
+            padding: 7px 12px;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 3px;
-        }
-
-        .language-option {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
             cursor: pointer;
+            font-size: 0.9rem;
+            color: white;
+            transition: all 0.3s;
         }
 
-            .language-option:hover {
-                background-color: #f1f1f1;
+            .language-switch:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.5);
             }
 
-        .flag-icon {
-            width: 20px;
-            height: 15px;
-            margin-right: 10px;
-            border: 1px solid #ddd;
+        /* Flag styles - LKW Walter style */
+        .flag {
+            width: 21px;
+            height: 14px;
+            margin-right: 8px;
+            background-size: cover;
+            display: inline-block;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .show-lang {
-            display: block;
+        .flag-int {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMjgwIj48ZGVmcz48c3R5bGU+LmNscy0xLC5jbHMtMntmaWxsOiMwMDM3ODE7fS5jbHMtMntvcGFjaXR5OjAuMjt9LmNscy0ze2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNDIwIiBoZWlnaHQ9IjI4MCIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTEzMC44MSwxNTguMDhjLTIuMzktMi4zOS00LjA2LTMuOTEtNS0zLjkxLTEuMTQsMC0yLjI5LDEuNTItMy40MiwzLjkxYTQ2LjUyLDQ2LjUyLDAsMCwxLTQuMzIsNy40NFExMTAuNiwxNzQuOTMsMTAwLDE4MC43OXYtNzcuNWEzNi4wNywzNi4wNywwLDAsMSwxMS44OCw3LjY3cTcuNzUsNy43NiwxMi43OSw3Ljc2LDcuNTksMCwxOS45My0xNC41N3YtNi4yNXEtNS4xOCw2LjYzLTEwLjc3LDEwLjU1dC05LjE2LDMuOTFxLTUsMC0xMi43OS03Ljc2YTM2LjA3LDM2LjA3LDAsMCwwLTExLjg4LTcuNjd2NzcuNXEtMTAuNTYtNS44Ni0xOC0xNS4yN2E0Ni41Miw0Ni41MiwwLDAsMS00LjMyLTcuNDRjLTEuMTMtMi4zOS0yLjI4LTMuOTEtMy40Mi0zLjkxLTEsMC0yLjYsMS41Mi01LDMuOTFsLTMuMjcsMy4yOEw2MS4xLDE2NXEzLjU3LDMuOTEsNS44NSw1Ljc4YTEyLjQxLDEyLjQxLDAsMCwwLDYuNDksMS44N0EyMC40MSwyMC40MSwwLDAsMCw4Mi41MiwxNzBxNC4zMi0xLjI1LDkuOTItMTEuMzVhMTUuOCwxNS44LDAsMCwxLDcuNTMtNy4xdjI3LjQ3SDk0Ljc0cTAsNy45LDQuMzEsNy45aDEuMTRWMjA5LjdxLTYuNzMsMy45LTEwLjgyLDcuMjFMMTAwLDIyNy41N3EzLjgzLTMuMywxNi43LTEwLjU1djI2Ljg4aDYuOFYyMTdxMTAuNTQsNi42NCwxNi42OSwxMC41NWwxMC42My0xMC42NnEtNi4yNy00LjY5LTEwLjY0LTcuMjFWMTg3LjkzaDEuMTRxNC4zMSwwLDQuMzEtNy45SDEwMFYxNTEuNTdhMTUuNiwxNS42LDAsMCwxLDcuNTQsNy4xcTUuNTksMTAuMSw5LjkxLDExLjM1YTIwLjQxLDIwLjQxLDAsMCwwLDkuMDgsMi42MiwxMi40MSwxMi40MSwwLDAsMCw2LjQ5LTEuODdxMi4yOC0xLjg3LDUuODYtNS43OGwtNS42NC02LjYzWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTI0OS4xNiwxNzYuODJhMTA5LjU5LDEwOS41OSwwLDAsMC0uNTUtMTEuMDYsMTA5LjU5LDEwOS41OSwwLDAsMC0uNTUsMTEuMDZ2LjE1YzAsMS44OC4wOSwzLjc1LjE4LDUuNi0uMDktMS44NS0uMTgtMy43Mi0uMTgtNS42WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTI3MS42OSwxNjcuMzJhNzIsNzIsMCwwLDAtNC4zMi0xMi4yOSw3Miw3MiwwLDAsMC00LjMyLDEyLjI5LDUwLjMsNTAuMywwLDAsMC0xLjE4LDkuNjUsNTAuMyw1MC4zLDAsMCwwLDEuMTgsOS42NSw3Miw3MiwwLDAsMCw0LjMyLDEyLjI5LDcyLDcyLDAsMCwwLDQuMzItMTIuMjksNTAuMyw1MC4zLDAsMCwwLDEuMTgtOS42NUE1MC4zLDUwLjMsMCwwLDAsMjcxLjY5LDE2Ny4zMloiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yMjUuNTQsMTU1YTcyLDcyLDAsMCwwLTEyLjI5LDQuMzIsNzIsNzIsMCwwLDAsMTIuMjksNC4zMiw1MC4zLDUwLjMsMCwwLDAsOS42NSwxLjE4LDUwLjMsNTAuMywwLDAsMCw5LjY1LTEuMTgsNzIsNzIsMCwwLDAsMTIuMjktNC4zMiw3Miw3MiwwLDAsMC0xMi4yOS00LjMyLDUwLjMsNTAuMywwLDAsMC05LjY1LTEuMThBNTAuMyw1MC4zLDAsMCwwLDIyNS41NCwxNTVaIi8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNMjI1LjU0LDE5OC42NGE3Miw3MiwwLDAsMC0xMi4yOSw0LjMyLDcyLDcyLDAsMCwwLDEyLjI5LDQuMzIsNTAuMyw1MC4zLDAsMCwwLDkuNjUsMS4xOCw1MC4zLDUwLjMsMCwwLDAsOS42NS0xLjE4LDcyLDcyLDAsMCwwLDEyLjI5LTQuMzIsNzIsNzIsMCwwLDAtMTIuMjktNC4zMiw1MC4zLDUwLjMsMCwwLDAtOS42NS0xLjE4QTUwLjMsNTAuMywwLDAsMCwyMjUuNTQsMTk4LjY0WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTM0NS44NCwxNTguMDhjLTIuMzktMi4zOS00LjA2LTMuOTEtNS0zLjkxLTEuMTQsMC0yLjI5LDEuNTItMy40MiwzLjkxYTQ2LjUyLDQ2LjUyLDAsMCwxLTQuMzIsNy40NHEtNy41LDkuNDEtMTguMSwxNS4yN3YtNzcuNWEzNi4wNywzNi4wNywwLDAsMSwxMS44OCw3LjY3cTcuNzUsNy43NiwxMi43OSw3Ljc2LDcuNTksMCwxOS45My0xNC41N3YtNi4yNXEtNS4xOCw2LjYzLTEwLjc3LDEwLjU1dC05LjE2LDMuOTFxLTUsMC0xMi43OS03Ljc2YTM2LjA3LDM2LjA3LDAsMCwwLTExLjg4LTcuNjd2NzcuNXEtMTAuNTYtNS44Ni0xOC0xNS4yN2E0Ni41Miw0Ni41MiwwLDAsMS00LjMyLTcuNDRjLTEuMTMtMi4zOS0yLjI4LTMuOTEtMy40Mi0zLjkxLTEsMC0yLjYsMS41Mi01LDMuOTFsLTMuMjcsMy4yOEwyNzYuMTMsMTY1cTMuNTcsMy45MSw1Ljg1LDUuNzhhMTIuNDEsMTIuNDEsMCwwLDAsNi40OSwxLjg3LDIwLjQxLDIwLjQxLDAsMCwwLDkuMDgtMi42MnE0LjMyLTEuMjUsOS45Mi0xMS4zNWExNS44LDE1LjgsMCwwLDEsNy41My03LjF2MjcuNDdoLTUuMjNxMCw3LjksNC4zMSw3LjloMS4xNFYyMDkuN3EtNi43MywzLjktMTAuODIsNy4yMUwzMTUsMjI3LjU3cTMuODMtMy4zLDE2LjctMTAuNTV2MjYuODhoNi44VjIxN3ExMC41NCw2LjY0LDE2LjY5LDEwLjU1bDEwLjYzLTEwLjY2cS02LjI3LTQuNjktMTAuNjQtNy4yMVYxODcuOTNoMS4xNHE0LjMxLDAsNC4zMS03LjlIMzE1VjE1MS41N2ExNS42LDE1LjYsMCwwLDEsNy41NCw3LjFxNS41OSwxMC4xLDkuOTEsMTEuMzVhMjAuNDEsMjAuNDEsMCwwLDAsOS4wOCwyLjYyLDEyLjQxLDEyLjQxLDAsMCwwLDYuNDktMS44N3EyLjI4LTEuODcsNS44Ni01Ljc4bC01LjY0LTYuNjNaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMjYwLjg5LDE0MmMtMS41OCwwLTMuOSwyLjM0LTQuNTYsNS40NC0xLDQuNjMtLjUzLDkuODUtLjUzLDE2LjM5djkuMThjMCw3LjQyLS40NCwxMy44OC42OSwxOC40OS43MSwzLjA3LDMuMTEsNC4yOSw0LjQsNC4yOXMzLjctMS4yMiw0LjM5LTQuMzJjMS4xMy00LjU4LjcxLTExLjA3LjcxLTE4LjQ2di05LjE4YzAtNi41MS0uNTItMTEuNzYtMS40OC0xNi4zOUM2NjQuMjcsMTQ0LjM1LDY2Mi40NywxNDIsNjYwLjg5LDE0MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00MDApIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNNjQzLjczLDE2Mi4wNmMwLTEuNTgtMi4zNC0zLjktNS40NC00LjU2LTQuNjMtMS05Ljg2LS41My0xNi4zOS0uNTNINjEyLjdjLTcuNDIsMC0xMy44OC0uNDQtMTguNDkuNjktMy4wNy43MS00LjI5LDMuMTEtNC4yOSw0LjRzMS4yMiwzLjcsNC4zMiw0LjM5YzQuNTgsMS4xMywxMS4wNy43MSwxOC40Ni43MWg5LjE4YzYuNTEsMCwxMS43Ni0uNTIsMTYuMzktMS40OUMsNjQxLjM1LDE2NS4yNyw2NDMuNzMsMTYzLjY0LDY0My43MywxNjIuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTY0My43MywxNzYuNzNjMC0xLjU4LTIuMzQtMy45LTUuNDQtNC41Ni00LjYzLTEtOS44Ni0uNTMtMTYuMzktLjUzSDYxMi43Yy03LjQyLDAtMTMuODgtLjQ0LTE4LjQ5LjY5LTMuMDcuNzEtNC4yOSwzLjExLTQuMjksNC40czEuMjIsMy43LDQuMzIsNC4zOWM0LjU4LDEuMTMsMTEuMDcuNzEsMTguNDYuNzFoOS4xOGM2LjUxLDAsMTEuNzYtLjUyLDE2LjM5LTEuNDlDLDY0MS4zNSwxNzkuOTQsNjQzLjczLDE3OC4zMSw2NDMuNzMsMTc2LjczWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwMCkiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NzguODksMTc2LjczYzAsMS41OC0yLjM0LDMuOS01LjQ0LDQuNTYtNC42MywxLTkuODYuNTMtMTYuMzkuNTNoLTkuMThjLTcuNDIsMC0xMy44OC40NC0xOC40OS0uNjktMy4wNy0uNzEtNC4yOS0zLjExLTQuMjktNC40czEuMjItMy43LDQuMzItNC4zOWM0LjU4LTEuMTMsMTEuMDctLjcxLDE4LjQ2LS43MWg5LjE4YzYuNTEsMCwxMS43Ni41MiwxNi4zOSwxLjQ5QywsNjc2LjUyLDE3MywwNjgsNjc4Ljg5LDE3NS4xNSw2NzguODksMTc2LjczWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwMCkiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NzguODksMTYyLjA2YzAsMS41OC0yLjM0LDMuOS01LjQ0LDQuNTYtNC42MywxLTkuODYuNTMtMTYuMzkuNTNoLTkuMThjLTcuNDIsMC0xMy44OC40NC0xOC40OS0uNjktMy4wNy0uNzEtNC4yOS0zLjExLTQuMjktNC40czEuMjItMy43LDQuMzItNC4zOWM0LjU4LTEuMTMsMTEuMDctLjcxLDE4LjQ2LS43MWg5LjE4YzYuNTEsMCwxMS43Ni41MiwxNi4zOSwxLjQ5QywsNjc2LjUyLDE1OC4zNyw2NzguODksMTYwLjQ4LDY3OC44OSwxNjIuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTY3MC44OSwxNDJjMS41OCwwLDMuOSwyLjM0LDQuNTYsNS40NCwxLDQuNjMuNTMsOS44NS41MywxNi4zOXY5LjE4YzAsNy40Mi40NCwxMy44OC0uNjksMTguNDktLjcxLDMuMDctMy4xMSw0LjI5LTQuNCw0LjI5cy0zLjctMS4yMi00LjM5LTQuMzJjLTEuMTMtNC41OC0uNzEtMTEuMDctLjcxLTE4LjQ2di05LjE4YzAtNi41MS41Mi0xMS43NiwxLjQ4LTE2LjM5QywsNjY4LjQyLDE0NC4zNSw2Njkum4sMTQyLDY3MC44OSwxNDJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjwvc3ZnPg==');
         }
 
+        .flag-uk {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjM1IDY1MCIgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIj48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSI2NTAiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSI2NTAiIGZpbGw9IiMwMDI0N2QiLz48cGF0aCBkPSJNMCwwIEwxMjM1LDY1MCBNMTIzNSwwIEwwLDY1MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEzMCIvPjxwYXRoIGQ9Ik0wLDAgTDEyMzUsNjUwIE0xMjM1LDAgTDAsNjUwIiBzdHJva2U9IiNjZjE0MmIiIHN0cm9rZS13aWR0aD0iODUiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSIyMTUiIHk9IjIxNyIgZmlsbD0iI2ZmZiIvPjxyZWN0IHdpZHRoPSIyMTUiIGhlaWdodD0iNjUwIiB4PSI1MTAiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSIxMzAiIHk9IjI2MCIgZmlsbD0iI2NmMTQyYiIvPjxyZWN0IHdpZHRoPSIxMzAiIGhlaWdodD0iNjUwIiB4PSI1NTIiIGZpbGw9IiNjZjE0MmIiLz48L3N2Zz4=');
+        }
+
+        .flag-bg {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNDgwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS13aWR0aD0iMXB0Ij48cGF0aCBmaWxsPSIjZDYyNjEyIiBkPSJNMCAzMjBoNjQwdjE2MEgweiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDE2MGg2NDB2MTYwSDB6Ii8+PHBhdGggZmlsbD0iIzAwOTY2ZSIgZD0iTTAgMGg2NDB2MTYwSDB6Ii8+PC9nPjwvc3ZnPg==');
+        }
+
+        .language-flyout {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            min-width: 260px;
+            border-radius: 3px;
+            border-top: 3px solid var(--accent-color);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+            .language-flyout.show {
+                display: block;
+            }
+
+        .heading {
+            padding: 16px;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .headline {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+            transition: color 0.2s;
+        }
+
+            .close-button:hover {
+                color: var(--primary-color);
+            }
+
+        .language-list {
+            list-style: none;
+            padding: 5px 0;
+        }
+
+        .language-item {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .language-item:hover {
+                background-color: #f5f7f9;
+            }
+
+            .international-item, .language-item a {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: var(--dark-gray);
+                padding: 12px 16px;
+            }
+
+        .label {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .lang-codes a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 3px;
+        }
+
+            .lang-codes a.active {
+                font-weight: bold;
+            }
+
+        /* Main header with logo */
         .main-header {
             background-color: var(--primary-color);
             padding: 20px 0;
             color: white;
-            width: 100%;
         }
 
             .main-header .container {
@@ -136,39 +195,48 @@
         }
 
             .logo img {
-                max-height: 50px;
+                height: 60px;
+                width: auto;
+                background-color: white;
+                padding: 5px;
+                border-radius: 3px;
+                transition: transform 0.2s;
+                cursor: pointer;
             }
 
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
-            margin-left: 10px;
-        }
+                .logo img:hover {
+                    transform: scale(1.05);
+                }
 
         .slogan {
             color: white;
             font-size: 1rem;
-            margin-left: 10px;
-            font-style: italic;
+            margin-left: 15px;
+            font-weight: 300;
         }
 
         .login-button {
-            font-weight: 500;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
             cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 3px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
         }
 
             .login-button:hover {
-                background-color: rgba(255, 255, 255, 0.2);
+                background-color: white;
+                color: var(--primary-color);
             }
 
-        /* User menu dropdown styles */
+        /* User menu dropdown styles - LKW Walter style */
         .user-menu {
             position: relative;
-            display: inline-block;
+            display: none; /* Hidden by default, will be shown when logged in */
         }
 
         .user-name {
@@ -176,78 +244,90 @@
             align-items: center;
             color: white;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 8px 15px;
             font-weight: 500;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            transition: all 0.3s;
         }
 
             .user-name:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 3px;
+                background-color: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.5);
             }
-
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #fff;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-        }
 
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
+            top: 110%;
             background-color: white;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            min-width: 220px;
+            box-shadow: 0px 8px 30px rgba(0,0,0,0.15);
             z-index: 1000;
             border-radius: 3px;
+            border-top: 3px solid var(--accent-color);
         }
 
             .dropdown-content a {
                 color: var(--dark-gray);
-                padding: 12px 16px;
+                padding: 14px 18px;
                 text-decoration: none;
                 display: flex;
                 align-items: center;
-                transition: background-color 0.2s;
+                transition: all 0.3s;
+                font-size: 0.95rem;
             }
 
                 .dropdown-content a:hover {
-                    background-color: #f1f1f1;
+                    background-color: #f8f8f8;
+                    color: var(--primary-color);
                 }
 
                 .dropdown-content a i {
-                    margin-right: 10px;
-                    font-size: 16px;
-                    width: 20px;
+                    margin-right: 12px;
+                    font-size: 18px;
+                    width: 24px;
                     text-align: center;
+                    color: var(--accent-color);
                 }
 
             .dropdown-content .divider {
                 height: 1px;
-                background-color: #e0e0e0;
+                background-color: #eeeeee;
                 margin: 5px 0;
             }
 
         .show {
             display: block;
+            animation: fadeIn 0.2s ease-in-out;
         }
 
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        /* Main navigation */
         .main-nav {
             background-color: white;
-            border-bottom: 1px solid #ddd;
-            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
             .main-nav .container {
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
             }
 
         .nav-links {
@@ -258,884 +338,1381 @@
             .nav-links a {
                 text-decoration: none;
                 color: var(--dark-gray);
-                padding: 15px 20px;
-                font-weight: 500;
-                display: block;
-                border-right: 1px solid #eee;
+                padding: 20px;
+                font-weight: 600;
                 font-size: 0.9rem;
+                text-transform: uppercase;
+                transition: all 0.3s;
+                border-right: 1px solid rgba(0,0,0,0.05);
             }
 
                 .nav-links a:hover {
-                    background-color: #f5f5f5;
+                    color: var(--primary-color);
+                    background-color: var(--light-gray);
+                }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .language-selector-nav {
+            margin-right: 15px;
+        }
+
+            .language-selector-nav .language-switch {
+                color: var(--dark-gray);
+                border-color: var(--medium-gray);
+            }
+
+                .language-selector-nav .language-switch:hover {
+                    background-color: var(--light-gray);
                 }
 
         .enquiry-button {
-            background-color: var(--accent-color);
-            color: var(--dark-gray);
-            padding: 15px 25px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 25px;
             text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
+            font-weight: 600;
             font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: all 0.3s;
         }
 
             .enquiry-button:hover {
-                background-color: #e0a500;
+                background-color: #cc0000;
             }
 
+        /* Toggle menu for mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Hero section - LKW Walter style */
         .hero {
             position: relative;
-            height: 500px;
-            background-image: url('/api/placeholder/1200/500');
+            height: 550px;
+            background-image: url('https://res.cloudinary.com/dyonctb8p/image/upload/v1742196270/Mercedes-Benz-Actros-conoy-in-autonomous-Netherlands-European-Truck-Platooning-Challenge-2016-image-1_ryyhmn.png');
             background-size: cover;
             background-position: center;
             display: flex;
             align-items: center;
-            width: 100%;
         }
 
+            /* Add a subtle overlay to ensure text readability */
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%);
+                pointer-events: none;
+            }
+
         .hero-content {
+            position: relative; /* To appear above the overlay */
+            background-color: rgba(0, 55, 129, 0.85); /* Semi-transparent primary color */
             max-width: 500px;
             padding: 40px;
-            margin-left: 40px;
+            margin-left: 60px;
             color: white;
+            z-index: 1;
         }
 
             .hero-content h1 {
                 font-size: 2.5rem;
-                font-weight: bold;
+                font-weight: 700;
                 margin-bottom: 20px;
+                line-height: 1.2;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                margin-bottom: 10px;
             }
 
         .hero-button {
             display: inline-block;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
+            background-color: var(--secondary-color);
             color: white;
             padding: 12px 25px;
             text-decoration: none;
-            margin-top: 20px;
+            margin-top: 25px;
+            font-weight: 600;
             transition: background-color 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
             .hero-button:hover {
-                background-color: rgba(255, 255, 255, 0.3);
-            }
-            .services-section {
-                padding: 60px 0;
-                background-color: white;
-            }            .section-title {
-                text-align: center;
-                font-size: 2rem;
-                margin-bottom: 40px;
-                color: var(--primary-color);
-            }            .services-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
-            }            .service-card {
-                text-align: center;
-                padding: 20px;
-                transition: transform 0.3s;
-            }                .service-card:hover {
-                    transform: translateY(-5px);
-                }                .service-card img {
-                    width: 150px;
-                    height: 150px;
-                    object-fit: contain;
-                    margin-bottom: 20px;
-                }                .service-card h3 {
-                    font-size: 1.3rem;
-                    margin-bottom: 15px;
-                    color: var(--primary-color);
-                }                .service-card p {
-                    margin-bottom: 20px;
-                    color: #666;
-                }            .btn {
-                display: inline-block;
-                background-color: var(--primary-color);
-                color: white;
-                padding: 10px 20px;
-                text-decoration: none;
-                border-radius: 0;
-                transition: background-color 0.3s;
-            }                .btn:hover {
-                    background-color: #004d8c;
-                }            .stats-section {
-                background-color: var(--light-gray);
-                padding: 60px 0;
-            }            .stats-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 30px;
-            }            .stat-card {
-                text-align: center;
-                padding: 20px;
-            }                .stat-card .number {
-                    font-size: 3rem;
-                    font-weight: bold;
-                    color: var(--primary-color);
-                    margin-bottom: 10px;
-                }                .stat-card .label {
-                    font-size: 1.1rem;
-                    color: #666;
-                }            .testimonials-section {
-                padding: 60px 0;
-                background-color: white;
-            }            .testimonial {
-                max-width: 800px;
-                margin: 0 auto;
-                text-align: center;
-            }            .testimonial-text {
-                font-size: 1.3rem;
-                font-style: italic;
-                margin-bottom: 20px;
-                position: relative;
-                padding: 0 40px;
-            }                .testimonial-text::before,
-                .testimonial-text::after {
-                    content: '"';
-                    font-size: 4rem;
-                    color: var(--medium-gray);
-                    position: absolute;
-                    opacity: 0.5;
-                }                .testimonial-text::before {
-                    top: -20px;
-                    left: 0;
-                }                .testimonial-text::after {
-                    bottom: -40px;
-                    right: 0;
-                }            .testimonial-author {
-                font-weight: bold;
-                color: var(--primary-color);
-            }            .news-section {
-                padding: 60px 0;
-                background-color: var(--light-gray);
-            }            .news-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
-            }            .news-card {
-                background-color: white;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                overflow: hidden;
-            }                .news-card img {
-                    width: 100%;
-                    height: 200px;
-                    object-fit: cover;
-                }            .news-content {
-                padding: 20px;
-            }            .news-date {
-                color: #999;
-                font-size: 0.9rem;
-                margin-bottom: 10px;
-            }            .news-title {
-                color: var(--primary-color);
-                margin-bottom: 10px;
-                font-size: 1.2rem;
-            }            .news-excerpt {
-                margin-bottom: 15px;
-                font-size: 0.9rem;
-            }            .read-more {
-                display: inline-block;
-                color: var(--primary-color);
-                text-decoration: none;
-                font-weight: 500;
-                font-size: 0.9rem;
-            }                .read-more:hover {
-                    text-decoration: underline;
-                }            .contact-section {
-                padding: 60px 0;
-                background-color: white;
-            }            .contact-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-            }            .contact-info h3 {
-                color: var(--primary-color);
-                margin-bottom: 20px;
-                font-size: 1.5rem;
-            }            .contact-detail {
-                margin-bottom: 15px;
-                display: flex;
-                align-items: flex-start;
-            }            .contact-icon {
-                margin-right: 10px;
-                color: var(--primary-color);
-                font-size: 1.2rem;
-            }            .contact-form .form-group {
-                margin-bottom: 20px;
-            }            .contact-form label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-            }            .contact-form input,
-            .contact-form textarea {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ddd;
-            }            .contact-form textarea {
-                height: 120px;
-            }            .submit-btn {
-                background-color: var(--primary-color);
-                color: white;
-                border: none;
-                padding: 12px 25px;
-                cursor: pointer;
-                font-weight: 500;
-            }                .submit-btn:hover {
-                    background-color: #004d8c;
-                }            .footer {
-                background-color: var(--dark-gray);
-                color: white;
-                padding: 60px 0 20px;
-            }            .footer-grid {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-                gap: 40px;
-                margin-bottom: 40px;
-            }            .footer-col h4 {
-                color: var(--accent-color);
-                margin-bottom: 20px;
-                font-size: 1.2rem;
-            }            .footer-col p {
-                margin-bottom: 15px;
-                color: #ccc;
-                font-size: 0.9rem;
-            }            .footer-col ul {
-                list-style: none;
-            }                .footer-col ul li {
-                    margin-bottom: 10px;
-                }                    .footer-col ul li a {
-                        color: #ccc;
-                        text-decoration: none;
-                        font-size: 0.9rem;
-                    }                        .footer-col ul li a:hover {
-                            color: white;
-                        }            .social-icons {
-                display: flex;
-                gap: 15px;
-                margin-top: 20px;
-            }            .social-icon {
-                width: 40px;
-                height: 40px;
-                background-color: #444;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                transition: background-color 0.3s;
-            }                .social-icon:hover {
-                    background-color: var(--primary-color);
-                }            .copyright {
-                text-align: center;
-                padding-top: 20px;
-                border-top: 1px solid #444;
-                color: #999;
-                font-size: 0.9rem;
+                background-color: #cc0000;
             }
 
-        @@media (max-width: 992px) {
-            .services-grid, .stats-grid, .news-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @@media (max-width: 768px) {
-            .user-type-bar .container, .main-header .container, .main-nav .container, .contact-grid {
-                flex-direction: column;
-            }
-
-            .user-type-bar .container {
-                justify-content: center;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                width: 100%;
-            }
-
-                .nav-links a {
-                    border-right: none;
-                    border-bottom: 1px solid #eee;
-                }
-
-            .hero-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-
-            .dropdown-content {
-                right: auto;
-                left: 0;
-            }
-
-            .language-dropdown {
-                right: auto;
-                left: 0;
-            }
-        }
-        #meta-navigation {
-            background-color: var(--light-gray);
-            padding: 10px 0;
-            width: 100%;
-            border-bottom: 1px solid var(--medium-gray);
-        }
-
-        .layout-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .type-switch {
-            margin: 0 10px;
-        }
-
-        .type-switch a {
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
-            text-decoration: none;
-            color: var(--dark-gray);
+        /* THIS IS ENN CARGO Section - Redesigned to match LKW WALTER style */
+        .company-highlights {
+            padding: 60px 0;
             background-color: white;
+        }
+
+        .highlight-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+            .highlight-title:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 3px;
+                background-color: #f0ca30; /* Yellow accent line */
+            }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: -20px;
+            margin-bottom: 40px;
+        }
+
+        /* New LKW Walter style feature blocks */
+        .feature-block {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .feature-icon {
+            flex: 0 0 auto;
+            margin-right: 30px;
+        }
+
+            .feature-icon img {
+                width: 80px;
+                height: 80px;
+                object-fit: contain;
+            }
+
+        .feature-content {
+            flex: 1;
+        }
+
+            .feature-content h3 {
+                color: var(--primary-color);
+                font-size: 1.4rem;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+            .feature-content p {
+                color: #555;
+                line-height: 1.6;
+            }
+
+        /* Services section - LKW Walter style */
+        .services-section {
+            padding: 60px 0;
+            background-color: var(--light-gray);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+            .section-title:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 3px;
+                background-color: var(--accent-color);
+            }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 30px 20px;
             border: 1px solid var(--medium-gray);
-            transition: all 0.3s ease;
-            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background-color: white;
         }
 
-        .type-switch.active a {
+            .service-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            }
+
+            .service-card img {
+                width: 80px;
+                height: 80px;
+                object-fit: contain;
+                margin-bottom: 20px;
+            }
+
+            /* Service cards styling */
+
+            .service-card h3 {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+                color: var(--primary-color);
+            }
+
+            .service-card p {
+                margin-bottom: 20px;
+                color: #666;
+                line-height: 1.7;
+            }
+
+        .btn {
+            display: inline-block;
             background-color: var(--primary-color);
             color: white;
-            border-color: var(--primary-color);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
 
-        .type-switch a:hover {
+            .btn:hover {
+                background-color: var(--accent-color);
+            }
+
+        /* Stats section - LKW Walter style */
+        .stats-section {
             background-color: var(--primary-color);
             color: white;
+            padding: 60px 0;
         }
 
-        .type-switch img.icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
         }
 
-        .language-switch-wrapper {
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+            .stat-card:last-child {
+                border-right: none;
+            }
+
+            .stat-card .number {
+                font-size: 3rem;
+                font-weight: 700;
+                color: var(--accent-color);
+                margin-bottom: 10px;
+            }
+
+            .stat-card .label {
+                font-size: 1.1rem;
+                color: white;
+                font-weight: 300;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+        /* Testimonials - LKW Walter style */
+        .testimonials-section {
+            padding: 60px 0;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-container {
             position: relative;
         }
 
-        .language-switch {
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
+        .testimonial {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
             background-color: white;
-            border: 1px solid var(--medium-gray);
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .flag {
-            width: 21px;
-            height: 14px;
-            margin-right: 8px;
-            background-size: cover;
-        }
-
-        .flag-int { background-image: url('/static/assets/flags/int.png'); }
-        .flag-ge { background-image: url('/static/assets/flags/ge.png'); }
-        .flag-am { background-image: url('/static/assets/flags/am.png'); }
-
-        .language-flyout {
-            display: none;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            opacity: 0;
             position: absolute;
-            top: 100%;
+            top: 0;
+            left: 0;
             right: 0;
-            background-color: white;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1000;
-            min-width: 250px;
-            border: 1px solid var(--medium-gray);
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        .language-flyout.show {
-            display: block;
-        }
+            .testimonial.active {
+                opacity: 1;
+                position: relative;
+                transform: translateY(0);
+            }
 
-        .heading {
-            padding: 15px;
-            border-bottom: 1px solid var(--medium-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .headline {
-            font-size: 1.1rem;
-            color: var(--primary-color);
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
+        .testimonial-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-bottom: 25px;
+            position: relative;
+            padding: 0 40px;
             color: var(--dark-gray);
+            line-height: 1.7;
         }
 
-        .language-list {
-            list-style: none;
+            .testimonial-text::before,
+            .testimonial-text::after {
+                content: '"';
+                font-size: 4rem;
+                color: var(--accent-color);
+                position: absolute;
+                opacity: 0.5;
+            }
+
+            .testimonial-text::before {
+                top: -20px;
+                left: 0;
+            }
+
+            .testimonial-text::after {
+                bottom: -40px;
+                right: 0;
+            }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
 
-        .language-item {
-            padding: 10px 15px;
+        .testimonial-company {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-nav {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .testimonial-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin: 0 5px;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .language-item:hover {
+            .testimonial-dot.active {
+                background-color: var(--accent-color);
+                transform: scale(1.2);
+            }
+
+        /* Contact section - LKW Walter style */
+        .contact-section {
+            padding: 60px 0;
             background-color: var(--light-gray);
         }
 
-        .international-item, .language-item a {
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .contact-info {
+            padding: 40px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+            .contact-info h3 {
+                color: white;
+                margin-bottom: 30px;
+                font-size: 1.5rem;
+                position: relative;
+                padding-bottom: 15px;
+            }
+
+                .contact-info h3:after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 50px;
+                    height: 3px;
+                    background-color: var(--accent-color);
+                }
+
+        .contact-detail {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            margin-right: 15px;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            padding: 40px;
+        }
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+            .contact-form input:focus,
+            .contact-form textarea:focus {
+                border-color: var(--accent-color);
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 159, 227, 0.3);
+            }
+
+        .contact-form textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+            .submit-btn:hover {
+                background-color: var(--accent-color);
+            }
+
+        /* Footer - LKW Walter style */
+        .footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+            .footer-col h4:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 30px;
+                height: 2px;
+                background-color: var(--accent-color);
+            }
+
+        .footer-col p {
+            margin-bottom: 15px;
+            color: #bbb;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+            .footer-col ul li {
+                margin-bottom: 10px;
+            }
+
+                .footer-col ul li a {
+                    color: #bbb;
+                    text-decoration: none;
+                    font-size: 0.9rem;
+                    transition: all 0.3s;
+                    display: block;
+                }
+
+                    .footer-col ul li a:hover {
+                        color: white;
+                        padding-left: 5px;
+                    }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
-            text-decoration: none;
-            color: var(--dark-gray);
-        }
-
-        .label {
-            flex-grow: 1;
-            margin: 0 10px;
-        }
-
-        .lang-codes a {
-            color: var(--primary-color);
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: white;
             text-decoration: none;
         }
 
-        .lang-codes a.active {
-            font-weight: bold;
+            .social-icon:hover {
+                background-color: var(--accent-color);
+                transform: translateY(-3px);
+            }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Responsive styles */
+        @@media (max-width: 1200px) {
+            .container
+
+        {
+            padding: 0 30px;
+        }
+
+        }
+
+        @@media (max-width: 992px) {
+            .services-grid, .stats-grid
+
+        {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat-card {
+            border-right: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 30px 10px;
+        }
+
+            .stat-card:nth-child(3),
+            .stat-card:nth-child(4) {
+                border-bottom: none;
+            }
+
+        .feature-block {
+            flex-direction: column;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .feature-icon {
+            margin-right: 0;
+            margin-bottom: 15px;
+        }
+
+            .feature-icon img {
+                width: 70px;
+                height: 70px;
+            }
+
         }
 
         @@media (max-width: 768px) {
-            .layout-wrapper {
-                justify-content: center;
-            }
-            
-            .type-switch {
-                margin: 5px;
-            }
+            .menu-toggle
+
+        {
+            display: block;
         }
-        </style>
-    </head>
-    <body>
-        <!-- Top bar with user types -->
- <div id="meta-navigation" data-tracking-area="metaSwitcher:auftraggeberHeader">
-        <div class="container">
-            <div class="row">
-                <div class="col flex">
-                    <div class="layout-wrapper">
-                        <span class="active type-switch">
-                            <a href="/int/en" data-tracking-link-internal="/virtual/int/en">
-                                <img class="icon" src="/static/assets/svg/loads.svg" alt="Customer">
-                                <span class="text">I am a customer</span>
-                            </a>
-                        </span>
-                        <span class="type-switch">
-                            <a href="/int/en/carrier" data-tracking-link-internal="/virtual/int/en/transportunternehmer">
-                                <img class="icon" src="/static/assets/svg/truck-front.svg" alt="Carrier">
-                                <span class="text">I am a carrier</span>
-                            </a>
-                        </span>
-                        <div class="language-switch-wrapper">
-                            <button type="button" class="language-switch" id="languageSwitch">
-                                <span class="flag flags-21x14 flag-int"></span>
-                                <span>en</span>
-                            </button>
-                            <div class="language-flyout language-selection has-transition" id="languageFlyout">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="heading">
-                                                <h2 class="headline">Select a language</h2>
-                                                <button type="button" class="close-button" id="closeFlyout">×</button>
-                                            </div>
-                                            <div class="international-item">
-                                                <a href="/int/en" data-save-language="en-INT">
-                                                    <span class="flag flags-21x14 flag-int"></span>
-                                                    <span class="label">International</span>
-                                                    <span class="lang-codes">
-                                                        <a class="lang-url active" data-save-language="en-INT" href="/int/en">en</a>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <ul class="language-list">
-                                                <li class="language-item">
-                                                    <a href="/ge/en" data-save-language="en-GE">
-                                                        <span class="flag flags-21x14 flag-ge"></span>
-                                                        <span class="label">საქართველო</span>
-                                                        <span class="lang-codes">
-                                                            <a class="lang-url" data-save-language="en-GE" href="/ge/en">en</a>
-                                                        </span>
-                                                    </a>
-                                                </li>
-                                                <li class="language-item">
-                                                    <a href="/am/ru" data-save-language="ru-AM">
-                                                        <span class="flag flags-21x14 flag-am"></span>
-                                                        <span class="label">Армения</span>
-                                                        <span class="lang-codes">
-                                                            <a class="lang-url" data-save-language="ru-AM" href="/am/ru">ru</a>
-                                                        </span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>        <!-- Main header with logo -->
+
+        .main-header .container, .main-nav .container {
+            flex-direction: column;
+        }
+
+        .header-right {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            width: 100%;
+            display: none;
+        }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                text-align: center;
+                padding: 15px;
+            }
+
+        .nav-right {
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .enquiry-button {
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .hero {
+            height: auto;
+            padding: 60px 0;
+        }
+
+        .hero-content {
+            margin: 0 20px;
+            max-width: 100%;
+            padding: 30px;
+        }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .feature-block {
+            padding: 0 10px;
+        }
+
+        }
+
+        @@media (max-width: 576px) {
+            .services-grid
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .hero-content {
+            margin: 0 15px;
+            padding: 25px 20px;
+        }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+            .stat-card:last-child {
+                border-bottom: none;
+            }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+
+        .section-title, .highlight-title {
+            font-size: 1.7rem;
+        }
+
+        .contact-form, .contact-info {
+            padding: 30px 20px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- Main header with logo -->
     <header class="main-header">
         <div class="container">
             <div class="logo">
-                <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1741775565/cdn_27085d12-de58-49ef-8620-3ac674a84a83_0_tdz6hh.png" alt="ENN Cargo Logo">
+                <!-- Only the logo image is clickable to redirect to home page -->
+                <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742193325/ENN_cargo_transparent_goqj9p.png" alt="ENN Cargo Logo" onclick="window.location.href='/'">
                 <div class="slogan">The European Transport Organisation</div>
             </div>
 
-            @if (User.Identity.IsAuthenticated)
-            {
-                <!-- For authenticated users -->
-                <div class="user-menu">
-                    <div class="user-name" id="userMenuButton">
-                        <div class="user-avatar">
-                            @(User.FindFirst("FirstName")?.Value?[0] ?? 'U')
-                        </div>
-                        <span>@(User.FindFirst("CompanyName")?.Value ?? User.FindFirst("FirstName")?.Value ?? "User")</span>
+            <div class="header-right">
+                <!-- Login button (will be hidden when user is logged in) -->
+                <div class="login-button" id="login-button">
+                    LOGIN
+                </div>
+
+                <!-- User menu (will be shown when user is logged in) -->
+                <div class="user-menu" id="user-menu">
+                    <div class="user-name" id="user-name-toggle">
+                        <span id="current-user-name">John Doe</span>
                         <span style="margin-left: 5px;">▼</span>
                     </div>
-                    <div class="dropdown-content" id="userDropdown">
-                        <a href="@Url.Action("Dashboard", "Account")"><i>📊</i> Dashboard</a>
-                        <a href="@Url.Action("Profile", "Account")"><i>👤</i> My Profile</a>
-                        <a href="@Url.Action("Notifications", "Account")"><i>🔔</i> Notifications</a>
+                    <div class="dropdown-content" id="user-dropdown">
+                        <a href="/user/profile"><i>👤</i> My Profile</a>
+                        <a href="/user/orders"><i>📦</i> My Orders</a>
+                        <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
                         <div class="divider"></div>
-                        <a href="@Url.Action("Settings", "Account")"><i>⚙️</i> Settings</a>
-                        <a href="@Url.Action("Help", "Account")"><i>❓</i> Help Center</a>
-                        <div class="divider"></div>
-                        <a href="javascript:document.getElementById('logoutForm').submit();"><i>🚪</i> Log Out</a>
+                        <a href="/user/settings"><i>⚙️</i> Account Settings</a>
+                        <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
                     </div>
                 </div>
-                <form id="logoutForm" asp-action="Logout" asp-controller="Account" method="post" style="display:none;">
-                    @Html.AntiForgeryToken()
-                </form>
-            }
-            else
-            {
-                <!-- For non-authenticated users - renamed from "CONNECT LOGIN" to just "LOGIN" -->
-                <div class="login-button" id="login-button">
-                    <span>LOGIN</span>
-                </div>
-            }
+            </div>
         </div>
     </header>
-        <!-- Main navigation -->
+
+    <!-- Main navigation -->
     <nav class="main-nav">
         <div class="container">
-            <div class="nav-links">
-                <a href="#">PRODUCTS AND SERVICES</a>
-                <a href="#">OUR INTERNATIONAL MARKETS</a>
-                <a href="#">NEWS</a>
-                <a href="#">ABOUT US</a>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div class="nav-links" id="navLinks">
+                <a href="#">TRANSPORT SOLUTIONS</a>
+                <a href="#">MARKETS</a>
+                <a href="#">QUALITY & ENVIRONMENT</a>
+                <a href="#">COMPANY</a>
+                <a href="#">CAREERS</a>
                 <a href="#">CONTACT</a>
             </div>
-            <a href="#" class="enquiry-button">ENQUIRY</a>
+            <div class="nav-right">
+                <!-- Language selector moved to navigation bar -->
+                <div class="language-selector language-selector-nav">
+                    <button type="button" class="language-switch" id="languageSwitch">
+                        <span class="flag flag-uk"></span>
+                        <span>EN</span>
+                        <span style="margin-left: 5px;">▼</span>
+                    </button>
+                    <div class="language-flyout" id="languageFlyout">
+                        <div class="heading">
+                            <h2 class="headline">Select a language</h2>
+                            <button type="button" class="close-button" id="closeFlyout">×</button>
+                        </div>
+                        <ul class="language-list">
+                            <li class="language-item">
+                                <a href="/int/en" class="international-item">
+                                    <span class="flag flag-uk"></span>
+                                    <span class="label">English</span>
+                                </a>
+                            </li>
+                            <li class="language-item">
+                                <a href="/bg/en">
+                                    <span class="flag flag-bg"></span>
+                                    <span class="label">Български</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#" class="enquiry-button">REQUEST A QUOTE</a>
+            </div>
         </div>
-    </nav>        <!-- Hero section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1>The driving force for your business</h1>
-                <a href="#" class="hero-button">Find out more →</a>
-            </div>
-        </section>        <!-- Services section -->
-        <section class="services-section">
-            <div class="container">
-                <h2 class="section-title">Our Transport Solutions</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <img src="/api/placeholder/150/150" alt="Full Truck Loads">
-                        <h3>Full Truck Loads</h3>
-                        <p>We organize full loads throughout Europe with our high-quality transport network.</p>
-                        <a href="#" class="btn">Learn More</a>
+    </nav>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <!-- Hero image applied as background in CSS -->
+        <div class="hero-content">
+            <h1>YOUR RELIABLE PARTNER FOR TRANSPORT ACROSS EUROPE</h1>
+            <p>Full truck loads and intermodal solutions for your cargo throughout Europe and beyond.</p>
+            <a href="#" class="hero-button">EXPLORE OUR SOLUTIONS</a>
+        </div>
+    </section>
+
+    <!-- This is ENN Cargo Section - Redesigned to match LKW Walter style -->
+    <section class="company-highlights">
+        <div class="container">
+            <h2 class="highlight-title">This is ENN Cargo</h2>
+            <p class="subtitle">Tailor-made solutions</p>
+
+            <div class="feature-blocks">
+                <!-- Feature 1: Complete cargo -->
+                <div class="feature-block">
+                    <div class="feature-icon">
+                        <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742372138/loads_1_whg2qt.png" alt="Complete Cargo">
                     </div>
-                    <div class="service-card">
-                        <img src="/api/placeholder/150/150" alt="Partial Loads">
-                        <h3>Partial Loads</h3>
-                        <p>Cost-effective solutions for shipments that don't require a full truck.</p>
-                        <a href="#" class="btn">Learn More</a>
+                    <div class="feature-content">
+                        <h3>Full truck load</h3>
+                        <p>We organise more than 7,000 full truck loads every day on the road and in Combined Transport. This makes us one of Europe's largest transport companies</p>
                     </div>
-                    <div class="service-card">
-                        <img src="/api/placeholder/150/150" alt="Intermodal Transport">
-                        <h3>Intermodal Transport</h3>
-                        <p>Environmentally friendly combination of road and rail transport.</p>
-                        <a href="#" class="btn">Learn More</a>
+                </div>
+
+                <!-- Feature 2: Communication -->
+                <div class="feature-block">
+                    <div class="feature-icon">
+                        <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742372138/bubble-globe_1_elzk7f.png" alt="Communication">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Communication in your national language</h3>
+                        <p>Our employees come from over 40 nations, speak more than 35 languages and communicate with you, your customers and suppliers in the appropriate national language.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Personal contact -->
+                <div class="feature-block">
+                    <div class="feature-icon">
+                        <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742372138/bubble-user_1_lg9xsj.png" alt="Personal Contact">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Personal advice and support on site</h3>
+                        <p>We attach great importance to providing comprehensive and competent advice. With us you receive a personal contact for all your concerns.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4: High standards -->
+                <div class="feature-block">
+                    <div class="feature-icon">
+                        <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742372138/medal-star_v5kbwj.png" alt="High Standards">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Highest standards</h3>
+                        <p>We don't compromise on quality, health, safety and environment. We offer innovative and environmentally-friendly solutions for your transports.</p>
                     </div>
                 </div>
             </div>
-        </section>        <!-- Stats section -->
-        <section class="stats-section">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="number">950+</div>
-                        <div class="label">Transport specialists</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">30</div>
-                        <div class="label">Years of experience</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">550,000</div>
-                        <div class="label">Transports per year</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">37</div>
-                        <div class="label">European countries</div>
-                    </div>
+        </div>
+    </section>
+
+    <!-- Services section -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Our Transport Solutions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742195153/truck-front_fxhmsv.png" alt="Full Truck Loads">
+                    <h3>Full Truck Load Transport</h3>
+                    <p>We organize full loads throughout Europe with our high-quality transport network of over 7,000 selected carrier partners.</p>
+                    <a href="#" class="btn">LEARN MORE</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742195286/intermodal_ol88gt.png" alt="Intermodal Transport">
+                    <h3>Intermodal Solutions</h3>
+                    <p>Environmentally friendly combination of road and rail transport for sustainable and reliable cargo transport.</p>
+                    <a href="#" class="btn">LEARN MORE</a>
+                </div>
+                <div class="service-card">
+                    <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742195852/output-onlinepngtools_nqirwh.png" alt="Digital Solutions">
+                    <h3>Digital Transport Management</h3>
+                    <p>Real-time tracking and digital documentation for complete transparency throughout the transport process.</p>
+                    <a href="#" class="btn">LEARN MORE</a>
                 </div>
             </div>
-        </section>        <!-- Testimonials section -->
-        <section class="testimonials-section">
-            <div class="container">
-                <h2 class="section-title">What Our Clients Say</h2>
-                <div class="testimonial">
+        </div>
+    </section>
+
+    <!-- Stats section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">950+</div>
+                    <div class="label">Transport specialists</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">30</div>
+                    <div class="label">Years of experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">550,000</div>
+                    <div class="label">Transports per year</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">37</div>
+                    <div class="label">European countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials section with rotating testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <div class="testimonial-container">
+                <div class="testimonial active" id="testimonial1">
                     <div class="testimonial-text">
                         ENN Cargo has been our reliable transport partner for over 5 years. Their dedication to punctuality and their professional handling of our goods has made them an invaluable part of our logistics chain.
                     </div>
-                    <div class="testimonial-author">John Doe, Logistics Manager at Example Corp</div>
+                    <div class="testimonial-author">John Doe</div>
+                    <div class="testimonial-company">Logistics Manager at Example Corp</div>
+                </div>
+                <div class="testimonial" id="testimonial2">
+                    <div class="testimonial-text">
+                        We've been working with ENN Cargo since 2020, and I'm consistently impressed by their responsiveness and efficiency. They've helped us expand our business across Eastern Europe with minimal logistics challenges.
+                    </div>
+                    <div class="testimonial-author">Sarah Johnson</div>
+                    <div class="testimonial-company">Supply Chain Director at Global Enterprises</div>
+                </div>
+                <div class="testimonial" id="testimonial3">
+                    <div class="testimonial-text">
+                        The intermodal transport solutions provided by ENN Cargo have significantly reduced our carbon footprint while maintaining reliable delivery times. Their commitment to sustainability aligns perfectly with our corporate values.
+                    </div>
+                    <div class="testimonial-author">Michael Weber</div>
+                    <div class="testimonial-company">CEO at Green Manufacturing Ltd.</div>
+                </div>
+                <div class="testimonial" id="testimonial4">
+                    <div class="testimonial-text">
+                        What sets ENN Cargo apart is their digital tracking system. The real-time updates and complete transparency have revolutionized how we manage our supply chain and communicate with our customers.
+                    </div>
+                    <div class="testimonial-author">Elena Petrova</div>
+                    <div class="testimonial-company">Operations Manager at Tech Solutions Inc.</div>
+                </div>
+                <div class="testimonial" id="testimonial5">
+                    <div class="testimonial-text">
+                        I've worked with many transport companies over my 15-year career, but ENN Cargo's attention to detail and customer service is unmatched. They treat every shipment as if it were their own product.
+                    </div>
+                    <div class="testimonial-author">Thomas Schmidt</div>
+                    <div class="testimonial-company">Head of Distribution at Consumer Goods Co.</div>
                 </div>
             </div>
-        </section>        <!-- News section -->
-        <section class="news-section">
-            <div class="container">
-                <h2 class="section-title">Latest News</h2>
-                <div class="news-grid">
-                    <div class="news-card">
-                        <img src="/api/placeholder/400/200" alt="News 1">
-                        <div class="news-content">
-                            <div class="news-date">February 25, 2025</div>
-                            <h3 class="news-title">New Route Expansion to Eastern Europe</h3>
-                            <div class="news-excerpt">ENN Cargo expands its transport network with new dedicated routes to Eastern European countries.</div>
-                            <a href="#" class="read-more">Read more →</a>
+            <div class="testimonial-nav">
+                <span class="testimonial-dot active" data-testimonial="testimonial1"></span>
+                <span class="testimonial-dot" data-testimonial="testimonial2"></span>
+                <span class="testimonial-dot" data-testimonial="testimonial3"></span>
+                <span class="testimonial-dot" data-testimonial="testimonial4"></span>
+                <span class="testimonial-dot" data-testimonial="testimonial5"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-detail">
+                        <span class="contact-icon">📍</span>
+                        <div>
+                            <strong>ENN Cargo Headquarters</strong><br>
+                            Industrialna Zona, ул. 23ти Пехотен шипченски полк №114,<br>
+                            6100 Kazanlak, Bulgaria
                         </div>
                     </div>
-                    <div class="news-card">
-                        <img src="/api/placeholder/400/200" alt="News 2">
-                        <div class="news-content">
-                            <div class="news-date">February 15, 2025</div>
-                            <h3 class="news-title">Sustainable Transport Initiative Launch</h3>
-                            <div class="news-excerpt">Our new green initiative aims to reduce carbon emissions by 30% over the next five years.</div>
-                            <a href="#" class="read-more">Read more →</a>
-                        </div>
+                    <div class="contact-detail">
+                        <span class="contact-icon">📞</span>
+                        <div>+359 89 508 0151</div>
                     </div>
-                    <div class="news-card">
-                        <img src="/api/placeholder/400/200" alt="News 3">
-                        <div class="news-content">
-                            <div class="news-date">February 5, 2025</div>
-                            <h3 class="news-title">Digital Transport Management System Update</h3>
-                            <div class="news-excerpt">Improved tracking and management capabilities with our latest system upgrade.</div>
-                            <a href="#" class="read-more">Read more →</a>
+                    <div class="contact-detail">
+                        <span class="contact-icon">✉️</span>
+                        <div>enncargo@gmail.com</div>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-icon">🕒</span>
+                        <div>
+                            <strong>Opening Hours:</strong><br>
+                            Monday - Friday: 8:00 AM - 6:00 PM<br>
+                            Saturday: 9:00 AM - 2:00 PM
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>        <!-- Contact section -->
-        <section class="contact-section">
-            <div class="container">
-                <h2 class="section-title">Contact Us</h2>
-                <div class="contact-grid">
-                    <div class="contact-info">
-                        <h3>Get In Touch</h3>
-                        <div class="contact-detail">
-                            <span class="contact-icon">📍</span>
-                            <div>
-                                <strong>ENN Cargo Headquarters</strong><br>
-                                Cargo Street 123<br>
-                                10115 Berlin, Germany
-                            </div>
-                        </div>
-                        <div class="contact-detail">
-                            <span class="contact-icon">📞</span>
-                            <div>+49 123 456 7890</div>
-                        </div>
-                        <div class="contact-detail">
-                            <span class="contact-icon">✉️</span>
-                            <div>info@enncargo.com</div>
-                        </div>
-                        <div class="contact-detail">
-                            <span class="contact-icon">🕒</span>
-                            <div>
-                                <strong>Opening Hours:</strong><br>
-                                Monday - Friday: 8:00 AM - 6:00 PM<br>
-                                Saturday: 9:00 AM - 2:00 PM
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contact-form">
+                <div class="contact-form">
+                    <!-- Add form with action pointing to controller endpoint -->
+                    <form id="contactForm" asp-controller="Contact" asp-action="SendContactEmail" method="post">
                         <div class="form-group">
                             <label for="name">Your Name</label>
-                            <input type="text" id="name" name="name">
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Your Email</label>
-                            <input type="email" id="email" name="email">
+                            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
                         </div>
                         <div class="form-group">
                             <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject">
+                            <input type="text" id="subject" name="subject" placeholder="What is your inquiry about?" required>
                         </div>
                         <div class="form-group">
                             <label for="message">Your Message</label>
-                            <textarea id="message" name="message"></textarea>
+                            <textarea id="message" name="message" placeholder="Please describe your request in detail" required></textarea>
                         </div>
-                        <button type="submit" class="submit-btn">Send Message</button>
-                    </div>
+                        <!-- Add anti-forgery token for security -->
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="submit-btn">SEND MESSAGE</button>
+                    </form>
+                    <!-- Area to display success/error messages -->
+                    <div id="formMessage" class="form-message" style="display: none;"></div>
                 </div>
             </div>
-        </section>        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-col">
-                        <h4>About ENN Cargo</h4>
-                        <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe.</p>
-                        <div class="social-icons">
-                            <a href="#" class="social-icon">f</a>
-                            <a href="#" class="social-icon">in</a>
-                            <a href="#" class="social-icon">🐦</a>
-                            <a href="#" class="social-icon">yt</a>
-                        </div>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Our Services</h4>
-                        <ul>
-                            <li><a href="#">Full Truck Loads</a></li>
-                            <li><a href="#">Partial Loads</a></li>
-                            <li><a href="#">Intermodal Transport</a></li>
-                            <li><a href="#">Express Delivery</a></li>
-                            <li><a href="#">Specialized Transport</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">International Markets</a></li>
-                            <li><a href="#">News</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Legal Information</h4>
-                        <ul>
-                            <li><a href="#">Terms and Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Cookie Policy</a></li>
-                            <li><a href="#">Imprint</a></li>
-                            <li><a href="#">Data Protection</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="copyright">
-                    <p>© 2025 ENN Cargo. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    <script>
-        // Toggle dropdown menu
-        document.addEventListener('DOMContentLoaded', function() {
-            var userMenuButton = document.getElementById('userMenuButton');
-            var userDropdown = document.getElementById('userDropdown');
+        </div>
+    </section>
 
-            if (userMenuButton) {
-                userMenuButton.addEventListener('click', function() {
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About ENN Cargo</h4>
+                    <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe. Our network of carrier partners helps us deliver excellence in every transport.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">in</a>
+                        <a href="#" class="social-icon">🐦</a>
+                        <a href="#" class="social-icon">yt</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href="#">Full Truck Loads</a></li>
+                        <li><a href="#">Intermodal Transport</a></li>
+                        <li><a href="#">Express Delivery</a></li>
+                        <li><a href="#">Specialized Transport</a></li>
+                        <li><a href="#">Digital Solutions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">International Markets</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal Information</h4>
+                    <ul>
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Imprint</a></li>
+                        <li><a href="#">Data Protection</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ENN Cargo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in (for demo purposes, you would implement this with your authentication system)
+            function checkLoginStatus() {
+                // This is a placeholder. In a real application, this would check session/cookie/localStorage
+                // For demo purposes, let's create a function to simulate login/logout
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                const userMenu = document.getElementById('user-menu');
+                const loginButton = document.getElementById('login-button');
+
+                if (isLoggedIn) {
+                    // User is logged in
+                    userMenu.style.display = 'inline-block';
+                    loginButton.style.display = 'none';
+
+                    // Set user name (in a real app, this would come from your backend)
+                    const userName = localStorage.getItem('userName') || 'User';
+                    document.getElementById('current-user-name').textContent = userName;
+                } else {
+                    // User is not logged in
+                    userMenu.style.display = 'none';
+                    loginButton.style.display = 'inline-block';
+                }
+            }
+
+            // Initial check
+            checkLoginStatus();
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Language dropdown toggle
+            const languageSwitch = document.getElementById('languageSwitch');
+            const languageFlyout = document.getElementById('languageFlyout');
+            const closeFlyout = document.getElementById('closeFlyout');
+
+            if (languageSwitch) {
+                languageSwitch.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent event bubbling
+                    languageFlyout.classList.toggle('show');
+                });
+
+                if (closeFlyout) {
+                    closeFlyout.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent event bubbling
+                        languageFlyout.classList.remove('show');
+                    });
+                }
+
+                // Handle language selection
+                const languageItems = document.querySelectorAll('.language-item a');
+                languageItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        // Optional: Add visual feedback before redirecting
+                        this.style.fontWeight = 'bold';
+
+                        // In a real implementation, you might want to set a cookie
+                        // or use localStorage to remember the language preference
+
+                        // Close the flyout
+                        languageFlyout.classList.remove('show');
+
+                        // Don't prevent default here to allow navigation
+                    });
+                });
+
+                // Close the flyout if clicked outside
+                document.addEventListener('click', function(event) {
+                    const isClickInside = languageSwitch.contains(event.target) ||
+                                          languageFlyout.contains(event.target);
+
+                    if (!isClickInside && languageFlyout.classList.contains('show')) {
+                        languageFlyout.classList.remove('show');
+                    }
+                });
+            }
+
+            // Login button action
+            const loginButton = document.getElementById('login-button');
+            if (loginButton) {
+                loginButton.addEventListener('click', function() {
+                    // For demo purposes, we'll simulate a login
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userName', 'John Doe');
+                    checkLoginStatus();
+
+                    // In a real application, this would redirect to the login page
+                    // window.location.href = '/Account/Login';
+                });
+            }
+
+            // User menu dropdown toggle
+            const userNameToggle = document.getElementById('user-name-toggle');
+            const userDropdown = document.getElementById('user-dropdown');
+
+            if (userNameToggle) {
+                userNameToggle.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent event bubbling
                     userDropdown.classList.toggle('show');
                 });
 
                 // Close the dropdown if clicked outside
-                window.addEventListener('click', function(event) {
-                    if (!event.target.matches('.user-name') && !event.target.matches('.user-name *')) {
-                        if (userDropdown.classList.contains('show')) {
-                            userDropdown.classList.remove('show');
-                        }
+                document.addEventListener('click', function(event) {
+                    const isClickInside = userNameToggle.contains(event.target) ||
+                                          userDropdown.contains(event.target);
+
+                    if (!isClickInside && userDropdown.classList.contains('show')) {
+                        userDropdown.classList.remove('show');
                     }
                 });
             }
 
-            // For non-authenticated users, keep the original login redirect
-            var loginButton = document.getElementById('login-button');
-            if (loginButton) {
-                loginButton.addEventListener('click', function() {
-                    window.location.href = '@Url.Action("Login", "Account")';
-                });
-            }
-
-            // Language selector functionality
-           const languageSwitch = document.getElementById('languageSwitch');
-            const languageFlyout = document.getElementById('languageFlyout');
-            const closeFlyout = document.getElementById('closeFlyout');
-            const languageItems = document.querySelectorAll('.language-item, .international-item');
-
-            if (languageSwitch) {
-                languageSwitch.addEventListener('click', function(e) {
+            // Logout button
+            const logoutButton = document.getElementById('logout-button');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    languageFlyout.classList.toggle('show');
+                    // Simulate logout
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userName');
+                    checkLoginStatus();
+
+                    // In a real application, this would call your logout endpoint
+                    // window.location.href = '/Account/Logout';
+                });
+            }
+
+            // Rotating testimonials
+            const testimonials = document.querySelectorAll('.testimonial');
+            const dots = document.querySelectorAll('.testimonial-dot');
+            let currentTestimonial = 0;
+            let testimonialInterval;
+
+            // Function to show a specific testimonial
+            function showTestimonial(index) {
+                // Hide all testimonials
+                testimonials.forEach(testimonial => {
+                    testimonial.classList.remove('active');
                 });
 
-                closeFlyout.addEventListener('click', function() {
-                    languageFlyout.classList.remove('show');
+                // Hide all active dots
+                dots.forEach(dot => {
+                    dot.classList.remove('active');
                 });
 
-                languageItems.forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        const link = this.querySelector('a');
-                        const langCode = link.getAttribute('data-save-language');
-                        const flagClass = this.querySelector('.flag').className;
-                        const langText = this.querySelector('.lang-codes a').textContent;
+                // Show the selected testimonial
+                testimonials[index].classList.add('active');
+                dots[index].classList.add('active');
 
-                        // Update switcher display
-                        languageSwitch.innerHTML = `
-                            <span class="${flagClass}"></span>
-                            <span>${langText}</span>
-                        `;
+                // Update current testimonial index
+                currentTestimonial = index;
+            }
 
-                        // Remove active class from all
-                        document.querySelectorAll('.lang-url').forEach(el => el.classList.remove('active'));
-                        // Add active class to selected
-                        this.querySelector('.lang-url').classList.add('active');
+            // Function to show the next testimonial
+            function nextTestimonial() {
+                let next = currentTestimonial + 1;
+                if (next >= testimonials.length) {
+                    next = 0;
+                }
+                showTestimonial(next);
+            }
 
-                        languageFlyout.classList.remove('show');
-                        // Here you would typically handle the actual language change
-                        // window.location.href = link.getAttribute('href');
+            // Setup dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    // Clear automatic rotation when user manually navigates
+                    clearInterval(testimonialInterval);
+
+                    // Show the clicked testimonial
+                    showTestimonial(index);
+
+                    // Restart automatic rotation
+                    testimonialInterval = setInterval(nextTestimonial, 7000);
+                });
+            });
+
+            // Start automatic rotation
+            testimonialInterval = setInterval(nextTestimonial, 7000);
+
+            // Random testimonial on page load
+            const randomIndex = Math.floor(Math.random() * testimonials.length);
+            showTestimonial(randomIndex);
+
+            // Contact form submission via AJAX
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    const form = this;
+                    const formMessage = document.getElementById('formMessage');
+                    const submitBtn = form.querySelector('.submit-btn');
+
+                    // Disable the submit button to prevent multiple submissions
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Sending...';
+
+                    // Create FormData object to send form data
+                    const formData = new FormData(form);
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'RequestVerificationToken': form.querySelector('input[name="__RequestVerificationToken"]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        formMessage.style.display = 'block';
+                        if (data.success) {
+                            formMessage.classList.remove('error');
+                            formMessage.classList.add('success');
+                            formMessage.textContent = 'Your message has been sent successfully!';
+                            form.reset(); // Clear the form
+                        } else {
+                            formMessage.classList.remove('success');
+                            formMessage.classList.add('error');
+                            formMessage.textContent = data.message || 'An error occurred while sending your message. Please try again.';
+                        }
+                    })
+                    .catch(error => {
+                        formMessage.style.display = 'block';
+                        formMessage.classList.remove('success');
+                        formMessage.classList.add('error');
+                        formMessage.textContent = 'An error occurred while sending your message. Please try again.';
+                        console.error('Error:', error);
+                    })
+                    .finally(() => {
+                        // Re-enable the submit button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'SEND MESSAGE';
                     });
-                });
-
-                // Close flyout when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!languageSwitch.contains(e.target) && !languageFlyout.contains(e.target)) {
-                        languageFlyout.classList.remove('show');
-                    }
                 });
             }
         });

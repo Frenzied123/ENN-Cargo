@@ -32,13 +32,11 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             _companyStockService = companyStockService;
             _pendingRequestService = pendingRequestService;
         }
-
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -61,14 +59,12 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             }
             return View(model);
         }
-
         public IActionResult Register() => View();
         [HttpGet]
         public IActionResult RegisterForTruckCompanies()
         {
             return View();
         }
-
         [HttpGet]
         public IActionResult RegisterForStockCompanies()
         {
@@ -87,13 +83,11 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             {
                 return View(model);
             }
-
             if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 ModelState.AddModelError("Email", "This email is already registered.");
                 return View(model);
             }
-
             var tempUserId = Guid.NewGuid().ToString();
             var request = new PendingRequest
             {
@@ -108,7 +102,6 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
                 Message = "Your truck company registration is waiting for admin approval."
             });
         }
-
         [HttpPost]
         public async Task<IActionResult> RegisterForStockCompanies(RegisterForCompanyStock model)
         {
@@ -116,13 +109,11 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             {
                 return View(model);
             }
-
             if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 ModelState.AddModelError("Email", "This email is already registered.");
                 return View(model);
             }
-
             var tempUserId = Guid.NewGuid().ToString();
             var request = new PendingRequest
             {
@@ -137,7 +128,6 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
                 Message = "Your stock company registration is waiting for admin approval."
             });
         }
-
         [HttpPost]
         public async Task<IActionResult> RegisterForDrivers(RegisterForDriver model)
         {
@@ -145,13 +135,11 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
             {
                 return View(model);
             }
-
             if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 ModelState.AddModelError("Email", "This email is already registered.");
                 return View(model);
             }
-
             var tempUserId = Guid.NewGuid().ToString();
             var request = new PendingRequest
             {
@@ -166,13 +154,11 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
                 Message = "Your driver registration is waiting for admin approval."
             });
         }
-
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
         public IActionResult AccessDenied()
         {
             return View();

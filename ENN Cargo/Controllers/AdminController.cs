@@ -19,7 +19,6 @@ namespace ENN_Cargo.Controllers
         private readonly IShipmentService _shipmentService;
         private readonly IVehicleService _vehicleService;
         private readonly ILogger<AdminController> _logger;
-
         public AdminController(
             UserManager<IdentityUser> userManager,
             ENN_CargoApplicationDbContext context,
@@ -39,14 +38,12 @@ namespace ENN_Cargo.Controllers
             _vehicleService = vehicleService;
             _logger = logger;
         }
-
         public IActionResult AdminPage()
         {
             var rawRequests = _context.PendingRequests
                 .Where(r => r.Status == "Pending")
                 .OrderBy(r => r.CreatedAt)
                 .ToList();
-
             var requests = rawRequests.Select(r => new PendingRequestViewModel
             {
                 Id = r.Id,
@@ -60,7 +57,6 @@ namespace ENN_Cargo.Controllers
 
             return View(requests);
         }
-
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
         {
@@ -70,7 +66,6 @@ namespace ENN_Cargo.Controllers
                 TempData["Error"] = "Request not found or already processed.";
                 return RedirectToAction("AdminPage");
             }
-
             try
             {
                 request.Status = "Approved";
@@ -86,7 +81,6 @@ namespace ENN_Cargo.Controllers
             }
             return RedirectToAction("AdminPage");
         }
-
         [HttpPost]
         public async Task<IActionResult> Decline(int id)
         {
@@ -96,18 +90,17 @@ namespace ENN_Cargo.Controllers
                 TempData["Error"] = "Request not found or already processed.";
                 return RedirectToAction("AdminPage");
             }
-
             try
             {
-                var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.PendingRequest_Id == id);
+                var driver = await _context.Drivers.FirstOrDefaultAsync(x => x.PendingRequest_Id == id);
                 if (driver != null) _context.Drivers.Remove(driver);
-                var truckCompany = await _context.TruckCompanies.FirstOrDefaultAsync(tc => tc.PendingRequest_Id == id);
+                var truckCompany = await _context.TruckCompanies.FirstOrDefaultAsync(x => x.PendingRequest_Id == id);
                 if (truckCompany != null) _context.TruckCompanies.Remove(truckCompany);
-                var companyStock = await _context.CompanyStocks.FirstOrDefaultAsync(cs => cs.PendingRequest_Id == id);
+                var companyStock = await _context.CompanyStocks.FirstOrDefaultAsync(x => x.PendingRequest_Id == id);
                 if (companyStock != null) _context.CompanyStocks.Remove(companyStock);
-                var shipment = await _context.Shipments.FirstOrDefaultAsync(s => s.PendingRequest_Id == id);
+                var shipment = await _context.Shipments.FirstOrDefaultAsync(x => x.PendingRequest_Id == id);
                 if (shipment != null) _context.Shipments.Remove(shipment);
-                var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.PendingRequest_Id == id);
+                var vehicle = await _context.Vehicles.FirstOrDefaultAsync(x => x.PendingRequest_Id == id);
                 if (vehicle != null) _context.Vehicles.Remove(vehicle);
                 _context.PendingRequests.Remove(request);
                 await _context.SaveChangesAsync();
@@ -120,29 +113,25 @@ namespace ENN_Cargo.Controllers
             }
             return RedirectToAction("AdminPage");
         }
-
         private async Task ProcessRequest(PendingRequest request)
         {
             var parts = request.Type.Split(new[] { ':' }, 2);
             if (parts.Length < 2)
                 throw new Exception("Invalid request data.");
-
             var type = parts[0];
             var detailsString = parts[1];
             var details = detailsString.Split(", ")
-                .Select(kv => kv.Split(new[] { '=' }, 2))
-                .Where(kv => kv.Length == 2)
+                .Select(x => x.Split(new[] { '=' }, 2))
+                .Where(x => x.Length == 2)
                 .ToDictionary(
-                    kv => kv[0].Trim(),
-                    kv => kv[1].Trim(),
+                    x => x[0].Trim(),
+                    x => x[1].Trim(),
                     StringComparer.OrdinalIgnoreCase
                 );
-
             if (type == "DriverRegistration" || type == "TruckCompanyRegistration" || type == "ShipmentCompanyRegistration")
             {
                 if (!details.ContainsKey("Email") || !details.ContainsKey("Password"))
                     throw new Exception("Missing required user fields.");
-
                 var user = new IdentityUser
                 {
                     UserName = details["Email"],
@@ -153,7 +142,6 @@ namespace ENN_Cargo.Controllers
                 if (!result.Succeeded)
                     throw new Exception("Failed to create user.");
             }
-
             switch (type)
             {
                 case "DriverRegistration":
@@ -171,7 +159,6 @@ namespace ENN_Cargo.Controllers
                     };
                     _context.Drivers.Add(driver);
                     break;
-
                 case "TruckCompanyRegistration":
                     await _userManager.AddToRoleAsync(await _userManager.FindByEmailAsync(details["Email"]), "TruckCompany");
                     if (!details.ContainsKey("Name") || !details.ContainsKey("Address") || !details.ContainsKey("Country") || !details.ContainsKey("Town"))
@@ -187,7 +174,6 @@ namespace ENN_Cargo.Controllers
                     };
                     _context.TruckCompanies.Add(truckCompany);
                     break;
-
                 case "ShipmentCompanyRegistration":
                     await _userManager.AddToRoleAsync(await _userManager.FindByEmailAsync(details["Email"]), "ShipmentCompany");
                     if (!details.ContainsKey("Name") || !details.ContainsKey("Address") || !details.ContainsKey("Country") || !details.ContainsKey("Town"))
@@ -203,7 +189,6 @@ namespace ENN_Cargo.Controllers
                     };
                     _context.CompanyStocks.Add(companyStock);
                     break;
-
                 case "ShipmentCreation":
                     if (!details.ContainsKey("Description") || !details.ContainsKey("Weight") || !details.ContainsKey("From") || !details.ContainsKey("to") || !details.ContainsKey("CompanyStockId"))
                         throw new Exception("Missing required shipment fields.");
@@ -229,7 +214,6 @@ namespace ENN_Cargo.Controllers
                         CompanyStock_Id = int.Parse(details["CompanyStockId"])
                     });
                     break;
-
                 case "VehicleCreation":
                     if (!details.ContainsKey("LicensePlate") || !details.ContainsKey("TruckCompanyId") || !details.ContainsKey("Brand") || !details.ContainsKey("Model") || !details.ContainsKey("Year"))
                         throw new Exception("Missing required vehicle fields.");
@@ -244,7 +228,6 @@ namespace ENN_Cargo.Controllers
                     };
                     _context.Vehicles.Add(vehicle);
                     break;
-
                 default:
                     throw new Exception("Unknown request type.");
             }

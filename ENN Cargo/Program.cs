@@ -6,7 +6,7 @@ using ENN_Cargo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;using ENN_Cargo.Utility;var builder = WebApplication.CreateBuilder(args);builder.Services.AddControllersWithViews();
+using System.Security.Claims;using ENN_Cargo.Utility;var builder = WebApplication.CreateBuilder(args);builder.Services.AddTransient<EmailService>();builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ENN_CargoApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("ENN Cargo.DataAccess")));

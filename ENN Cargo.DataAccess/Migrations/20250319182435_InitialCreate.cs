@@ -404,8 +404,8 @@ namespace ENN_Cargo.DataAccess.Migrations
                 columns: new[] { "Id", "DeliveryDate", "Description", "DriverId", "FromAddress", "FromCountry", "FromTown", "PendingRequest_Id", "PickUpDate", "Status", "ToAddress", "ToCountry", "ToTown", "VehicleId", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 3, 17, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5599), "Electronics", null, "Sklad Kappa", "Bulgaria", "Kazanlak", null, new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5546), "Available", "Kaufland", "Bulgaria", "Plovdiv", null, 24.0 },
-                    { 2, new DateTime(2025, 3, 19, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5607), "Furniture", null, "Sklad Videnov", "Bulgaria", "Stara Zagora", null, new DateTime(2025, 3, 14, 8, 26, 22, 856, DateTimeKind.Local).AddTicks(5606), "Available", "Metro", "Bulgaria", "Sofia", null, 27.0 }
+                    { 1, new DateTime(2025, 3, 22, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7709), "Electronics", null, "Sklad Kappa", "Bulgaria", "Kazanlak", null, new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7653), "Available", "Kaufland", "Bulgaria", "Plovdiv", null, 24.0 },
+                    { 2, new DateTime(2025, 3, 24, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7717), "Furniture", null, "Sklad Videnov", "Bulgaria", "Stara Zagora", null, new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7716), "Available", "Metro", "Bulgaria", "Sofia", null, 27.0 }
                 });
 
             migrationBuilder.InsertData(
