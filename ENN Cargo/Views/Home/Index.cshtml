@@ -9,9 +9,9 @@
     <title>ENN Cargo - The European Transport Organisation</title>
     <style>
         :root {
-            --primary-color: #003781; /* LKW Walter blue */
-            --secondary-color: #e30613; /* Red accent */
-            --accent-color: #009fe3; /* Light blue */
+            --primary-color: #003781;
+            --secondary-color: #e30613;
+            --accent-color: #009fe3;
             --light-gray: #f5f5f5;
             --medium-gray: #e0e0e0;
             --dark-gray: #333;
@@ -25,7 +25,7 @@
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif; /* LKW Walter uses a clean sans-serif font */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             color: var(--dark-gray);
             line-height: 1.6;
             width: 100%;
@@ -45,7 +45,6 @@
 
         /* Language selector in header */
 
-        /* Language selector - LKW Walter style */
         .language-selector {
             position: relative;
             margin-right: 20px;
@@ -70,7 +69,6 @@
                 border-color: rgba(255, 255, 255, 0.5);
             }
 
-        /* Flag styles - LKW Walter style */
         .flag {
             width: 21px;
             height: 14px;
@@ -233,7 +231,6 @@
                 color: var(--primary-color);
             }
 
-        /* User menu dropdown styles - LKW Walter style */
         .user-menu {
             position: relative;
             display: none; /* Hidden by default, will be shown when logged in */
@@ -395,7 +392,6 @@
             padding: 10px;
         }
 
-        /* Hero section - LKW Walter style */
         .hero {
             position: relative;
             height: 550px;
@@ -458,7 +454,6 @@
                 background-color: #cc0000;
             }
 
-        /* THIS IS ENN CARGO Section - Redesigned to match LKW WALTER style */
         .company-highlights {
             padding: 60px 0;
             background-color: white;
@@ -493,7 +488,6 @@
             margin-bottom: 40px;
         }
 
-        /* New LKW Walter style feature blocks */
         .feature-block {
             display: flex;
             align-items: center;
@@ -528,7 +522,6 @@
                 line-height: 1.6;
             }
 
-        /* Services section - LKW Walter style */
         .services-section {
             padding: 60px 0;
             background-color: var(--light-gray);
@@ -613,7 +606,6 @@
                 background-color: var(--accent-color);
             }
 
-        /* Stats section - LKW Walter style */
         .stats-section {
             background-color: var(--primary-color);
             color: white;
@@ -651,7 +643,6 @@
                 letter-spacing: 1px;
             }
 
-        /* Testimonials - LKW Walter style */
         .testimonials-section {
             padding: 60px 0;
             background-color: white;
@@ -746,7 +737,6 @@
                 transform: scale(1.2);
             }
 
-        /* Contact section - LKW Walter style */
         .contact-section {
             padding: 60px 0;
             background-color: var(--light-gray);
@@ -849,7 +839,6 @@
                 background-color: var(--accent-color);
             }
 
-        /* Footer - LKW Walter style */
         .footer {
             background-color: var(--dark-gray);
             color: white;
@@ -1121,28 +1110,76 @@
                 <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742193325/ENN_cargo_transparent_goqj9p.png" alt="ENN Cargo Logo" onclick="window.location.href='/'">
                 <div class="slogan">The European Transport Organisation</div>
             </div>
-
             <div class="header-right">
-                <!-- Login button (will be hidden when user is logged in) -->
-                <div class="login-button" id="login-button">
+                <!-- Always render the login button, but control visibility -->
+                <div class="login-button" id="login-button" style="@(User.Identity.IsAuthenticated ? "display: none;" : "display: inline-block;")">
                     LOGIN
                 </div>
 
-                <!-- User menu (will be shown when user is logged in) -->
-                <div class="user-menu" id="user-menu">
-                    <div class="user-name" id="user-name-toggle">
-                        <span id="current-user-name">John Doe</span>
-                        <span style="margin-left: 5px;">▼</span>
+                <!-- Always render the user menu, but control visibility -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    string displayName = "";
+                    string userEmail = User.Identity.Name; // This is the email (e.g., ENNCargo@admin, driver@example.com, etc.)
+
+                    if (User.IsInRole("Admin"))
+                    {
+                        // For Admin role: Display "Admin"
+                        displayName = "Admin";
+                    }
+                    else if (User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                    {
+                        // For Driver, TruckCompany, or ShipmentCompany: Use the email, but remove the domain part for a cleaner display
+                        if (!string.IsNullOrEmpty(userEmail))
+                        {
+                            // Split the email at the '@' symbol and take the first part
+                            var emailParts = userEmail.Split('@');
+                            displayName = emailParts.Length > 0 ? emailParts[0] : userEmail;
+                        }
+                        else
+                        {
+                            // Fallback if email is null or empty
+                            displayName = User.IsInRole("Driver") ? "Driver" : "Company";
+                        }
+                    }
+                    else
+                    {
+                        // Fallback for any other role
+                        displayName = userEmail ?? "User";
+                    }
+
+                    <div class="user-menu" id="user-menu" style="display: inline-block;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name">@displayName</span>
+                            <span style="margin-left: 5px;">▼</span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i>👤</i> My Profile</a>
+                            <a href="/user/orders"><i>📦</i> My Orders</a>
+                            <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i>⚙️</i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
+                        </div>
                     </div>
-                    <div class="dropdown-content" id="user-dropdown">
-                        <a href="/user/profile"><i>👤</i> My Profile</a>
-                        <a href="/user/orders"><i>📦</i> My Orders</a>
-                        <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
-                        <div class="divider"></div>
-                        <a href="/user/settings"><i>⚙️</i> Account Settings</a>
-                        <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
+                }
+                else
+                {
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name"></span>
+                            <span style="margin-left: 5px;">▼</span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i>👤</i> My Profile</a>
+                            <a href="/user/orders"><i>📦</i> My Orders</a>
+                            <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i>⚙️</i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     </header>
@@ -1203,7 +1240,6 @@
         </div>
     </section>
 
-    <!-- This is ENN Cargo Section - Redesigned to match LKW Walter style -->
     <section class="company-highlights">
         <div class="container">
             <h2 class="highlight-title">This is ENN Cargo</h2>
@@ -1475,31 +1511,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in (for demo purposes, you would implement this with your authentication system)
-            function checkLoginStatus() {
-                // This is a placeholder. In a real application, this would check session/cookie/localStorage
-                // For demo purposes, let's create a function to simulate login/logout
+            // Check if user is logged in
+            /*function checkLoginStatus() {
+                // This would normally use your authentication system
+                // For demonstration purposes, we'll use localStorage
                 const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 const userMenu = document.getElementById('user-menu');
                 const loginButton = document.getElementById('login-button');
 
                 if (isLoggedIn) {
-                    // User is logged in
+                    // User is logged in - show user menu, hide login button
                     userMenu.style.display = 'inline-block';
                     loginButton.style.display = 'none';
 
-                    // Set user name (in a real app, this would come from your backend)
+                    // Set user name from localStorage or use default
                     const userName = localStorage.getItem('userName') || 'User';
                     document.getElementById('current-user-name').textContent = userName;
                 } else {
-                    // User is not logged in
+                    // User is not logged in - hide user menu, show login button
                     userMenu.style.display = 'none';
                     loginButton.style.display = 'inline-block';
                 }
             }
 
-            // Initial check
-            checkLoginStatus();
+            // Initial check when page loads
+            checkLoginStatus();*/
 
             // Mobile menu toggle
             const menuToggle = document.getElementById('menuToggle');
@@ -1536,13 +1572,8 @@
                         // Optional: Add visual feedback before redirecting
                         this.style.fontWeight = 'bold';
 
-                        // In a real implementation, you might want to set a cookie
-                        // or use localStorage to remember the language preference
-
                         // Close the flyout
                         languageFlyout.classList.remove('show');
-
-                        // Don't prevent default here to allow navigation
                     });
                 });
 
@@ -1558,18 +1589,14 @@
             }
 
             // Login button action
-            const loginButton = document.getElementById('login-button');
-            if (loginButton) {
-                loginButton.addEventListener('click', function() {
-                    // For demo purposes, we'll simulate a login
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userName', 'John Doe');
-                    checkLoginStatus();
-
-                    // In a real application, this would redirect to the login page
-                    // window.location.href = '/Account/Login';
-                });
-            }
+                    // Login button action
+        const loginButton = document.getElementById('login-button');
+        if (loginButton) {
+            loginButton.addEventListener('click', function() {
+                // Redirect to the login page
+                window.location.href = '/Account/Login';
+            });
+        }
 
             // User menu dropdown toggle
             const userNameToggle = document.getElementById('user-name-toggle');
@@ -1593,19 +1620,36 @@
             }
 
             // Logout button
-            const logoutButton = document.getElementById('logout-button');
-            if (logoutButton) {
-                logoutButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Simulate logout
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userName');
-                    checkLoginStatus();
+                   // Logout button
+               // Logout button
+        const logoutButton = document.getElementById('logout-button');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
 
-                    // In a real application, this would call your logout endpoint
-                    // window.location.href = '/Account/Logout';
+                // Immediately update the UI to reflect logged-out state
+                const userMenu = document.getElementById('user-menu');
+                const loginButton = document.getElementById('login-button');
+                userMenu.style.display = 'none';
+                loginButton.style.display = 'inline-block';
+
+                // Call the server-side logout endpoint to clear the authentication cookie
+                fetch('/Account/Logout', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    // Do not follow the redirect; we've already updated the UI
+                    console.log('Logout successful on server side');
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                    // In case of an error, the UI is already updated, so no further action needed
                 });
-            }
+            });
+        }
 
             // Rotating testimonials
             const testimonials = document.querySelectorAll('.testimonial');

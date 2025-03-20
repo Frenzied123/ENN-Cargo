@@ -25,13 +25,11 @@ namespace ENN_Cargo.Core
                 var senderEmail = _configuration["EmailSettings:SenderEmail"];
                 var senderName = _configuration["EmailSettings:SenderName"];
                 var password = _configuration["EmailSettings:Password"];
-                  
                 using var client = new SmtpClient(smtpServer, int.Parse(smtpPortString))
                 {
                     Credentials = new NetworkCredential(senderEmail, password),
                     EnableSsl = true
                 };
-
                 var mailMessage = new MailMessage
                 {
                     From = new MailAddress(senderEmail, senderName),
@@ -40,8 +38,6 @@ namespace ENN_Cargo.Core
                     IsBodyHtml = true
                 };
                 mailMessage.To.Add(toEmail);
-
-                // Send the email
                 await client.SendMailAsync(mailMessage);
                 Console.WriteLine("Email sent successfully!");
         }
