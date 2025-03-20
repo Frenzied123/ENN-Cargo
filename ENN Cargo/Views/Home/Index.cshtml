@@ -70,10 +70,12 @@
             }
 
         .flag {
-            width: 21px;
-            height: 14px;
+            width: 24px;
+            height: 18px;
             margin-right: 8px;
-            background-size: cover;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             display: inline-block;
             vertical-align: middle;
             border: 1px solid rgba(0,0,0,0.1);
@@ -84,11 +86,11 @@
         }
 
         .flag-uk {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjM1IDY1MCIgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIj48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSI2NTAiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSI2NTAiIGZpbGw9IiMwMDI0N2QiLz48cGF0aCBkPSJNMCwwIEwxMjM1LDY1MCBNMTIzNSwwIEwwLDY1MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEzMCIvPjxwYXRoIGQ9Ik0wLDAgTDEyMzUsNjUwIE0xMjM1LDAgTDAsNjUwIiBzdHJva2U9IiNjZjE0MmIiIHN0cm9rZS13aWR0aD0iODUiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSIyMTUiIHk9IjIxNyIgZmlsbD0iI2ZmZiIvPjxyZWN0IHdpZHRoPSIyMTUiIGhlaWdodD0iNjUwIiB4PSI1MTAiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iMTIzNSIgaGVpZ2h0PSIxMzAiIHk9IjI2MCIgZmlsbD0iI2NmMTQyYiIvPjxyZWN0IHdpZHRoPSIxMzAiIGhlaWdodD0iNjUwIiB4PSI1NTIiIGZpbGw9IiNjZjE0MmIiLz48L3N2Zz4=');
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTIzNSA2NTAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIiBmaWxsPSIjMDAyNDdkIi8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiIHN0cm9rZS13aWR0aD0iMTMwIi8+PHBhdGggZD0iTTAsMCBMMTIzNSw2NTAgTTEyMzUsMCBMMCw2NTAiIHN0cm9rZS13aWR0aD0iODciLz48L2c+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2YxNDJiIiBzdHJva2Utd2lkdGg9IjYwIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiLz48cGF0aCBkPSJNMCwwIEwxMjM1LDY1MCBNMTIzNSwwIEwwLDY1MCIvPjwvZz48L3N2Zz4=');
         }
 
         .flag-bg {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNDgwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS13aWR0aD0iMXB0Ij48cGF0aCBmaWxsPSIjZDYyNjEyIiBkPSJNMCAzMjBoNjQwdjE2MEgweiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDE2MGg2NDB2MTYwSDB6Ii8+PHBhdGggZmlsbD0iIzAwOTY2ZSIgZD0iTTAgMGg2NDB2MTYwSDB6Ii8+PC9nPjwvc3ZnPg==');
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMCAwaDYwMHYxMzMuM0gweiIvPjxwYXRoIGZpbGw9IiMwMDk2NjUiIGQ9Ik0wIDEzMy4zaDYwMHYxMzMuNEgweiIvPjxwYXRoIGZpbGw9IiNkNjI2MTIiIGQ9Ik0wIDI2Ni43aDYwMFY0MDBIMHoiLz48L3N2Zz4=');
         }
 
         .language-flyout {
@@ -211,6 +213,11 @@
             font-size: 1rem;
             margin-left: 15px;
             font-weight: 300;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
         }
 
         .login-button {
@@ -352,34 +359,6 @@
             display: flex;
             align-items: center;
         }
-
-        .language-selector-nav {
-            margin-right: 15px;
-        }
-
-            .language-selector-nav .language-switch {
-                color: var(--dark-gray);
-                border-color: var(--medium-gray);
-            }
-
-                .language-selector-nav .language-switch:hover {
-                    background-color: var(--light-gray);
-                }
-
-        .enquiry-button {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 20px 25px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: all 0.3s;
-        }
-
-            .enquiry-button:hover {
-                background-color: #cc0000;
-            }
 
         /* Toggle menu for mobile */
         .menu-toggle {
@@ -1021,12 +1000,6 @@
             margin-top: 10px;
         }
 
-        .enquiry-button {
-            width: 100%;
-            text-align: center;
-            padding: 15px;
-        }
-
         .hero {
             height: auto;
             padding: 60px 0;
@@ -1111,6 +1084,35 @@
                 <div class="slogan">The European Transport Organisation</div>
             </div>
             <div class="header-right">
+                <!-- Language selector moved to header -->
+                <div class="language-selector">
+                    <button type="button" class="language-switch" id="languageSwitch">
+                        <span class="flag flag-uk"></span>
+                        <span>EN</span>
+                        <span style="margin-left: 5px;">▼</span>
+                    </button>
+                    <div class="language-flyout" id="languageFlyout">
+                        <div class="heading">
+                            <h2 class="headline">Select a language</h2>
+                            <button type="button" class="close-button" id="closeFlyout">×</button>
+                        </div>
+                        <ul class="language-list">
+                            <li class="language-item">
+                                <a href="/int/en" class="international-item">
+                                    <span class="flag flag-uk"></span>
+                                    <span class="label">English</span>
+                                </a>
+                            </li>
+                            <li class="language-item">
+                                <a href="/bg/en">
+                                    <span class="flag flag-bg"></span>
+                                    <span class="label">Български</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Always render the login button, but control visibility -->
                 <div class="login-button" id="login-button" style="@(User.Identity.IsAuthenticated ? "display: none;" : "display: inline-block;")">
                     LOGIN
@@ -1190,42 +1192,9 @@
             <button class="menu-toggle" id="menuToggle">☰</button>
             <div class="nav-links" id="navLinks">
                 <a href="#">TRANSPORT SOLUTIONS</a>
-                <a href="#">MARKETS</a>
                 <a href="#">QUALITY & ENVIRONMENT</a>
                 <a href="#">COMPANY</a>
-                <a href="#">CAREERS</a>
                 <a href="#">CONTACT</a>
-            </div>
-            <div class="nav-right">
-                <!-- Language selector moved to navigation bar -->
-                <div class="language-selector language-selector-nav">
-                    <button type="button" class="language-switch" id="languageSwitch">
-                        <span class="flag flag-uk"></span>
-                        <span>EN</span>
-                        <span style="margin-left: 5px;">▼</span>
-                    </button>
-                    <div class="language-flyout" id="languageFlyout">
-                        <div class="heading">
-                            <h2 class="headline">Select a language</h2>
-                            <button type="button" class="close-button" id="closeFlyout">×</button>
-                        </div>
-                        <ul class="language-list">
-                            <li class="language-item">
-                                <a href="/int/en" class="international-item">
-                                    <span class="flag flag-uk"></span>
-                                    <span class="label">English</span>
-                                </a>
-                            </li>
-                            <li class="language-item">
-                                <a href="/bg/en">
-                                    <span class="flag flag-bg"></span>
-                                    <span class="label">Български</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <a href="#" class="enquiry-button">REQUEST A QUOTE</a>
             </div>
         </div>
     </nav>
@@ -1466,8 +1435,6 @@
                     <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe. Our network of carrier partners helps us deliver excellence in every transport.</p>
                     <div class="social-icons">
                         <a href="#" class="social-icon">f</a>
-                        <a href="#" class="social-icon">in</a>
-                        <a href="#" class="social-icon">🐦</a>
                         <a href="#" class="social-icon">yt</a>
                     </div>
                 </div>
@@ -1488,7 +1455,6 @@
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">International Markets</a></li>
                         <li><a href="#">News</a></li>
-                        <li><a href="#">Careers</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
@@ -1511,32 +1477,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            /*function checkLoginStatus() {
-                // This would normally use your authentication system
-                // For demonstration purposes, we'll use localStorage
-                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                const userMenu = document.getElementById('user-menu');
-                const loginButton = document.getElementById('login-button');
-
-                if (isLoggedIn) {
-                    // User is logged in - show user menu, hide login button
-                    userMenu.style.display = 'inline-block';
-                    loginButton.style.display = 'none';
-
-                    // Set user name from localStorage or use default
-                    const userName = localStorage.getItem('userName') || 'User';
-                    document.getElementById('current-user-name').textContent = userName;
-                } else {
-                    // User is not logged in - hide user menu, show login button
-                    userMenu.style.display = 'none';
-                    loginButton.style.display = 'inline-block';
-                }
-            }
-
-            // Initial check when page loads
-            checkLoginStatus();*/
-
             // Mobile menu toggle
             const menuToggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
@@ -1589,14 +1529,13 @@
             }
 
             // Login button action
-                    // Login button action
-        const loginButton = document.getElementById('login-button');
-        if (loginButton) {
-            loginButton.addEventListener('click', function() {
-                // Redirect to the login page
-                window.location.href = '/Account/Login';
-            });
-        }
+            const loginButton = document.getElementById('login-button');
+            if (loginButton) {
+                loginButton.addEventListener('click', function() {
+                    // Redirect to the login page
+                    window.location.href = '/Account/Login';
+                });
+            }
 
             // User menu dropdown toggle
             const userNameToggle = document.getElementById('user-name-toggle');
@@ -1620,36 +1559,34 @@
             }
 
             // Logout button
-                   // Logout button
-               // Logout button
-        const logoutButton = document.getElementById('logout-button');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', function(e) {
-                e.preventDefault();
+            const logoutButton = document.getElementById('logout-button');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', function(e) {
+                    e.preventDefault();
 
-                // Immediately update the UI to reflect logged-out state
-                const userMenu = document.getElementById('user-menu');
-                const loginButton = document.getElementById('login-button');
-                userMenu.style.display = 'none';
-                loginButton.style.display = 'inline-block';
+                    // Immediately update the UI to reflect logged-out state
+                    const userMenu = document.getElementById('user-menu');
+                    const loginButton = document.getElementById('login-button');
+                    userMenu.style.display = 'none';
+                    loginButton.style.display = 'inline-block';
 
-                // Call the server-side logout endpoint to clear the authentication cookie
-                fetch('/Account/Logout', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    // Do not follow the redirect; we've already updated the UI
-                    console.log('Logout successful on server side');
-                })
-                .catch(error => {
-                    console.error('Error during logout:', error);
-                    // In case of an error, the UI is already updated, so no further action needed
+                    // Call the server-side logout endpoint to clear the authentication cookie
+                    fetch('/Account/Logout', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        // Do not follow the redirect; we've already updated the UI
+                        console.log('Logout successful on server side');
+                    })
+                    .catch(error => {
+                        console.error('Error during logout:', error);
+                        // In case of an error, the UI is already updated, so no further action needed
+                    });
                 });
-            });
-        }
+            }
 
             // Rotating testimonials
             const testimonials = document.querySelectorAll('.testimonial');
