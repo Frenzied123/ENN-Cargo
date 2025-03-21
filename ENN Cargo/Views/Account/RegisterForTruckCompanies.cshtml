@@ -1,55 +1,806 @@
 ﻿@model ENN_Cargo.Models.RegisterForTruckCompany
 @{
-    ViewData["Title"] = "Register Truck Company";
+    ViewData["Title"] = "Carrier Registration";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENN Cargo - @ViewData["Title"]</title>
+    <style>
+        :root {
+            --primary-color: #003781;
+            --secondary-color: #e30613;
+            --accent-color: #009fe3;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333;
+            --white: #ffffff;
+        }
 
-<h1>@ViewData["Title"]</h1>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<form asp-action="RegisterForTruckCompanies" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Name">Company Name</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" type="email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password">Password</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword">Confirm Password</label>
-        <input asp-for="ConfirmPassword" type="password" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address">Address</label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Country">Country</label>
-        <input asp-for="Country" class="form-control" />
-        <span asp-validation-for="Country" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Town">Town</label>
-        <input asp-for="Town" class="form-control" />
-        <span asp-validation-for="Town" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber">Phone Number</label>
-        <input asp-for="PhoneNumber" type="tel" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        .register-container {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .register-left {
+            width: 40%;
+            background-color: var(--primary-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+            /* Background image styling for left side */
+            .register-left::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image: url('https://res.cloudinary.com/dyonctb8p/image/upload/v1742547533/14195104589_a62d076a3b_b_ubzmci.jpg');
+                background-size: cover;
+                background-position: center;
+                opacity: 0.15;
+                z-index: 1;
+            }
+
+        .register-right {
+            width: 60%;
+            background-color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+            .logo img {
+                height: 40px;
+                background-color: white;
+                padding: 2px;
+                border-radius: 3px;
+                transition: transform 0.2s;
+                cursor: pointer;
+            }
+
+                .logo img:hover {
+                    transform: scale(1.05);
+                }
+
+        /* Language selector styling */
+        .language-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-switch {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background-color: transparent;
+            border: 1px solid rgba(0, 55, 129, 0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+            .language-switch:hover {
+                background-color: rgba(0, 55, 129, 0.05);
+                border-color: rgba(0, 55, 129, 0.5);
+            }
+
+        .flag {
+            width: 20px;
+            height: 15px;
+            margin-right: 5px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: inline-block;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .flag-uk {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTIzNSA2NTAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIiBmaWxsPSIjMDAyNDdkIi8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiIHN0cm9rZS13aWR0aD0iMTMwIi8+PHBhdGggZD0iTTAsMCBMMTIzNSw2NTAgTTEyMzUsMCBMMCw2NTAiIHN0cm9rZS13aWR0aD0iODciLz48L2c+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2YxNDJiIiBzdHJva2Utd2lkdGg9IjYwIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiLz48cGF0aCBkPSJNMCwwIEwxMjM1LDY1MCBNMTIzNSwwIEwwLDY1MCIvPjwvZz48L3N2Zz4=');
+        }
+
+        .flag-bg {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMCAwaDYwMHYxMzMuM0gweiIvPjxwYXRoIGZpbGw9IiMwMDk2NjUiIGQ9Ik0wIDEzMy4zaDYwMHYxMzMuNEgweiIvPjxwYXRoIGZpbGw9IiNkNjI2MTIiIGQ9Ik0wIDI2Ni43aDYwMFY0MDBIMHoiLz48L3N2Zz4=');
+        }
+
+        .language-flyout {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            min-width: 260px;
+            border-radius: 3px;
+            border-top: 3px solid var(--accent-color);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+            .language-flyout.show {
+                display: block;
+            }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .heading {
+            padding: 16px;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .headline {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+            transition: color 0.2s;
+        }
+
+            .close-button:hover {
+                color: var(--primary-color);
+            }
+
+        .language-list {
+            list-style: none;
+            padding: 5px 0;
+        }
+
+        .language-item {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .language-item:hover {
+                background-color: #f5f7f9;
+            }
+
+            .language-item a {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: var(--dark-gray);
+                padding: 12px 16px;
+            }
+
+        .label {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .welcome-text {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 40px;
+            max-width: 600px;
+            margin-top: 80px;
+        }
+
+            .welcome-text h1 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                font-weight: 700;
+            }
+
+            .welcome-text p {
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+                line-height: 1.8;
+            }
+
+        .benefits-list {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 0 40px;
+            margin-top: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .benefit-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .benefit-text {
+            font-size: 1.1rem;
+        }
+
+        .register-form-container {
+            width: 100%;
+            max-width: 700px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-top: 70px;
+        }
+
+        .register-title {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+            .register-title:after {
+                content: '';
+                position: absolute;
+                bottom: -8px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 2px;
+                background-color: var(--accent-color);
+            }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+            padding-right: 10px;
+            padding-left: 10px;
+            flex: 0 0 100%;
+        }
+
+            .form-group.half {
+                flex: 0 0 50%;
+            }
+
+            .form-group.third {
+                flex: 0 0 33.33%;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 7px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: var(--primary-color);
+            }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            padding-left: 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+            .input-field:focus {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 5px rgba(0, 159, 227, 0.3);
+                outline: none;
+            }
+
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 38px;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus + .input-icon {
+            color: var(--accent-color);
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .register-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+            .register-button:hover {
+                background-color: var(--accent-color);
+            }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+            .login-link a {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+
+                .login-link a:hover {
+                    color: var(--accent-color);
+                    text-decoration: underline;
+                }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 0.75rem;
+        }
+
+        .footer-links {
+            margin-top: 5px;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 5px;
+            transition: all 0.3s;
+            font-size: 0.7rem;
+        }
+
+            .footer-link:hover {
+                color: var(--accent-color);
+                text-decoration: underline;
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 1200px) {
+            .register-form-container
+
+        {
+            max-width: 600px;
+            padding: 25px;
+        }
+
+        }
+
+        @@media (max-width: 992px) {
+            .register-container
+
+        {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .register-left, .register-right {
+            width: 100%;
+        }
+
+        .register-left {
+            min-height: 250px;
+        }
+
+        .welcome-text {
+            margin-top: 70px;
+            padding: 15px;
+        }
+
+            .welcome-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .welcome-text p {
+                font-size: 1rem;
+            }
+
+        .register-right {
+            padding: 20px 15px 40px;
+        }
+
+        .register-form-container {
+            margin-top: 60px;
+            max-width: 600px;
+        }
+
+        }
+
+        @@media (max-width: 768px) {
+            .form-group.half, .form-group.third
+
+        {
+            flex: 0 0 100%;
+        }
+
+        }
+
+        @@media (max-width: 576px) {
+            .header
+
+        {
+            padding: 10px;
+        }
+
+        .logo img {
+            height: 35px;
+        }
+
+        .register-left {
+            min-height: 200px;
+        }
+
+        .welcome-text {
+            margin-top: 60px;
+        }
+
+            .welcome-text h1 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+
+            .welcome-text p {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+
+        .register-form-container {
+            padding: 15px;
+            margin-top: 50px;
+        }
+
+        .register-title {
+            font-size: 1.3rem;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-left">
+            <!-- Welcome section -->
+            <div class="welcome-text">
+                <h1>Join ENN Cargo as a Carrier</h1>
+                <p>Become a part of Europe's premium transport network and grow your business with steady loads across the continent.</p>
+            </div>
+
+            <!-- Benefits list -->
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">Access to 7,000+ loads daily</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">Guaranteed payment within 30 days</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">Support in your native language</div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">Digital freight management platform</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="register-right">
+            <!-- Header with logo and language selector -->
+            <div class="header">
+                <div class="logo">
+                    <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742193325/ENN_cargo_transparent_goqj9p.png" alt="ENN Cargo Logo" onclick="window.location.href='/'">
+                </div>
+
+                <div class="language-selector">
+                    <button type="button" class="language-switch" id="languageSwitch">
+                        <span class="flag flag-uk"></span>
+                        <span>EN</span>
+                        <span style="margin-left: 5px;">▼</span>
+                    </button>
+                    <div class="language-flyout" id="languageFlyout">
+                        <div class="heading">
+                            <h2 class="headline">Select a language</h2>
+                            <button type="button" class="close-button" id="closeFlyout">×</button>
+                        </div>
+                        <ul class="language-list">
+                            <li class="language-item">
+                                <a href="/int/en" class="international-item">
+                                    <span class="flag flag-uk"></span>
+                                    <span class="label">English</span>
+                                </a>
+                            </li>
+                            <li class="language-item">
+                                <a href="/bg/en">
+                                    <span class="flag flag-bg"></span>
+                                    <span class="label">Български</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main registration form -->
+            <div class="register-form-container">
+                <h2 class="register-title">Carrier Company Registration</h2>
+
+                <form asp-action="RegisterForTruckCompanies" method="post">
+
+                    <div class="form-group">
+                        <label asp-for="Name">Company Name</label>
+                        <input asp-for="Name" class="input-field" placeholder="Enter your company name" />
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="3" width="15" height="13"></rect>
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                            </svg>
+                        </div>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email">Email Address</label>
+                        <input asp-for="Email" type="email" class="input-field" placeholder="Enter your company email" />
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label asp-for="Password">Password</label>
+                            <input asp-for="Password" type="password" class="input-field" placeholder="Create a password" />
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group half">
+                            <label asp-for="ConfirmPassword">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="password" class="input-field" placeholder="Confirm your password" />
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Address">Company Address</label>
+                        <input asp-for="Address" class="input-field" placeholder="Enter your company address" />
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label asp-for="Country">Country</label>
+                            <input asp-for="Country" class="input-field" placeholder="Enter your country" />
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                            </div>
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group half">
+                            <label asp-for="Town">City/Town</label>
+                            <input asp-for="Town" class="input-field" placeholder="Enter your city or town" />
+                            <div class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                            </div>
+                            <span asp-validation-for="Town" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber">Phone Number</label>
+                        <input asp-for="PhoneNumber" type="tel" class="input-field" placeholder="Enter your phone number" />
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="register-button">REGISTER YOUR COMPANY</button>
+
+                    <div class="login-link">
+                        Already have an account? <a href="/Account/Login">Login here</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>© 2025 ENN Cargo. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language dropdown toggle
+            const languageSwitch = document.getElementById('languageSwitch');
+            const languageFlyout = document.getElementById('languageFlyout');
+            const closeFlyout = document.getElementById('closeFlyout');
+
+            if (languageSwitch) {
+                languageSwitch.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent event bubbling
+                    languageFlyout.classList.toggle('show');
+                });
+
+                if (closeFlyout) {
+                    closeFlyout.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent event bubbling
+                        languageFlyout.classList.remove('show');
+                    });
+                }
+
+                // Handle language selection
+                const languageItems = document.querySelectorAll('.language-item a');
+                languageItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        // Optional: Add visual feedback before redirecting
+                        this.style.fontWeight = 'bold';
+
+                        // Close the flyout
+                        languageFlyout.classList.remove('show');
+                    });
+                });
+
+                // Close the flyout if clicked outside
+                document.addEventListener('click', function(event) {
+                    const isClickInside = languageSwitch.contains(event.target) ||
+                                          languageFlyout.contains(event.target);
+
+                    if (!isClickInside && languageFlyout.classList.contains('show')) {
+                        languageFlyout.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
