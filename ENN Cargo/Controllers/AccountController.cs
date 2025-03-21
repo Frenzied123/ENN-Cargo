@@ -2,8 +2,8 @@
 using ENN_Cargo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Protocol;namespace ENN_Cargo.Controllers
+
+namespace ENN_Cargo.Controllers
 {
     public class AccountController : Controller
     {
@@ -51,10 +51,46 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    TempData["Success"] = "Влизането е успешно";
+                    var roles = await _userManager.GetRolesAsync(user);
+                    string displayName = "";
+                    if (roles.Contains("Admin"))
+                    {
+                        displayName = "Admin";
+                    }
+                    else if (roles.Contains("Driver"))
+                    {
+                        var drivers = await _driverService.GetAllAsync();
+                        var driver = drivers.FirstOrDefault(d => d.UserId == user.Id);
+                        if (driver != null)
+                        {
+                            displayName = $"{driver.FirstName} {driver.LastName}".Trim();
+                        }
+                    }
+                    else if (roles.Contains("TruckCompany"))
+                    {
+                        var truckCompanies = await _truckCompanyService.GetAllAsync();
+                        var truckCompany = truckCompanies.FirstOrDefault(tc => tc.UserId == user.Id);
+                        if (truckCompany != null)
+                        {
+                            displayName = truckCompany.Name;
+                        }
+                    }
+                    else if (roles.Contains("ShipmentCompany"))
+                    {
+                        var companyStocks = await _companyStockService.GetAllAsync();
+                        var companyStock = companyStocks.FirstOrDefault(cs => cs.UserId == user.Id);
+                        if (companyStock != null)
+                        {
+                            displayName = companyStock.Name;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(displayName))
+                    {
+                        displayName = model.Email.Split('@')[0];
+                    }
+                    HttpContext.Session.SetString("DisplayName", displayName);
                     return RedirectToAction("Index", "Home");
                 }
-                TempData["Error"] = "Invalid login attempt.";
                 ModelState.AddModelError("", "Invalid login attempt.");
             }
             return View(model);
@@ -70,7 +106,6 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
         {
             return View();
         }
-
         [HttpGet]
         public IActionResult RegisterForDrivers()
         {
@@ -154,9 +189,19 @@ using NuGet.Protocol;namespace ENN_Cargo.Controllers
                 Message = "Your driver registration is waiting for admin approval."
             });
         }
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Session.Clear();
+            Response.Cookies.Delete("ENN_Cargo_Auth", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+
+            TempData["Success"] = "You have been logged out successfully.";
             return RedirectToAction("Index", "Home");
         }
         public IActionResult AccessDenied()

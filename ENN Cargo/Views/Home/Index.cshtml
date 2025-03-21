@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
 }
+@Html.AntiForgeryToken()
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1084,7 +1085,7 @@
                 <div class="slogan">The European Transport Organisation</div>
             </div>
             <div class="header-right">
-                <!-- Language selector moved to header -->
+                <!-- Language selector (unchanged) -->
                 <div class="language-selector">
                     <button type="button" class="language-switch" id="languageSwitch">
                         <span class="flag flag-uk"></span>
@@ -1183,7 +1184,6 @@
                     </div>
                 }
             </div>
-        </div>
     </header>
 
     <!-- Main navigation -->
@@ -1571,20 +1571,23 @@
                     loginButton.style.display = 'inline-block';
 
                     // Call the server-side logout endpoint to clear the authentication cookie
-                    fetch('/Account/Logout', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => {
-                        // Do not follow the redirect; we've already updated the UI
-                        console.log('Logout successful on server side');
-                    })
-                    .catch(error => {
-                        console.error('Error during logout:', error);
-                        // In case of an error, the UI is already updated, so no further action needed
-                    });
+                            fetch('/Account/Logout', {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Logout successful on server side');
+                window.location.href = '/';
+            } else {
+                console.error('Logout failed on server side');
+            }
+        })
+        .catch(error => {
+            console.error('Error during logout:', error);
+        });
                 });
             }
 

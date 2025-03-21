@@ -3,10 +3,15 @@ using ENN_Cargo.Core;
 using ENN_Cargo.DataAccess;
 using ENN_Cargo.DataAccess.Repository;
 using ENN_Cargo.DataAccess.Repository.IRepository;
+using ENN_Cargo.Utility;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;using ENN_Cargo.Utility;var builder = WebApplication.CreateBuilder(args);builder.Services.AddTransient<EmailService>();builder.Services.AddControllersWithViews();
+using System.Security.Claims;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddTransient<EmailService>();
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ENN_CargoApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("ENN Cargo.DataAccess")));
@@ -22,10 +27,33 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.Cookie.Name = "ENN_Cargo_Auth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+    options.SlidingExpiration = true;
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
-    options.SlidingExpiration = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Events.OnSigningIn = context =>
+    {
+        if (!context.Properties.IsPersistent)
+        {
+            context.Properties.ExpiresUtc = null;
+            context.CookieOptions.Expires = null;
+        }
+        context.Principal?.Identities.First().AddClaim(new Claim("IsPersistent", context.Properties.IsPersistent.ToString()));
+        return Task.CompletedTask;
+    };
+});
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ICompanyStockService, CompanyStockService>();
@@ -35,12 +63,15 @@ builder.Services.AddScoped<ITruckCompanyService, TruckCompanyService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IPendingRequest, PendingRequestService>();
 builder.Services.AddScoped<CloudinaryService>();
-builder.Services.AddRazorPages();var cloudinarySettings = builder.Configuration
+builder.Services.AddRazorPages();
+var cloudinarySettings = builder.Configuration
                          .GetSection("Cloudinary")
                          .Get<CloudinarySettings>();
-var account = new Account(cloudinarySettings.CloudName,
-cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
-var cloudinary = new Cloudinary(account);builder.Services.AddSingleton(cloudinary);var app = builder.Build();if (app.Environment.IsDevelopment())
+var account = new Account(cloudinarySettings.CloudName, cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
+var cloudinary = new Cloudinary(account);
+builder.Services.AddSingleton(cloudinary);
+var app = builder.Build();
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseExceptionHandler(errorApp =>
@@ -64,22 +95,34 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-}app.Use(async (context, next) =>
-{
-    Console.WriteLine($"Incoming Request: {context.Request.Method} {context.Request.Path} {context.Request.QueryString} - Authenticated: {context.User?.Identity?.IsAuthenticated} - Roles: {string.Join(", ", context.User?.Claims.Where(c => c.Type == "role").Select(c => c.Value) ?? new List<string>())}");
-    try
-    {
-        await next();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Middleware Exception: {ex.Message}\n{ex.StackTrace}"    );
-        throw;
-    }
-});app.UseHttpsRedirection();
+}
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity.IsAuthenticated)
+    {
+        var cookie = context.Request.Cookies["ENN_Cargo_Auth"];
+        if (cookie != null)
+        {
+            var isPersistentClaim = context.User.FindFirst("IsPersistent")?.Value;
+            bool isPersistent = bool.TryParse(isPersistentClaim, out var result) && result;
+            if (!isPersistent)
+            {
+                context.Response.Cookies.Delete("ENN_Cargo_Auth", new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
+            }
+        }
+    }
+    await next();
+});
 app.UseAuthorization();
 using (var scope = app.Services.CreateScope())
 {
@@ -91,15 +134,19 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error seeding roles/admin: {ex.Message}");
         throw;
     }
-}app.MapControllerRoute(
+}
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");app.Run();static async Task CreateRoles(IServiceProvider serviceProvider)
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
+static async Task CreateRoles(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    string[] roleNames = { "Admin", "Driver", "TruckCompany", "ShipmentCompany" };    foreach (var roleName in roleNames)
+    string[] roleNames = { "Admin", "Driver", "TruckCompany", "ShipmentCompany" };
+    foreach (var roleName in roleNames)
     {
         if (!await roleManager.RoleExistsAsync(roleName))
         {
@@ -110,14 +157,17 @@ using (var scope = app.Services.CreateScope())
             }
         }
     }
-}static async Task CreateAdmin(IServiceProvider serviceProvider)
+}
+static async Task CreateAdmin(IServiceProvider serviceProvider)
 {
     var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
     var adminEmail = "ENNCargo@admin.com";
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);    if (adminUser == null)
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
     {
         var user = new IdentityUser { UserName = adminEmail, Email = adminEmail };
-        var result = await userManager.CreateAsync(user, "ENN_Cargo06");        if (result.Succeeded)
+        var result = await userManager.CreateAsync(user, "ENN_Cargo06");
+        if (result.Succeeded)
         {
             await userManager.AddToRoleAsync(user, "Admin");
         }
