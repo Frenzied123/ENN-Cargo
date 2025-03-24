@@ -4,518 +4,1420 @@
     ViewData["Title"] = "Add Shipment";
 }
 
-<div class="shipment-container">
-    <div class="page-header">
-        <h1 class="page-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Add New Shipment
-        </h1>
-        <div class="breadcrumb">
-            <a asp-controller="Shipment" asp-action="ListOfShipments">Shipments</a>
-            <span class="separator">›</span>
-            <span class="current">Add Shipment</span>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - ENN Cargo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #003781;
+            --primary-dark: #002a61;
+            --primary-light: #1a4e93;
+            --secondary-color: #e30613;
+            --secondary-dark: #b90510;
+            --accent-color: #009fe3;
+            --accent-dark: #0080b7;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-gray: #f7f7f7;
+            --medium-gray: #e4e4e4;
+            --dark-gray: #333;
+            --text-color: #4a4a4a;
+            --white: #ffffff;
+            --border-color: #dee2e6;
+            --hover-light: #f8f9fa;
+            --focus-shadow: 0 0 0 0.2rem rgba(0, 159, 227, 0.25);
+            --border-radius: 3px;
+            --box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --transition: all 0.2s ease-in-out;
+        }
 
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title">Shipment Details</h2>
-            <p class="card-subtitle">Enter all required information to create a new shipment</p>
-        </div>
-        <div class="card-body">
-            <form asp-action="AddShipment" method="post" class="shipment-form">
-                <div class="form-section">
-                    <h3 class="section-title">General Information</h3>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label asp-for="Description">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="21" y1="10" x2="3" y2="10"></line>
-                                    <line x1="21" y1="6" x2="3" y2="6"></line>
-                                    <line x1="21" y1="14" x2="3" y2="14"></line>
-                                    <line x1="21" y1="18" x2="3" y2="18"></line>
-                                </svg>
-                                Description
-                            </label>
-                            <input asp-for="Description" class="form-control" placeholder="Briefly describe the contents" />
-                            <span asp-validation-for="Description" class="field-validation-error"></span>
-                        </div>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-                        <div class="form-group">
-                            <label asp-for="Weight">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                                    <line x1="12" y1="16" x2="12" y2="16"></line>
-                                    <line x1="12" y1="8" x2="12" y2="8"></line>
-                                </svg>
-                                Weight (kg)
-                            </label>
-                            <input asp-for="Weight" type="number" step="0.01" class="form-control" placeholder="0.00" />
-                            <span asp-validation-for="Weight" class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
+        img {
+            max-width: 100%;
+        }
 
-                <div class="form-section">
-                    <h3 class="section-title">Origin Details</h3>
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label asp-for="SelectedFromCountry">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                From Country
-                            </label>
-                            <select id="SelectedFromCountry" name="SelectedFromCountry" asp-for="SelectedFromCountry" asp-items="Model.FromCountries" class="form-control">
-                                <option value="">Select a country</option>
-                            </select>
-                            <span asp-validation-for="SelectedFromCountry" class="field-validation-error"></span>
-                        </div>
+        /* Language selector in header */
+        .language-selector {
+            position: relative;
+            margin-right: 20px;
+            display: inline-block;
+        }
 
-                        <div class="form-group">
-                            <label asp-for="SelectedFromTown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                From Town
-                            </label>
-                            <select id="SelectedFromTown" name="SelectedFromTown" asp-for="SelectedFromTown" class="form-control">
-                                <option value="">Select a town</option>
-                            </select>
-                            <span asp-validation-for="SelectedFromTown" class="field-validation-error"></span>
-                        </div>
-                    </div>
+        .language-switch {
+            display: flex;
+            align-items: center;
+            padding: 7px 12px;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: white;
+            transition: var(--transition);
+        }
 
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label asp-for="FromAddress">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                Pickup Address
-                            </label>
-                            <input asp-for="FromAddress" class="form-control" placeholder="Street address, building number, etc." />
-                            <span asp-validation-for="FromAddress" class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
+            .language-switch:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
 
-                <div class="form-section">
-                    <h3 class="section-title">Destination Details</h3>
+        .flag {
+            width: 24px;
+            height: 18px;
+            margin-right: 8px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: inline-block;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label asp-for="SelectedToCountry">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                To Country
-                            </label>
-                            <select id="SelectedToCountry" name="SelectedToCountry" asp-for="SelectedToCountry" asp-items="Model.ToCountries" class="form-control">
-                                <option value="">Select a country</option>
-                            </select>
-                            <span asp-validation-for="SelectedToCountry" class="field-validation-error"></span>
-                        </div>
+        .flag-int {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMjgwIj48ZGVmcz48c3R5bGU+LmNscy0xLC5jbHMtMntmaWxsOiMwMDM3ODE7fS5jbHMtMntvcGFjaXR5OjAuMjt9LmNscy0ze2ZpbGw6I2ZmZjt9PC9zdHlsZT48L2RlZnM+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNDIwIiBoZWlnaHQ9IjI4MCIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTEzMC44MSwxNTguMDhjLTIuMzktMi4zOS00LjA2LTMuOTEtNS0zLjkxLTEuMTQsMC0yLjI5LDEuNTItMy40MiwzLjkxYTQ2LjUyLDQ2LjUyLDAsMCwxLTQuMzIsNy40NFExMTAuNiwxNzQuOTMsMTAwLDE4MC43OXYtNzcuNWEzNi4wNywzNi4wNywwLDAsMSwxMS44OCw3LjY3cTcuNzUsNy43NiwxMi43OSw3Ljc2LDcuNTksMCwxOS45My0xNC41N3YtNi4yNXEtNS4xOCw2LjYzLTEwLjc3LDEwLjU1dC05LjE2LDMuOTFxLTUsMC0xMi43OS03Ljc2YTM2LjA3LDM2LjA3LDAsMCwwLTExLjg4LTcuNjd2NzcuNXEtMTAuNTYtNS44Ni0xOC0xNS4yN2E0Ni41Miw0Ni41MiwwLDAsMS00LjMyLTcuNDRjLTEuMTMtMi4zOS0yLjI4LTMuOTEtMy40Mi0zLjkxLTEsMC0yLjYsMS41Mi01LDMuOTFsLTMuMjcsMy4yOEw2MS4xLDE2NXEzLjU3LDMuOTEsNS44NSw1Ljc4YTEyLjQxLDEyLjQxLDAsMCwwLDYuNDksMS44N0EyMC40MSwyMC40MSwwLDAsMCw4Mi41MiwxNzBxNC4zMi0xLjI1LDkuOTItMTEuMzVhMTUuOCwxNS44LDAsMCwxLDcuNTMtNy4xdjI3LjQ3SDk0Ljc0cTAsNy45LDQuMzEsNy45aDEuMTRWMjA5LjdxLTYuNzMsMy45LTEwLjgyLDcuMjFMMTAwLDIyNy41N3EzLjgzLTMuMywxNi43LTEwLjU1djI2Ljg4aDYuOFYyMTdxMTAuNTQsNi42NCwxNi42OSwxMC41NWwxMC42My0xMC42NnEtNi4yNy00LjY5LTEwLjY0LTcuMjFWMTg3LjkzaDEuMTRxNC4zMSwwLDQuMzEtNy45SDEwMFYxNTEuNTdhMTUuNiwxNS42LDAsMCwxLDcuNTQsNy4xcTUuNTksMTAuMSw5LjkxLDExLjM1YTIwLjQxLDIwLjQxLDAsMCwwLDkuMDgsMi42MiwxMi40MSwxMi40MSwwLDAsMCw2LjQ5LTEuODdxMi4yOC0xLjg3LDUuODYtNS43OGwtNS42NC02LjYzWiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTI0OS4xNiwxNzYuODJhMTA5LjU5LDEwOS41OSwwLDAsMC0uNTUtMTEuMDYsMTA5LjU5LDEwOS41OSwwLDAsMC0uNTUsMTEuMDZ2LjE1YzAsMS44OC4wOSwzLjc1LjE4LDUuNi0uMDktMS44NS0uMTgtMy43Mi0uMTgtNS42WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTI3MS42OSwxNjcuMzJhNzIsNzIsMCwwLDAtNC4zMi0xMi4yOSw3Miw3MiwwLDAsMC00LjMyLDEyLjI5LDUwLjMsNTAuMywwLDAsMC0xLjE4LDkuNjUsNTAuMyw1MC4zLDAsMCwwLDEuMTgsOS42NSw3Miw3MiwwLDAsMCw0LjMyLDEyLjI5LDcyLDcyLDAsMCwwLDQuMzItMTIuMjksNTAuMyw1MC4zLDAsMCwwLDEuMTgtOS42NUE1MC4zLDUwLjMsMCwwLDAsMjcxLjY5LDE2Ny4zMloiLz48cGF0aCBjbGFzcz0iY2xzLTMiIGQ9Ik0yMjUuNTQsMTU1YTcyLDcyLDAsMCwwLTEyLjI5LDQuMzIsNzIsNzIsMCwwLDAsMTIuMjksNC4zMiw1MC4zLDUwLjMsMCwwLDAsOS42NSwxLjE4LDUwLjMsNTAuMywwLDAsMCw5LjY1LTEuMTgsNzIsNzIsMCwwLDAsMTIuMjktNC4zMiw3Miw3MiwwLDAsMC0xMi4yOS00LjMyLDUwLjMsNTAuMywwLDAsMC05LjY1LTEuMThBNTAuMyw1MC4zLDAsMCwwLDIyNS41NCwxNTVaIi8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNMjI1LjU0LDE5OC42NGE3Miw3MiwwLDAsMC0xMi4yOSw0LjMyLDcyLDcyLDAsMCwwLDEyLjI5LDQuMzIsNTAuMyw1MC4zLDAsMCwwLDkuNjUsMS4xOCw1MC4zLDUwLjMsMCwwLDAsOS42NS0xLjE4LDcyLDcyLDAsMCwwLDEyLjI5LTQuMzIsNzIsNzIsMCwwLDAtMTIuMjktNC4zMiw1MC4zLDUwLjMsMCwwLDAtOS42NS0xLjE4QTUwLjMsNTAuMywwLDAsMCwyMjUuNTQsMTk4LjY0WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTM0NS44NCwxNTguMDhjLTIuMzktMi4zOS00LjA2LTMuOTEtNS0zLjkxLTEuMTQsMC0yLjI5LDEuNTItMy40MiwzLjkxYTQ2LjUyLDQ2LjUyLDAsMCwxLTQuMzIsNy40NHEtNy41LDkuNDEtMTguMSwxNS4yN3YtNzcuNWEzNi4wNywzNi4wNywwLDAsMSwxMS44OCw3LjY3cTcuNzUsNy43NiwxMi43OSw3Ljc2LDcuNTksMCwxOS45My0xNC41N3YtNi4yNXEtNS4xOCw2LjYzLTEwLjc3LDEwLjU1dC05LjE2LDMuOTFxLTUsMC0xMi43OS03Ljc2YTM2LjA3LDM2LjA3LDAsMCwwLTExLjg4LTcuNjd2NzcuNXEtMTAuNTYtNS44Ni0xOC0xNS4yN2E0Ni41Miw0Ni41MiwwLDAsMS00LjMyLTcuNDRjLTEuMTMtMi4zOS0yLjI4LTMuOTEtMy40Mi0zLjkxLTEsMC0yLjYsMS41Mi01LDMuOTFsLTMuMjcsMy4yOEwyNzYuMTMsMTY1cTMuNTcsMy45MSw1Ljg1LDUuNzhhMTIuNDEsMTIuNDEsMCwwLDAsNi40OSwxLjg3LDIwLjQxLDIwLjQxLDAsMCwwLDkuMDgtMi42MnE0LjMyLTEuMjUsOS45Mi0xMS4zNWExNS44LDE1LjgsMCwwLDEsNy41My03LjF2MjcuNDdoLTUuMjNxMCw3LjksNC4zMSw3LjloMS4xNFYyMDkuN3EtNi43MywzLjktMTAuODIsNy4yMUwzMTUsMjI3LjU3cTMuODMtMy4zLDE2LjctMTAuNTV2MjYuODhoNi44VjIxN3ExMC41NCw2LjY0LDE2LjY5LDEwLjU1bDEwLjYzLTEwLjY2cS02LjI3LTQuNjktMTAuNjQtNy4yMVYxODcuOTNoMS4xNHE0LjMxLDAsNC4zMS03LjlIMzE1VjE1MS41N2ExNS42LDE1LjYsMCwwLDEsNy41NCw3LjFxNS41OSwxMC4xLDkuOTEsMTEuMzVhMjAuNDEsMjAuNDEsMCwwLDAsOS4wOCwyLjYyLDEyLjQxLDEyLjQxLDAsMCwwLDYuNDktMS44N3EyLjI4LTEuODcsNS44Ni01Ljc4bC01LjY0LTYuNjNaIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNMjYwLjg5LDE0MmMtMS41OCwwLTMuOSwyLjM0LTQuNTYsNS40NC0xLDQuNjMtLjUzLDkuODUtLjUzLDE2LjM5djkuMThjMCw3LjQyLS40NCwxMy44OC42OSwxOC40OS43MSwzLjA3LDMuMTEsNC4yOSw0LjQsNC4yOXMzLjctMS4yMiw0LjM5LTQuMzJjMS4xMy00LjU4LjcxLTExLjA3LjcxLTE4LjQ2di05LjE4YzAtNi41MS0uNTItMTEuNzYtMS40OC0xNi4zOUM2NjQuMjcsMTQ0LjM1LDY2Mi40NywxNDIsNjYwLjg5LDE0MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00MDApIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNNjQzLjczLDE2Mi4wNmMwLTEuNTgtMi4zNC0zLjktNS40NC00LjU2LTQuNjMtMS05Ljg2LS41My0xNi4zOS0uNTNINjEyLjdjLTcuNDIsMC0xMy44OC0uNDQtMTguNDkuNjktMy4wNy43MS00LjI5LDMuMTEtNC4yOSw0LjRzMS4yMiwzLjcsNC4zMiw0LjM5YzQuNTgsMS4xMywxMS4wNy43MSwxOC40Ni43MWg5LjE4YzYuNTEsMCwxMS43Ni0uNTIsMTYuMzktMS40OUMsNjQxLjM1LDE2NS4yNyw2NDMuNzMsMTYzLjY0LDY0My43MywxNjIuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTY0My43MywxNzYuNzNjMC0xLjU4LTIuMzQtMy45LTUuNDQtNC41Ni00LjYzLTEtOS44Ni0uNTMtMTYuMzktLjUzSDYxMi43Yy03LjQyLDAtMTMuODgtLjQ0LTE4LjQ5LjY5LTMuMDcuNzEtNC4yOSwzLjExLTQuMjksNC40czEuMjIsMy43LDQuMzIsNC4zOWM0LjU4LDEuMTMsMTEuMDcuNzEsMTguNDYuNzFoOS4xOGM2LjUxLDAsMTEuNzYtLjUyLDE2LjM5LTEuNDlDLDY0MS4zNSwxNzkuOTQsNjQzLjczLDE3OC4zMSw2NDMuNzMsMTc2LjczWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwMCkiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NzguODksMTc2LjczYzAsMS41OC0yLjM0LDMuOS01LjQ0LDQuNTYtNC42MywxLTkuODYuNTMtMTYuMzkuNTNoLTkuMThjLTcuNDIsMC0xMy44OC40NC0xOC40OS0uNjktMy4wNy0uNzEtNC4yOS0zLjExLTQuMjktNC40czEuMjItMy43LDQuMzItNC4zOWM0LjU4LTEuMTMsMTEuMDctLjcxLDE4LjQ2LS43MWg5LjE4YzYuNTEsMCwxMS43Ni41MiwxNi4zOSwxLjQ5QywsNjc2LjUyLDE3MywwNjgsNjc4Ljg5LDE3NS4xNSw2NzguODksMTc2LjczWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwMCkiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NzguODksMTYyLjA2YzAsMS41OC0yLjM0LDMuOS01LjQ0LDQuNTYtNC42MywxLTkuODYuNTMtMTYuMzkuNTNoLTkuMThjLTcuNDIsMC0xMy44OC40NC0xOC40OS0uNjktMy4wNy0uNzEtNC4yOS0zLjExLTQuMjktNC40czEuMjItMy43LDQuMzItNC4zOWM0LjU4LTEuMTMsMTEuMDctLjcxLDE4LjQ2LS43MWg5LjE4YzYuNTEsMCwxMS43Ni41MiwxNi4zOSwxLjQ5QywsNjc2LjUyLDE1OC4zNyw2NzguODksMTYwLjQ4LDY3OC44OSwxNjIuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTY3MC44OSwxNDJjMS41OCwwLDMuOSwyLjM0LDQuNTYsNS40NCwxLDQuNjMuNTMsOS44NS41MywxNi4zOXY5LjE4YzAsNy40Mi40NCwxMy44OC0uNjksMTguNDktLjcxLDMuMDctMy4xMSw0LjI5LTQuNCw0LjI5cy0zLjctMS4yMi00LjM5LTQuMzJjLTEuMTMtNC41OC0uNzEtMTEuMDctLjcxLTE4LjQ2di05LjE4YzAtNi41MS41Mi0xMS43NiwxLjQ4LTE2LjM5QywsNjY4LjQyLDE0NC4zNSw2Njkum4sMTQyLDY3MC44OSwxNDJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDAwKSIvPjwvc3ZnPg==');
+        }
 
-                        <div class="form-group">
-                            <label asp-for="SelectedToTown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                To Town
-                            </label>
-                            <select id="SelectedToTown" name="SelectedToTown" asp-for="SelectedToTown" class="form-control">
-                                <option value="">Select a town</option>
-                            </select>
-                            <span asp-validation-for="SelectedToTown" class="field-validation-error"></span>
-                        </div>
-                    </div>
+        .flag-uk {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTIzNSA2NTAiIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIiBmaWxsPSIjMDAyNDdkIi8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiIHN0cm9rZS13aWR0aD0iMTMwIi8+PHBhdGggZD0iTTAsMCBMMTIzNSw2NTAgTTEyMzUsMCBMMCw2NTAiIHN0cm9rZS13aWR0aD0iODciLz48L2c+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2YxNDJiIiBzdHJva2Utd2lkdGg9IjYwIj48cGF0aCBkPSJNNjE3LjUsMCBMNjE3LjUsNjUwIE0wLDMyNSBMMTIzNSwzMjUiLz48cGF0aCBkPSJNMCwwIEwxMjM1LDY1MCBNMTIzNSwwIEwwLDY1MCIvPjwvZz48L3N2Zz4=');
+        }
 
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label asp-for="ToAddress">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                Delivery Address
-                            </label>
-                            <input asp-for="ToAddress" class="form-control" placeholder="Street address, building number, etc." />
-                            <span asp-validation-for="ToAddress" class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
+        .flag-bg {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMCAwaDYwMHYxMzMuM0gweiIvPjxwYXRoIGZpbGw9IiMwMDk2NjUiIGQ9Ik0wIDEzMy4zaDYwMHYxMzMuNEgweiIvPjxwYXRoIGZpbGw9IiNkNjI2MTIiIGQ9Ik0wIDI2Ni43aDYwMFY0MDBIMHoiLz48L3N2Zz4=');
+        }
 
-                <div class="form-section">
-                    <h3 class="section-title">Scheduling & Responsibility</h3>
+        .language-flyout {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            min-width: 260px;
+            border-radius: var(--border-radius);
+            border-top: 3px solid var(--accent-color);
+            animation: fadeIn 0.2s ease-in-out;
+        }
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label asp-for="PickUpDate">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
-                                Pickup Date
-                            </label>
-                            <input asp-for="PickUpDate" type="date" class="form-control" />
-                            <span asp-validation-for="PickUpDate" class="field-validation-error"></span>
-                        </div>
+            .language-flyout.show {
+                display: block;
+            }
 
-                        <div class="form-group">
-                            <label asp-for="DeliveryDate">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    <line x1="8" y1="14" x2="8" y2="14"></line>
-                                    <line x1="12" y1="14" x2="12" y2="14"></line>
-                                    <line x1="16" y1="14" x2="16" y2="14"></line>
-                                    <line x1="8" y1="18" x2="8" y2="18"></line>
-                                    <line x1="12" y1="18" x2="12" y2="18"></line>
-                                    <line x1="16" y1="18" x2="16" y2="18"></line>
-                                </svg>
-                                Delivery Date
-                            </label>
-                            <input asp-for="DeliveryDate" type="date" class="form-control" />
-                            <span asp-validation-for="DeliveryDate" class="field-validation-error"></span>
-                        </div>
-                    </div>
+        .heading {
+            padding: 16px;
+            border-bottom: 1px solid var(--medium-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-                    <div class="form-row">
-                        <div class="form-group full-width">
-                            <label asp-for="SelectedCompanyStockId">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                                </svg>
-                                Responsible Company
-                            </label>
-                            <select asp-for="SelectedCompanyStockId" asp-items="Model.CompanyStocks" class="form-control">
-                                <option value="">Select a Company</option>
-                            </select>
-                            <span asp-validation-for="SelectedCompanyStockId" class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
+        .headline {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
 
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Create Shipment
-                    </button>
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+            transition: var(--transition);
+        }
 
-                    <a asp-controller="Shipment" asp-action="ListOfShipments" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 12H5"></path>
-                            <polyline points="12 19 5 12 12 5"></polyline>
-                        </svg>
-                        Back to List
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            .close-button:hover {
+                color: var(--primary-color);
+            }
 
-<style>
-    :root {
-        --primary-color: #003781;
-        --secondary-color: #e30613;
-        --accent-color: #009fe3;
-        --success-color: #28a745;
-        --danger-color: #dc3545;
-        --warning-color: #ffc107;
-        --info-color: #17a2b8;
-        --light-gray: #f5f5f5;
-        --medium-gray: #e0e0e0;
-        --dark-gray: #333;
-        --white: #ffffff;
-        --border-color: #dee2e6;
-        --hover-light: #f8f9fa;
-        --focus-shadow: 0 0 0 0.2rem rgba(0, 159, 227, 0.25);
-    }
+        .language-list {
+            list-style: none;
+            padding: 5px 0;
+        }
 
-    body {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        background-color: var(--light-gray);
-        color: var(--dark-gray);
-        line-height: 1.6;
-    }
+        .language-item {
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-    .shipment-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+            .language-item:hover {
+                background-color: #f5f7f9;
+            }
 
-    .page-header {
-        margin-bottom: 25px;
-    }
+            .international-item, .language-item a {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: var(--dark-gray);
+                padding: 12px 16px;
+            }
 
-    .page-title {
-        color: var(--primary-color);
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-    }
+        .label {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
 
-        .page-title svg {
-            margin-right: 10px;
+        .lang-codes a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 3px;
+        }
+
+            .lang-codes a.active {
+                font-weight: bold;
+            }
+
+        /* Main header with logo */
+        .main-header {
+            background-color: var(--primary-color);
+            padding: 20px 0;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+            .main-header .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+            .logo img {
+                height: 60px;
+                width: auto;
+                background-color: white;
+                padding: 5px;
+                border-radius: var(--border-radius);
+                transition: transform 0.2s;
+                cursor: pointer;
+            }
+
+                .logo img:hover {
+                    transform: scale(1.05);
+                }
+
+        .slogan {
+            color: white;
+            font-size: 1rem;
+            margin-left: 15px;
+            font-weight: 300;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .login-button {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            border-radius: var(--border-radius);
+        }
+
+            .login-button:hover {
+                background-color: white;
+                color: var(--primary-color);
+            }
+
+        .user-menu {
+            position: relative;
+            display: none; /* Hidden by default, will be shown when logged in */
+        }
+
+        .user-name {
+            display: flex;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            font-weight: 500;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+            .user-name:hover {
+                background-color: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background-color: white;
+            min-width: 280px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: var(--border-radius);
+            border-top: 3px solid var(--accent-color);
+        }
+
+            .dropdown-content a {
+                color: var(--dark-gray);
+                padding: 14px 18px;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                transition: var(--transition);
+                font-size: 0.95rem;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #f8f8f8;
+                    color: var(--primary-color);
+                }
+
+                .dropdown-content a i {
+                    margin-right: 12px;
+                    font-size: 16px;
+                    width: 18px;
+                    text-align: center;
+                    color: var(--accent-color);
+                }
+
+            .dropdown-content .divider {
+                height: 1px;
+                background-color: var(--medium-gray);
+                margin: 5px 0;
+            }
+
+        .show {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main navigation */
+        .main-nav {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+            .main-nav .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        .nav-links {
+            display: flex;
+            flex-grow: 1;
+        }
+
+            .nav-links a {
+                text-decoration: none;
+                color: var(--dark-gray);
+                padding: 20px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                transition: var(--transition);
+                border-right: 1px solid rgba(0,0,0,0.05);
+            }
+
+                .nav-links a:hover {
+                    color: var(--primary-color);
+                    background-color: var(--light-gray);
+                }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Role-based dashboard navigation */
+        .dashboard-nav {
+            background-color: #fff;
+            padding: 0;
+            border-bottom: 1px solid var(--medium-gray);
+            display: none; /* Hidden by default, shown when logged in */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .dashboard-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 15px 20px 15px 0;
+            margin-right: 15px;
+            border-right: 1px solid var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-links {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .dashboard-links a {
+                text-decoration: none;
+                color: var(--text-color);
+                padding: 15px 20px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                position: relative;
+            }
+
+                .dashboard-links a:hover {
+                    color: var(--primary-color);
+                    background-color: rgba(0,0,0,0.015);
+                }
+
+                .dashboard-links a.active {
+                    color: var(--primary-color);
+                    background-color: var(--light-gray);
+                    font-weight: 600;
+                }
+
+                    .dashboard-links a.active::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 3px;
+                        background-color: var(--accent-color);
+                    }
+
+                .dashboard-links a i {
+                    margin-right: 8px;
+                    color: var(--accent-color);
+                    font-size: 14px;
+                    width: 16px;
+                    text-align: center;
+                }
+
+        /* Shipment pages styles */
+        main {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .shipment-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            .page-title svg {
+                margin-right: 10px;
+                color: var(--primary-color);
+            }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+            .breadcrumb a {
+                color: var(--accent-color);
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+
+                .breadcrumb a:hover {
+                    color: var(--primary-color);
+                    text-decoration: underline;
+                }
+
+        .separator {
+            margin: 0 8px;
+        }
+
+        .current {
+            font-weight: 500;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: white;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
             color: var(--primary-color);
         }
 
-    .breadcrumb {
-        display: flex;
-        align-items: center;
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
-
-        .breadcrumb a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-            .breadcrumb a:hover {
-                color: var(--primary-color);
-                text-decoration: underline;
-            }
-
-    .separator {
-        margin: 0 8px;
-    }
-
-    .current {
-        font-weight: 500;
-    }
-
-    .card {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-        overflow: hidden;
-    }
-
-    .card-header {
-        padding: 20px 25px;
-        border-bottom: 1px solid var(--border-color);
-        background-color: white;
-    }
-
-    .card-title {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-
-    .card-subtitle {
-        margin-top: 5px;
-        color: #6c757d;
-        font-size: 0.9rem;
-    }
-
-    .card-body {
-        padding: 25px;
-    }
-
-    .form-section {
-        margin-bottom: 25px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-        .form-section:last-child {
-            border-bottom: none;
-        }
-
-    .section-title {
-        font-size: 1.1rem;
-        color: var(--primary-color);
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
-
-    .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-right: -10px;
-        margin-left: -10px;
-        margin-bottom: 15px;
-    }
-
-        .form-row:last-child {
-            margin-bottom: 0;
-        }
-
-    .form-group {
-        flex: 1;
-        min-width: 250px;
-        padding: 0 10px;
-        margin-bottom: 15px;
-    }
-
-        .form-group.full-width {
-            min-width: 100%;
-            flex-basis: 100%;
-        }
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            font-weight: 600;
+        .card-subtitle {
+            margin-top: 5px;
+            color: #6c757d;
             font-size: 0.9rem;
-            color: var(--dark-gray);
         }
 
-            .form-group label svg {
-                margin-right: 8px;
-                color: var(--accent-color);
+        .card-body {
+            padding: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+            .form-section:last-child {
+                border-bottom: none;
             }
 
-    .form-control {
-        display: block;
-        width: 100%;
-        padding: 10px 12px;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
 
-        .form-control:focus {
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -10px;
+            margin-left: -10px;
+            margin-bottom: 15px;
+        }
+
+            .form-row:last-child {
+                margin-bottom: 0;
+            }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+
+            .form-group.full-width {
+                min-width: 100%;
+                flex-basis: 100%;
+            }
+
+            .form-group label {
+                display: flex;
+                align-items: center;
+                margin-bottom: 8px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: var(--dark-gray);
+            }
+
+                .form-group label svg {
+                    margin-right: 8px;
+                    color: var(--accent-color);
+                }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1rem;
+            line-height: 1.5;
             color: #495057;
             background-color: #fff;
-            border-color: var(--accent-color);
-            outline: 0;
-            box-shadow: var(--focus-shadow);
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
-        .form-control::-webkit-input-placeholder {
-            color: #adb5bd;
+            .form-control:focus {
+                color: #495057;
+                background-color: #fff;
+                border-color: var(--accent-color);
+                outline: 0;
+                box-shadow: var(--focus-shadow);
+            }
+
+            .form-control::-webkit-input-placeholder {
+                color: #adb5bd;
+            }
+
+        .field-validation-error {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
         }
 
-    .field-validation-error {
-        color: var(--danger-color);
-        font-size: 0.85rem;
-        margin-top: 5px;
-        display: block;
-    }
-
-    .form-actions {
-        display: flex;
-        gap: 15px;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid var(--border-color);
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        border: none;
-        font-size: 0.95rem;
-        text-decoration: none;
-    }
-
-        .btn svg {
-            margin-right: 8px;
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
         }
 
-    .btn-primary {
-        background-color: var(--primary-color);
-        color: white;
-    }
-
-        .btn-primary:hover {
-            background-color: var(--accent-color);
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.95rem;
+            text-decoration: none;
         }
 
-    .btn-secondary {
-        background-color: var(--light-gray);
-        color: var(--dark-gray);
-        border: 1px solid var(--border-color);
-    }
+            .btn svg {
+                margin-right: 8px;
+            }
 
-        .btn-secondary:hover {
-            background-color: var(--medium-gray);
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-    @@media (max-width: 768px) {
-        .form-row
+            .btn-primary:hover {
+                background-color: var(--accent-color);
+            }
 
+        .btn-secondary {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            border: 1px solid var(--border-color);
+        }
+
+            .btn-secondary:hover {
+                background-color: var(--medium-gray);
+            }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: auto; /* Push footer to bottom */
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--accent-color);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+            .footer-col h4:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 30px;
+                height: 2px;
+                background-color: var(--accent-color);
+            }
+
+        .footer-col p {
+            margin-bottom: 15px;
+            color: #bbb;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+            .footer-col ul li {
+                margin-bottom: 10px;
+            }
+
+                .footer-col ul li a {
+                    color: #bbb;
+                    text-decoration: none;
+                    font-size: 0.9rem;
+                    transition: var(--transition);
+                    display: block;
+                }
+
+                    .footer-col ul li a:hover {
+                        color: white;
+                        padding-left: 5px;
+                    }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            color: white;
+            text-decoration: none;
+        }
+
+            .social-icon:hover {
+                background-color: var(--accent-color);
+                transform: translateY(-3px);
+            }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive styles */
+        @@media (max-width: 1200px) {
+            .container {
+                padding: 0 30px;
+            }
+        }
+
+        @@media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-group {
+                min-width: 250px;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .main-header .container, .main-nav .container {
+                flex-direction: column;
+            }
+
+            .header-right {
+                margin-top: 20px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+            }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links a {
+                    border-right: none;
+                    border-bottom: 1px solid #eee;
+                    text-align: center;
+                    padding: 15px;
+                }
+
+            .nav-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .dashboard-nav .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-title {
+                border-right: none;
+                border-bottom: 1px solid var(--medium-gray);
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            .dashboard-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+                .dashboard-links a {
+                    padding: 12px 15px;
+                    border-bottom: 1px solid rgba(0,0,0,0.05);
+                }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-group {
+                min-width: 100%;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main header with logo -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <!-- Only the logo image is clickable to redirect to home page -->
+                <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742193325/ENN_cargo_transparent_goqj9p.png" alt="ENN Cargo Logo" onclick="window.location.href='/'">
+                <div class="slogan">The European Transport Organisation</div>
+            </div>
+            <div class="header-right">
+                <!-- Language selector -->
+                <div class="language-selector">
+                    <button type="button" class="language-switch" id="languageSwitch">
+                        <span class="flag flag-uk"></span>
+                        <span>EN</span>
+                        <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <div class="language-flyout" id="languageFlyout">
+                        <div class="heading">
+                            <h2 class="headline">Select a language</h2>
+                            <button type="button" class="close-button" id="closeFlyout"><i class="fas fa-times"></i></button>
+                        </div>
+                        <ul class="language-list">
+                            <li class="language-item">
+                                <a href="/int/en" class="international-item">
+                                    <span class="flag flag-uk"></span>
+                                    <span class="label">English</span>
+                                </a>
+                            </li>
+                            <li class="language-item">
+                                <a href="/bg/en">
+                                    <span class="flag flag-bg"></span>
+                                    <span class="label">Български</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Always render the login button, but control visibility -->
+                <div class="login-button" id="login-button" style="@(User.Identity.IsAuthenticated ? "display: none;" : "display: inline-block;")">
+                    LOGIN
+                </div>
+
+                <!-- Always render the user menu, but control visibility -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    string displayName = "";
+                    string userEmail = User.Identity.Name; // This is the email (e.g., ENNCargo@admin, driver@example.com, etc.)
+
+                    if (User.IsInRole("Admin"))
+                    {
+                        // For Admin role: Display "Admin"
+                        displayName = "Admin";
+                    }
+                    else if (User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                    {
+                        // For Driver, TruckCompany, or ShipmentCompany: Use the email, but remove the domain part for a cleaner display
+                        if (!string.IsNullOrEmpty(userEmail))
+                        {
+                            // Split the email at the '@' symbol and take the first part
+                            var emailParts = userEmail.Split('@');
+                            displayName = emailParts.Length > 0 ? emailParts[0] : userEmail;
+                        }
+                        else
+                        {
+                            // Fallback if email is null or empty
+                            displayName = User.IsInRole("Driver") ? "Driver" : "Company";
+                        }
+                    }
+                    else
+                    {
+                        // Fallback for any other role
+                        displayName = userEmail ?? "User";
+                    }
+
+                    <div class="user-menu" id="user-menu" style="display: inline-block;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name">@displayName</span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                            {
+                                <div class="divider"></div>
+                                <div class="role-section"><i class="fas fa-cogs"></i> Management</div>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
+                                {
+                                    <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("ShipmentCompany"))
+                                {
+                                    <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                                }
+                            }
+
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name"></span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="/user/orders"><i class="fas fa-box"></i> My Orders</a>
+                            <a href="/user/tracking"><i class="fas fa-search"></i> Track Shipments</a>
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <!-- Role-based dashboard navigation - Only visible when logged in -->
+    @if (User.Identity.IsAuthenticated)
     {
-        flex-direction: column;
+        <div class="dashboard-nav" id="dashboard-nav" style="display: block;">
+            <div class="container dashboard-container">
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-links">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                        <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                    }
+                    else if (User.IsInRole("TruckCompany"))
+                    {
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("Driver"))
+                    {
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("ShipmentCompany"))
+                    {
+                        <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                </div>
+            </div>
+        </div>
     }
 
-    .form-group {
-        min-width: 100%;
-    }
+    <!-- Main navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="#">TRANSPORT SOLUTIONS</a>
+                <a href="#">QUALITY & ENVIRONMENT</a>
+                <a href="#">COMPANY</a>
+                <a href="#">CONTACT</a>
+            </div>
+        </div>
+    </nav>
 
-    .form-actions {
-        flex-direction: column;
-    }
+    <!-- Main content -->
+    <main>
+        <div class="container">
+            <div class="shipment-container">
+                <div class="page-header">
+                    <h1 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add New Shipment
+                    </h1>
+                    <div class="breadcrumb">
+                        <a asp-controller="Shipment" asp-action="ListOfShipments">Shipments</a>
+                        <span class="separator">›</span>
+                        <span class="current">Add Shipment</span>
+                    </div>
+                </div>
 
-    .btn {
-        width: 100%;
-    }
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Shipment Details</h2>
+                        <p class="card-subtitle">Enter all required information to create a new shipment</p>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="AddShipment" method="post" class="shipment-form">
+                            <div class="form-section">
+                                <h3 class="section-title">General Information</h3>
 
-    }
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label asp-for="Description">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="21" y1="10" x2="3" y2="10"></line>
+                                                <line x1="21" y1="6" x2="3" y2="6"></line>
+                                                <line x1="21" y1="14" x2="3" y2="14"></line>
+                                                <line x1="21" y1="18" x2="3" y2="18"></line>
+                                            </svg>
+                                            Description
+                                        </label>
+                                        <input asp-for="Description" class="form-control" placeholder="Briefly describe the contents" />
+                                        <span asp-validation-for="Description" class="field-validation-error"></span>
+                                    </div>
 
-    @@media (max-width: 576px) {
-        .page-title
+                                    <div class="form-group">
+                                        <label asp-for="Weight">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                                                <line x1="12" y1="16" x2="12" y2="16"></line>
+                                                <line x1="12" y1="8" x2="12" y2="8"></line>
+                                            </svg>
+                                            Weight (tons)
+                                        </label>
+                                        <input asp-for="Weight" type="number" step="0.001" class="form-control" placeholder="0.000" />
+                                        <span asp-validation-for="Weight" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
 
-    {
-        font-size: 1.5rem;
-    }
+                            <div class="form-section">
+                                <h3 class="section-title">Origin Details</h3>
 
-    .card-body {
-        padding: 15px;
-    }
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label asp-for="SelectedFromCountry">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                            </svg>
+                                            From Country
+                                        </label>
+                                        <select id="SelectedFromCountry" name="SelectedFromCountry" asp-for="SelectedFromCountry" asp-items="Model.FromCountries" class="form-control">
+                                            <option value="">Select a country</option>
+                                        </select>
+                                        <span asp-validation-for="SelectedFromCountry" class="field-validation-error"></span>
+                                    </div>
 
-    }
-</style>
+                                    <div class="form-group">
+                                        <label asp-for="SelectedFromTown">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            From Town
+                                        </label>
+                                        <select id="SelectedFromTown" name="SelectedFromTown" asp-for="SelectedFromTown" class="form-control">
+                                            <option value="">Select a town</option>
+                                        </select>
+                                        <span asp-validation-for="SelectedFromTown" class="field-validation-error"></span>
+                                    </div>
+                                </div>
 
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label asp-for="FromAddress">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            Pickup Address
+                                        </label>
+                                        <input asp-for="FromAddress" class="form-control" placeholder="Street address, building number, etc." />
+                                        <span asp-validation-for="FromAddress" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-section">
+                                <h3 class="section-title">Destination Details</h3>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label asp-for="SelectedToCountry">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                            </svg>
+                                            To Country
+                                        </label>
+                                        <select id="SelectedToCountry" name="SelectedToCountry" asp-for="SelectedToCountry" asp-items="Model.ToCountries" class="form-control">
+                                            <option value="">Select a country</option>
+                                        </select>
+                                        <span asp-validation-for="SelectedToCountry" class="field-validation-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="SelectedToTown">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            To Town
+                                        </label>
+                                        <select id="SelectedToTown" name="SelectedToTown" asp-for="SelectedToTown" class="form-control">
+                                            <option value="">Select a town</option>
+                                        </select>
+                                        <span asp-validation-for="SelectedToTown" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label asp-for="ToAddress">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            Delivery Address
+                                        </label>
+                                        <input asp-for="ToAddress" class="form-control" placeholder="Street address, building number, etc." />
+                                        <span asp-validation-for="ToAddress" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3 class="section-title">Scheduling & Responsibility</h3>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label asp-for="PickUpDate">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                            </svg>
+                                            Pickup Date
+                                        </label>
+                                        <input asp-for="PickUpDate" type="date" class="form-control" />
+                                        <span asp-validation-for="PickUpDate" class="field-validation-error"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="DeliveryDate">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                <line x1="8" y1="14" x2="8" y2="14"></line>
+                                                <line x1="12" y1="14" x2="12" y2="14"></line>
+                                                <line x1="16" y1="14" x2="16" y2="14"></line>
+                                                <line x1="8" y1="18" x2="8" y2="18"></line>
+                                                <line x1="12" y1="18" x2="12" y2="18"></line>
+                                                <line x1="16" y1="18" x2="16" y2="18"></line>
+                                            </svg>
+                                            Delivery Date
+                                        </label>
+                                        <input asp-for="DeliveryDate" type="date" class="form-control" />
+                                        <span asp-validation-for="DeliveryDate" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label asp-for="SelectedCompanyStockId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                            </svg>
+                                            Responsible Company
+                                        </label>
+                                        <select asp-for="SelectedCompanyStockId" asp-items="Model.CompanyStocks" class="form-control">
+                                            <option value="">Select a Company</option>
+                                        </select>
+                                        <span asp-validation-for="SelectedCompanyStockId" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Create Shipment
+                                </button>
+
+                                <a asp-controller="Shipment" asp-action="ListOfShipments" class="btn btn-secondary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 12H5"></path>
+                                        <polyline points="12 19 5 12 12 5"></polyline>
+                                    </svg>
+                                    Back to List
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About ENN Cargo</h4>
+                    <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe. Our network of carrier partners helps us deliver excellence in every transport.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href="#">Full Truck Loads</a></li>
+                        <li><a href="#">Intermodal Transport</a></li>
+                        <li><a href="#">Express Delivery</a></li>
+                        <li><a href="#">Specialized Transport</a></li>
+                        <li><a href="#">Digital Solutions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">International Markets</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal Information</h4>
+                    <ul>
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Imprint</a></li>
+                        <li><a href="#">Data Protection</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ENN Cargo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Language dropdown toggle
+            const languageSwitch = document.getElementById('languageSwitch');
+            const languageFlyout = document.getElementById('languageFlyout');
+            const closeFlyout = document.getElementById('closeFlyout');
+
+            if (languageSwitch) {
+                languageSwitch.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageFlyout.classList.toggle('show');
+                });
+
+                if (closeFlyout) {
+                    closeFlyout.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        languageFlyout.classList.remove('show');
+                    });
+                }
+
+                // Close the flyout if clicked outside
+                document.addEventListener('click', function(event) {
+                    const isClickInside = languageSwitch.contains(event.target) ||
+                                        languageFlyout.contains(event.target);
+
+                    if (!isClickInside && languageFlyout.classList.contains('show')) {
+                        languageFlyout.classList.remove('show');
+                    }
+                });
+            }
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // User menu dropdown toggle
+            const userNameToggle = document.getElementById('user-name-toggle');
+            const userDropdown = document.getElementById('user-dropdown');
+
+            if (userNameToggle) {
+                userNameToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('show');
+                });
+
+                // Close the dropdown if clicked outside
+                document.addEventListener('click', function(event) {
+                    const isClickInside = userNameToggle.contains(event.target) ||
+                                        userDropdown.contains(event.target);
+
+                    if (!isClickInside && userDropdown.classList.contains('show')) {
+                        userDropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            // Predefined towns
             var predefinedTowns = @Html.Raw(Json.Serialize(Model.PredefinedTowns));
 
             function updateTowns(countryDropdownId, townDropdownId) {
@@ -563,4 +1465,7 @@
             });
         });
     </script>
-}
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+</body>
+</html>

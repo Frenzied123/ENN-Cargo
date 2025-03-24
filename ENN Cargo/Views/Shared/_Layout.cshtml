@@ -7,55 +7,237 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ENN_Cargo.styles.css" asp-append-version="true" />
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ENN_Cargo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <!-- Only the logo image is clickable to redirect to home page -->
+                <img src="https://res.cloudinary.com/dyonctb8p/image/upload/v1742193325/ENN_cargo_transparent_goqj9p.png" alt="ENN Cargo Logo" onclick="window.location.href='/'">
+                <div class="slogan">The European Transport Organisation</div>
+            </div>
+            <div class="header-right">
+                <!-- Language selector -->
+                <div class="language-selector">
+                    <button type="button" class="language-switch" id="languageSwitch">
+                        <span class="flag flag-uk"></span>
+                        <span>EN</span>
+                        <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                    </button>
+                    <div class="language-flyout" id="languageFlyout">
+                        <div class="heading">
+                            <h2 class="headline">Select a language</h2>
+                            <button type="button" class="close-button" id="closeFlyout"><i class="fas fa-times"></i></button>
+                        </div>
+                        <ul class="language-list">
+                            <li class="language-item">
+                                <a href="/int/en" class="international-item">
+                                    <span class="flag flag-uk"></span>
+                                    <span class="label">English</span>
+                                </a>
+                            </li>
+                            <li class="language-item">
+                                <a href="/bg/en">
+                                    <span class="flag flag-bg"></span>
+                                    <span class="label">Български</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Always render the login button, but control visibility -->
+                <div class="login-button" id="login-button" style="@(User.Identity.IsAuthenticated ? "display: none;" : "display: inline-block;")">
+                    LOGIN
+                </div>
+
+                <!-- Always render the user menu, but control visibility -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    string displayName = "";
+                    string userEmail = User.Identity.Name; // This is the email (e.g., ENNCargo@admin, driver@example.com, etc.)
+
+                    if (User.IsInRole("Admin"))
+                    {
+                        // For Admin role: Display "Admin"
+                        displayName = "Admin";
+                    }
+                    else if (User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                    {
+                        // For Driver, TruckCompany, or ShipmentCompany: Use the email, but remove the domain part for a cleaner display
+                        if (!string.IsNullOrEmpty(userEmail))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="ListOfDrivers">Driver</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CompanyStock" asp-action="ListOfCompaniesStock">CompanyStock</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Shipment" asp-action="ListOfShipments">Shipments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TruckCompany" asp-action="ListOfTruckCompanies">TruckCompany</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="ListOfVehicles">Vehicle</a>
-                            </li>
+                            // Split the email at the '@' symbol and take the first part
+                            var emailParts = userEmail.Split('@');
+                            displayName = emailParts.Length > 0 ? emailParts[0] : userEmail;
                         }
-                    </ul>
-                    <partial name="_LoginPartial"/>
+                        else
+                        {
+                            // Fallback if email is null or empty
+                            displayName = User.IsInRole("Driver") ? "Driver" : "Company";
+                        }
+                    }
+                    else
+                    {
+                        // Fallback for any other role
+                        displayName = userEmail ?? "User";
+                    }
+
+                    <div class="user-menu" id="user-menu" style="display: inline-block;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name">@displayName</span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                            {
+                                <div class="divider"></div>
+                                <div class="role-section"><i class="fas fa-cogs"></i> Management</div>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
+                                {
+                                    <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("ShipmentCompany"))
+                                {
+                                    <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                                }
+                            }
+
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <div class="user-name" id="user-name-toggle">
+                            <span id="current-user-name"></span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="dropdown-content" id="user-dropdown">
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="/user/orders"><i class="fas fa-box"></i> My Orders</a>
+                            <a href="/user/tracking"><i class="fas fa-search"></i> Track Shipments</a>
+                            <div class="divider"></div>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </header>
+
+    <!-- Role-based dashboard navigation - Only visible when logged in -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="dashboard-nav" id="dashboard-nav" style="display: block;">
+            <div class="container dashboard-container">
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-links">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Driver/ListOfDrivers" class="@(Context.Request.Path.StartsWithSegments("/Driver") ? "active" : "")"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies" class="@(Context.Request.Path.StartsWithSegments("/TruckCompany") ? "active" : "")"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles" class="@(Context.Request.Path.StartsWithSegments("/Vehicle") ? "active" : "")"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments" class="@(Context.Request.Path.StartsWithSegments("/Shipment") ? "active" : "")"><i class="fas fa-box"></i> Shipments</a>
+                        <a href="/CompanyStock/ListOfCompaniesStock" class="@(Context.Request.Path.StartsWithSegments("/CompanyStock") ? "active" : "")"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                    }
+                    else if (User.IsInRole("TruckCompany"))
+                    {
+                        <a href="/TruckCompany/ListOfTruckCompanies" class="@(Context.Request.Path.StartsWithSegments("/TruckCompany") ? "active" : "")"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles" class="@(Context.Request.Path.StartsWithSegments("/Vehicle") ? "active" : "")"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Driver/ListOfDrivers" class="@(Context.Request.Path.StartsWithSegments("/Driver") ? "active" : "")"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/Shipment/ListOfShipments" class="@(Context.Request.Path.StartsWithSegments("/Shipment") ? "active" : "")"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("Driver"))
+                    {
+                        <a href="/Driver/ListOfDrivers" class="@(Context.Request.Path.StartsWithSegments("/Driver") ? "active" : "")"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies" class="@(Context.Request.Path.StartsWithSegments("/TruckCompany") ? "active" : "")"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles" class="@(Context.Request.Path.StartsWithSegments("/Vehicle") ? "active" : "")"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments" class="@(Context.Request.Path.StartsWithSegments("/Shipment") ? "active" : "")"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("ShipmentCompany"))
+                    {
+                        <a href="/CompanyStock/ListOfCompaniesStock" class="@(Context.Request.Path.StartsWithSegments("/CompanyStock") ? "active" : "")"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                        <a href="/Shipment/ListOfShipments" class="@(Context.Request.Path.StartsWithSegments("/Shipment") ? "active" : "")"><i class="fas fa-box"></i> Shipments</a>
+                    }
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>    <footer class="border-top footer text-muted">
+        </div>
+    }
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+    <footer class="footer">
         <div class="container">
-            &copy; 2025 - ENN_Cargo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About ENN Cargo</h4>
+                    <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe. Our network of carrier partners helps us deliver excellence in every transport.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><a href="#">Full Truck Loads</a></li>
+                        <li><a href="#">Intermodal Transport</a></li>
+                        <li><a href="#">Express Delivery</a></li>
+                        <li><a href="#">Specialized Transport</a></li>
+                        <li><a href="#">Digital Solutions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">International Markets</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal Information</h4>
+                    <ul>
+                        <li><a href="#">Terms and Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Imprint</a></li>
+                        <li><a href="#">Data Protection</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ENN Cargo. All rights reserved.</p>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
