@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ENN_Cargo.DataAccess.Migrations
 {
     [DbContext(typeof(ENN_CargoApplicationDbContext))]
-    [Migration("20250319182435_InitialCreate")]
+    [Migration("20250324064444_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -263,12 +263,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryDate = new DateTime(2025, 3, 22, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7709),
+                            DeliveryDate = new DateTime(2025, 3, 27, 8, 44, 43, 535, DateTimeKind.Local).AddTicks(1875),
                             Description = "Electronics",
                             FromAddress = "Sklad Kappa",
                             FromCountry = "Bulgaria",
                             FromTown = "Kazanlak",
-                            PickUpDate = new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7653),
+                            PickUpDate = new DateTime(2025, 3, 24, 8, 44, 43, 535, DateTimeKind.Local).AddTicks(1817),
                             Status = "Available",
                             ToAddress = "Kaufland",
                             ToCountry = "Bulgaria",
@@ -278,12 +278,12 @@ namespace ENN_Cargo.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            DeliveryDate = new DateTime(2025, 3, 24, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7717),
+                            DeliveryDate = new DateTime(2025, 3, 29, 8, 44, 43, 535, DateTimeKind.Local).AddTicks(1883),
                             Description = "Furniture",
                             FromAddress = "Sklad Videnov",
                             FromCountry = "Bulgaria",
                             FromTown = "Stara Zagora",
-                            PickUpDate = new DateTime(2025, 3, 19, 20, 24, 34, 957, DateTimeKind.Local).AddTicks(7716),
+                            PickUpDate = new DateTime(2025, 3, 24, 8, 44, 43, 535, DateTimeKind.Local).AddTicks(1882),
                             Status = "Available",
                             ToAddress = "Metro",
                             ToCountry = "Bulgaria",

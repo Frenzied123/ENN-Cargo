@@ -44,7 +44,13 @@ builder.Services.ConfigureApplicationCookie(options =>
             context.Properties.ExpiresUtc = null;
             context.CookieOptions.Expires = null;
         }
+        var sessionId = Guid.NewGuid().ToString();
+        var loginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
         context.Principal?.Identities.First().AddClaim(new Claim("IsPersistent", context.Properties.IsPersistent.ToString()));
+        context.Principal?.Identities.First().AddClaim(new Claim("SessionId", sessionId));
+        context.Principal?.Identities.First().AddClaim(new Claim("LoginTime", loginTime));
+        context.HttpContext.Session.SetString("SessionId", sessionId);
+        context.HttpContext.Session.SetString("LoginTime", loginTime);
         return Task.CompletedTask;
     };
 });
@@ -112,12 +118,22 @@ app.Use(async (context, next) =>
             bool isPersistent = bool.TryParse(isPersistentClaim, out var result) && result;
             if (!isPersistent)
             {
-                context.Response.Cookies.Delete("ENN_Cargo_Auth", new CookieOptions
+                var sessionIdClaim = context.User.FindFirst("SessionId")?.Value;
+                var sessionIdFromSession = context.Session.GetString("SessionId");
+                var loginTimeClaim = context.User.FindFirst("LoginTime")?.Value;
+                var loginTimeFromSession = context.Session.GetString("LoginTime");
+                var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                if (string.IsNullOrEmpty(sessionIdFromSession) || sessionIdClaim != sessionIdFromSession ||
+                    string.IsNullOrEmpty(loginTimeClaim) || loginTimeClaim != loginTimeFromSession ||
+                    (long.TryParse(loginTimeClaim, out var loginTime) && (currentTime - loginTime) > 1800))
                 {
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
+                    context.Response.Cookies.Delete("ENN_Cargo_Auth", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+                }
             }
         }
     }
