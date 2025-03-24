@@ -8,15 +8,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENN Cargo - The European Transport Organisation</title>
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #003781;
+            --primary-dark: #002a61;
+            --primary-light: #1a4e93;
             --secondary-color: #e30613;
+            --secondary-dark: #b90510;
             --accent-color: #009fe3;
-            --light-gray: #f5f5f5;
-            --medium-gray: #e0e0e0;
+            --accent-dark: #0080b7;
+            --light-gray: #f7f7f7;
+            --medium-gray: #e4e4e4;
             --dark-gray: #333;
+            --text-color: #4a4a4a;
             --white: #ffffff;
+            --border-radius: 3px;
+            --box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --transition: all 0.2s ease-in-out;
         }
 
         * {
@@ -27,10 +37,11 @@
 
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: var(--dark-gray);
+            color: var(--text-color);
             line-height: 1.6;
             width: 100%;
             overflow-x: hidden;
+            background-color: var(--light-gray);
         }
 
         img {
@@ -45,7 +56,6 @@
         }
 
         /* Language selector in header */
-
         .language-selector {
             position: relative;
             margin-right: 20px;
@@ -58,11 +68,11 @@
             padding: 7px 12px;
             background-color: transparent;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             font-size: 0.9rem;
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
             .language-switch:hover {
@@ -100,10 +110,10 @@
             top: 110%;
             right: 0;
             background-color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: var(--box-shadow);
             z-index: 1000;
             min-width: 260px;
-            border-radius: 3px;
+            border-radius: var(--border-radius);
             border-top: 3px solid var(--accent-color);
             animation: fadeIn 0.2s ease-in-out;
         }
@@ -132,7 +142,7 @@
             font-size: 1.4rem;
             cursor: pointer;
             color: var(--dark-gray);
-            transition: color 0.2s;
+            transition: var(--transition);
         }
 
             .close-button:hover {
@@ -146,7 +156,7 @@
 
         .language-item {
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
             .language-item:hover {
@@ -182,6 +192,7 @@
             background-color: var(--primary-color);
             padding: 20px 0;
             color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
 
             .main-header .container {
@@ -200,7 +211,7 @@
                 width: auto;
                 background-color: white;
                 padding: 5px;
-                border-radius: 3px;
+                border-radius: var(--border-radius);
                 transition: transform 0.2s;
                 cursor: pointer;
             }
@@ -228,10 +239,11 @@
             padding: 10px 25px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-transform: uppercase;
             font-size: 0.9rem;
             letter-spacing: 0.5px;
+            border-radius: var(--border-radius);
         }
 
             .login-button:hover {
@@ -252,8 +264,8 @@
             padding: 8px 15px;
             font-weight: 500;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            transition: all 0.3s;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
         }
 
             .user-name:hover {
@@ -267,10 +279,10 @@
             right: 0;
             top: 110%;
             background-color: white;
-            min-width: 220px;
-            box-shadow: 0px 8px 30px rgba(0,0,0,0.15);
+            min-width: 280px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
             z-index: 1000;
-            border-radius: 3px;
+            border-radius: var(--border-radius);
             border-top: 3px solid var(--accent-color);
         }
 
@@ -280,7 +292,7 @@
                 text-decoration: none;
                 display: flex;
                 align-items: center;
-                transition: all 0.3s;
+                transition: var(--transition);
                 font-size: 0.95rem;
             }
 
@@ -291,15 +303,15 @@
 
                 .dropdown-content a i {
                     margin-right: 12px;
-                    font-size: 18px;
-                    width: 24px;
+                    font-size: 16px;
+                    width: 18px;
                     text-align: center;
                     color: var(--accent-color);
                 }
 
             .dropdown-content .divider {
                 height: 1px;
-                background-color: #eeeeee;
+                background-color: var(--medium-gray);
                 margin: 5px 0;
             }
 
@@ -309,24 +321,21 @@
         }
 
         @@keyframes fadeIn {
-            from
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-        {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Main navigation */
         .main-nav {
             background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
             .main-nav .container {
@@ -347,7 +356,7 @@
                 font-weight: 600;
                 font-size: 0.9rem;
                 text-transform: uppercase;
-                transition: all 0.3s;
+                transition: var(--transition);
                 border-right: 1px solid rgba(0,0,0,0.05);
             }
 
@@ -371,6 +380,78 @@
             cursor: pointer;
             padding: 10px;
         }
+
+        /* Role-based dashboard navigation */
+        .dashboard-nav {
+            background-color: #fff;
+            padding: 0;
+            border-bottom: 1px solid var(--medium-gray);
+            display: none; /* Hidden by default, shown when logged in */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .dashboard-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 15px 20px 15px 0;
+            margin-right: 15px;
+            border-right: 1px solid var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-links {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .dashboard-links a {
+                text-decoration: none;
+                color: var(--text-color);
+                padding: 15px 20px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                position: relative;
+            }
+
+                .dashboard-links a:hover {
+                    color: var(--primary-color);
+                    background-color: rgba(0,0,0,0.015);
+                }
+
+                .dashboard-links a.active {
+                    color: var(--primary-color);
+                    background-color: var(--light-gray);
+                    font-weight: 600;
+                }
+
+                    .dashboard-links a.active::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 3px;
+                        background-color: var(--accent-color);
+                    }
+
+                .dashboard-links a i {
+                    margin-right: 8px;
+                    color: var(--accent-color);
+                    font-size: 14px;
+                    width: 16px;
+                    text-align: center;
+                }
 
         .hero {
             position: relative;
@@ -402,6 +483,7 @@
             margin-left: 60px;
             color: white;
             z-index: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
             .hero-content h1 {
@@ -428,10 +510,11 @@
             transition: background-color 0.3s;
             text-transform: uppercase;
             font-size: 0.9rem;
+            border-radius: var(--border-radius);
         }
 
             .hero-button:hover {
-                background-color: #cc0000;
+                background-color: var(--secondary-dark);
             }
 
         .company-highlights {
@@ -538,9 +621,10 @@
             text-align: center;
             padding: 30px 20px;
             border: 1px solid var(--medium-gray);
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
             background-color: white;
+            border-radius: var(--border-radius);
         }
 
             .service-card:hover {
@@ -556,7 +640,6 @@
             }
 
             /* Service cards styling */
-
             .service-card h3 {
                 font-size: 1.3rem;
                 margin-bottom: 15px;
@@ -577,9 +660,10 @@
             text-decoration: none;
             font-weight: 600;
             margin-top: 10px;
-            transition: background-color 0.3s;
+            transition: var(--transition);
             text-transform: uppercase;
             font-size: 0.8rem;
+            border-radius: var(--border-radius);
         }
 
             .btn:hover {
@@ -590,6 +674,7 @@
             background-color: var(--primary-color);
             color: white;
             padding: 60px 0;
+            background-image: linear-gradient(to right, var(--primary-dark), var(--primary-color));
         }
 
         .stats-grid {
@@ -621,6 +706,7 @@
                 font-weight: 300;
                 text-transform: uppercase;
                 letter-spacing: 1px;
+                margin: 0;
             }
 
         .testimonials-section {
@@ -640,7 +726,7 @@
             text-align: center;
             background-color: white;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: var(--box-shadow);
             opacity: 0;
             position: absolute;
             top: 0;
@@ -648,6 +734,7 @@
             right: 0;
             transform: translateY(20px);
             transition: opacity 0.5s, transform 0.5s;
+            border-radius: var(--border-radius);
         }
 
             .testimonial.active {
@@ -709,7 +796,7 @@
             background-color: #ddd;
             margin: 0 5px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
             .testimonial-dot.active {
@@ -727,7 +814,9 @@
             grid-template-columns: 1fr 1fr;
             gap: 0;
             background-color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
 
         .contact-info {
@@ -764,12 +853,13 @@
             margin-right: 15px;
             color: var(--accent-color);
             font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
         }
 
         .contact-form {
             padding: 40px;
         }
-
 
         .form-group {
             margin-bottom: 20px;
@@ -787,8 +877,9 @@
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-family: inherit;
+            border-radius: var(--border-radius);
         }
 
             .contact-form input:focus,
@@ -811,8 +902,9 @@
             cursor: pointer;
             font-weight: 600;
             text-transform: uppercase;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-size: 0.9rem;
+            border-radius: var(--border-radius);
         }
 
             .submit-btn:hover {
@@ -869,7 +961,7 @@
                     color: #bbb;
                     text-decoration: none;
                     font-size: 0.9rem;
-                    transition: all 0.3s;
+                    transition: var(--transition);
                     display: block;
                 }
 
@@ -892,7 +984,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: white;
             text-decoration: none;
         }
@@ -910,168 +1002,197 @@
             font-size: 0.9rem;
         }
 
-        /* Enhanced Responsive styles */
-        @@media (max-width: 1200px) {
-            .container
-
-        {
-            padding: 0 30px;
+        /* Role-based specific styling */
+        .dropdown-content .role-section {
+            padding: 12px 18px;
+            background-color: #f5f7f9;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--medium-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+            .dropdown-content .role-section i {
+                margin-right: 8px;
+                font-size: 14px;
+                color: var(--accent-color);
+            }
+
+        /* Enhanced Responsive styles */
+        @@media (max-width: 1200px) {
+            .container {
+                padding: 0 30px;
+            }
         }
 
         @@media (max-width: 992px) {
-            .services-grid, .stats-grid
-
-        {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .footer-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .stat-card {
-            border-right: none;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding: 30px 10px;
-        }
-
-            .stat-card:nth-child(3),
-            .stat-card:nth-child(4) {
-                border-bottom: none;
+            .services-grid, .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-        .feature-block {
-            flex-direction: column;
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .feature-icon {
-            margin-right: 0;
-            margin-bottom: 15px;
-        }
-
-            .feature-icon img {
-                width: 70px;
-                height: 70px;
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
+            .stat-card {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                padding: 30px 10px;
+            }
+
+                .stat-card:nth-child(3),
+                .stat-card:nth-child(4) {
+                    border-bottom: none;
+                }
+
+            .feature-block {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 50px;
+            }
+
+            .feature-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+                .feature-icon img {
+                    width: 70px;
+                    height: 70px;
+                }
         }
 
         @@media (max-width: 768px) {
-            .menu-toggle
+            .menu-toggle {
+                display: block;
+            }
 
-        {
-            display: block;
-        }
+            .main-header .container, .main-nav .container {
+                flex-direction: column;
+            }
 
-        .main-header .container, .main-nav .container {
-            flex-direction: column;
-        }
-
-        .header-right {
-            margin-top: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .nav-links {
-            flex-direction: column;
-            width: 100%;
-            display: none;
-        }
-
-            .nav-links.active {
+            .header-right {
+                margin-top: 20px;
+                width: 100%;
                 display: flex;
+                justify-content: space-between;
             }
 
-            .nav-links a {
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+            }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-links a {
+                    border-right: none;
+                    border-bottom: 1px solid #eee;
+                    text-align: center;
+                    padding: 15px;
+                }
+
+            .nav-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .dashboard-nav .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-title {
                 border-right: none;
-                border-bottom: 1px solid #eee;
-                text-align: center;
-                padding: 15px;
+                border-bottom: 1px solid var(--medium-gray);
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                width: 100%;
             }
 
-        .nav-right {
-            width: 100%;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .hero {
-            height: auto;
-            padding: 60px 0;
-        }
-
-        .hero-content {
-            margin: 0 20px;
-            max-width: 100%;
-            padding: 30px;
-        }
-
-            .hero-content h1 {
-                font-size: 2rem;
+            .dashboard-links {
+                flex-direction: column;
+                width: 100%;
             }
 
-        .contact-grid {
-            grid-template-columns: 1fr;
-        }
+                .dashboard-links a {
+                    padding: 12px 15px;
+                    border-bottom: 1px solid rgba(0,0,0,0.05);
+                }
 
-        .feature-block {
-            padding: 0 10px;
-        }
+            .hero {
+                height: auto;
+                padding: 60px 0;
+            }
 
+            .hero-content {
+                margin: 0 20px;
+                max-width: 100%;
+                padding: 30px;
+            }
+
+                .hero-content h1 {
+                    font-size: 2rem;
+                }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-block {
+                padding: 0 10px;
+            }
         }
 
         @@media (max-width: 576px) {
-            .services-grid
-
-        {
-            grid-template-columns: 1fr;
-        }
-
-        .footer-grid {
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        .hero-content {
-            margin: 0 15px;
-            padding: 25px 20px;
-        }
-
-            .hero-content h1 {
-                font-size: 1.8rem;
+            .services-grid {
+                grid-template-columns: 1fr;
             }
 
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .stat-card {
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-            .stat-card:last-child {
-                border-bottom: none;
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
-        .testimonial-text {
-            font-size: 1.1rem;
-            padding: 0 20px;
-        }
+            .hero-content {
+                margin: 0 15px;
+                padding: 25px 20px;
+            }
 
-        .section-title, .highlight-title {
-            font-size: 1.7rem;
-        }
+                .hero-content h1 {
+                    font-size: 1.8rem;
+                }
 
-        .contact-form, .contact-info {
-            padding: 30px 20px;
-        }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
 
+            .stat-card {
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+            }
+
+                .stat-card:last-child {
+                    border-bottom: none;
+                }
+
+            .testimonial-text {
+                font-size: 1.1rem;
+                padding: 0 20px;
+            }
+
+            .section-title, .highlight-title {
+                font-size: 1.7rem;
+            }
+
+            .contact-form, .contact-info {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
@@ -1090,12 +1211,12 @@
                     <button type="button" class="language-switch" id="languageSwitch">
                         <span class="flag flag-uk"></span>
                         <span>EN</span>
-                        <span style="margin-left: 5px;">▼</span>
+                        <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
                     </button>
                     <div class="language-flyout" id="languageFlyout">
                         <div class="heading">
                             <h2 class="headline">Select a language</h2>
-                            <button type="button" class="close-button" id="closeFlyout">×</button>
+                            <button type="button" class="close-button" id="closeFlyout"><i class="fas fa-times"></i></button>
                         </div>
                         <ul class="language-list">
                             <li class="language-item">
@@ -1154,15 +1275,45 @@
                     <div class="user-menu" id="user-menu" style="display: inline-block;">
                         <div class="user-name" id="user-name-toggle">
                             <span id="current-user-name">@displayName</span>
-                            <span style="margin-left: 5px;">▼</span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
                         </div>
                         <div class="dropdown-content" id="user-dropdown">
-                            <a href="/user/profile"><i>👤</i> My Profile</a>
-                            <a href="/user/orders"><i>📦</i> My Orders</a>
-                            <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Driver") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany"))
+                            {
+                                <div class="divider"></div>
+                                <div class="role-section"><i class="fas fa-cogs"></i> Management</div>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany"))
+                                {
+                                    <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("TruckCompany") || User.IsInRole("ShipmentCompany") || User.IsInRole("Driver"))
+                                {
+                                    <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("ShipmentCompany"))
+                                {
+                                    <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                                }
+                            }
+
                             <div class="divider"></div>
-                            <a href="/user/settings"><i>⚙️</i> Account Settings</a>
-                            <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                 }
@@ -1171,25 +1322,65 @@
                     <div class="user-menu" id="user-menu" style="display: none;">
                         <div class="user-name" id="user-name-toggle">
                             <span id="current-user-name"></span>
-                            <span style="margin-left: 5px;">▼</span>
+                            <span style="margin-left: 5px;"><i class="fas fa-chevron-down"></i></span>
                         </div>
                         <div class="dropdown-content" id="user-dropdown">
-                            <a href="/user/profile"><i>👤</i> My Profile</a>
-                            <a href="/user/orders"><i>📦</i> My Orders</a>
-                            <a href="/user/tracking"><i>🔍</i> Track Shipments</a>
+                            <a href="/user/profile"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="/user/orders"><i class="fas fa-box"></i> My Orders</a>
+                            <a href="/user/tracking"><i class="fas fa-search"></i> Track Shipments</a>
                             <div class="divider"></div>
-                            <a href="/user/settings"><i>⚙️</i> Account Settings</a>
-                            <a href="/Account/Logout" id="logout-button"><i>🚪</i> Logout</a>
+                            <a href="/user/settings"><i class="fas fa-cog"></i> Account Settings</a>
+                            <a href="/Account/Logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                 }
             </div>
+        </div>
     </header>
+
+    <!-- Role-based dashboard navigation - Only visible when logged in -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="dashboard-nav" id="dashboard-nav" style="display: block;">
+            <div class="container dashboard-container">
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-links">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                        <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                    }
+                    else if (User.IsInRole("TruckCompany"))
+                    {
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("Driver"))
+                    {
+                        <a href="/Driver/ListOfDrivers"><i class="fas fa-id-card"></i> Drivers</a>
+                        <a href="/TruckCompany/ListOfTruckCompanies"><i class="fas fa-building"></i> Truck Companies</a>
+                        <a href="/Vehicle/ListOfVehicles"><i class="fas fa-truck"></i> Vehicles</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                    else if (User.IsInRole("ShipmentCompany"))
+                    {
+                        <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                        <a href="/Shipment/ListOfShipments"><i class="fas fa-box"></i> Shipments</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 
     <!-- Main navigation -->
     <nav class="main-nav">
         <div class="container">
-            <button class="menu-toggle" id="menuToggle">☰</button>
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
             <div class="nav-links" id="navLinks">
                 <a href="#">TRANSPORT SOLUTIONS</a>
                 <a href="#">QUALITY & ENVIRONMENT</a>
@@ -1372,7 +1563,7 @@
                 <div class="contact-info">
                     <h3>Get In Touch</h3>
                     <div class="contact-detail">
-                        <span class="contact-icon">📍</span>
+                        <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
                         <div>
                             <strong>ENN Cargo Headquarters</strong><br>
                             Industrialna Zona, ул. 23ти Пехотен шипченски полк №114,<br>
@@ -1380,15 +1571,15 @@
                         </div>
                     </div>
                     <div class="contact-detail">
-                        <span class="contact-icon">📞</span>
+                        <span class="contact-icon"><i class="fas fa-phone-alt"></i></span>
                         <div>+359 89 508 0151</div>
                     </div>
                     <div class="contact-detail">
-                        <span class="contact-icon">✉️</span>
+                        <span class="contact-icon"><i class="fas fa-envelope"></i></span>
                         <div>enncargo@gmail.com</div>
                     </div>
                     <div class="contact-detail">
-                        <span class="contact-icon">🕒</span>
+                        <span class="contact-icon"><i class="fas fa-clock"></i></span>
                         <div>
                             <strong>Opening Hours:</strong><br>
                             Monday - Friday: 8:00 AM - 6:00 PM<br>
@@ -1434,8 +1625,9 @@
                     <h4>About ENN Cargo</h4>
                     <p>ENN Cargo is a leading European transport organization with 30 years of experience in providing reliable and cost-effective transport solutions across Europe. Our network of carrier partners helps us deliver excellence in every transport.</p>
                     <div class="social-icons">
-                        <a href="#" class="social-icon">f</a>
-                        <a href="#" class="social-icon">yt</a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -1567,29 +1759,42 @@
                     // Immediately update the UI to reflect logged-out state
                     const userMenu = document.getElementById('user-menu');
                     const loginButton = document.getElementById('login-button');
-                    userMenu.style.display = 'none';
-                    loginButton.style.display = 'inline-block';
+                    const dashboardNav = document.getElementById('dashboard-nav');
+
+                    if (userMenu) userMenu.style.display = 'none';
+                    if (loginButton) loginButton.style.display = 'inline-block';
+                    if (dashboardNav) dashboardNav.style.display = 'none';
 
                     // Call the server-side logout endpoint to clear the authentication cookie
-                            fetch('/Account/Logout', {
-            method: 'POST',
-            headers: {
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Logout successful on server side');
-                window.location.href = '/';
-            } else {
-                console.error('Logout failed on server side');
-            }
-        })
-        .catch(error => {
-            console.error('Error during logout:', error);
-        });
+                    fetch('/Account/Logout', {
+                        method: 'POST',
+                        headers: {
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Logout successful on server side');
+                            window.location.href = '/';
+                        } else {
+                            console.error('Logout failed on server side');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during logout:', error);
+                    });
                 });
             }
+
+            // Active state for dashboard links
+            const dashboardLinks = document.querySelectorAll('.dashboard-links a');
+            const currentPath = window.location.pathname;
+
+            dashboardLinks.forEach(link => {
+                if (currentPath.includes(link.getAttribute('href'))) {
+                    link.classList.add('active');
+                }
+            });
 
             // Rotating testimonials
             const testimonials = document.querySelectorAll('.testimonial');
