@@ -256,8 +256,6 @@
     </section>
 
     <!-- Footer -->
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
@@ -277,35 +275,36 @@
 
             if (languageSwitch) {
                 languageSwitch.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent event bubbling
-                    languageFlyout.classList.toggle('show');
+                    e.stopPropagation();
+                    if (languageFlyout) {
+                        languageFlyout.classList.toggle('show');
+                    }
                 });
 
                 if (closeFlyout) {
                     closeFlyout.addEventListener('click', function(e) {
-                        e.stopPropagation(); // Prevent event bubbling
-                        languageFlyout.classList.remove('show');
+                        e.stopPropagation();
+                        if (languageFlyout) {
+                            languageFlyout.classList.remove('show');
+                        }
                     });
                 }
 
-                // Handle language selection
                 const languageItems = document.querySelectorAll('.language-item a');
                 languageItems.forEach(item => {
                     item.addEventListener('click', function(e) {
-                        // Optional: Add visual feedback before redirecting
                         this.style.fontWeight = 'bold';
-
-                        // Close the flyout
-                        languageFlyout.classList.remove('show');
+                        if (languageFlyout) {
+                            languageFlyout.classList.remove('show');
+                        }
                     });
                 });
 
-                // Close the flyout if clicked outside
                 document.addEventListener('click', function(event) {
-                    const isClickInside = languageSwitch.contains(event.target) ||
-                                          languageFlyout.contains(event.target);
+                    const isClickInside = (languageSwitch && languageSwitch.contains(event.target)) ||
+                                          (languageFlyout && languageFlyout.contains(event.target));
 
-                    if (!isClickInside && languageFlyout.classList.contains('show')) {
+                    if (!isClickInside && languageFlyout && languageFlyout.classList.contains('show')) {
                         languageFlyout.classList.remove('show');
                     }
                 });
@@ -315,7 +314,6 @@
             const loginButton = document.getElementById('login-button');
             if (loginButton) {
                 loginButton.addEventListener('click', function() {
-                    // Redirect to the login page
                     window.location.href = '/Account/Login';
                 });
             }
@@ -326,11 +324,10 @@
 
             if (userNameToggle) {
                 userNameToggle.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent event bubbling
+                    e.stopPropagation();
                     userDropdown.classList.toggle('show');
                 });
 
-                // Close the dropdown if clicked outside
                 document.addEventListener('click', function(event) {
                     const isClickInside = userNameToggle.contains(event.target) ||
                                           userDropdown.contains(event.target);
@@ -347,7 +344,6 @@
                 logoutButton.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    // Immediately update the UI to reflect logged-out state
                     const userMenu = document.getElementById('user-menu');
                     const loginButton = document.getElementById('login-button');
                     const dashboardNav = document.getElementById('dashboard-nav');
@@ -356,7 +352,6 @@
                     if (loginButton) loginButton.style.display = 'inline-block';
                     if (dashboardNav) dashboardNav.style.display = 'none';
 
-                    // Call the server-side logout endpoint to clear the authentication cookie
                     fetch('/Account/Logout', {
                         method: 'POST',
                         headers: {
@@ -393,27 +388,21 @@
             let currentTestimonial = 0;
             let testimonialInterval;
 
-            // Function to show a specific testimonial
             function showTestimonial(index) {
-                // Hide all testimonials
                 testimonials.forEach(testimonial => {
                     testimonial.classList.remove('active');
                 });
 
-                // Hide all active dots
                 dots.forEach(dot => {
                     dot.classList.remove('active');
                 });
 
-                // Show the selected testimonial
                 testimonials[index].classList.add('active');
                 dots[index].classList.add('active');
 
-                // Update current testimonial index
                 currentTestimonial = index;
             }
 
-            // Function to show the next testimonial
             function nextTestimonial() {
                 let next = currentTestimonial + 1;
                 if (next >= testimonials.length) {
@@ -422,24 +411,16 @@
                 showTestimonial(next);
             }
 
-            // Setup dot navigation
             dots.forEach((dot, index) => {
                 dot.addEventListener('click', function() {
-                    // Clear automatic rotation when user manually navigates
                     clearInterval(testimonialInterval);
-
-                    // Show the clicked testimonial
                     showTestimonial(index);
-
-                    // Restart automatic rotation
                     testimonialInterval = setInterval(nextTestimonial, 7000);
                 });
             });
 
-            // Start automatic rotation
             testimonialInterval = setInterval(nextTestimonial, 7000);
 
-            // Random testimonial on page load
             const randomIndex = Math.floor(Math.random() * testimonials.length);
             showTestimonial(randomIndex);
 
@@ -447,34 +428,40 @@
             const contactForm = document.getElementById('contactForm');
             if (contactForm) {
                 contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Prevent default form submission
-
+                    e.preventDefault();
                     const form = this;
                     const formMessage = document.getElementById('formMessage');
                     const submitBtn = form.querySelector('.submit-btn');
-
-                    // Disable the submit button to prevent multiple submissions
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Sending...';
-
-                    // Create FormData object to send form data
                     const formData = new FormData(form);
-
                     fetch(form.action, {
                         method: 'POST',
                         body: formData,
                         headers: {
-                            'RequestVerificationToken': form.querySelector('input[name="__RequestVerificationToken"]').value
+                            'RequestVerificationToken': form.querySelector('input[name="__RequestVerificationToken"]').value,
+                            'Accept': 'application/json'
                         }
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 400) {
+                                throw new Error('Bad request: Possibly an issue with form data or anti-forgery token.');
+                            } else if (response.status === 500) {
+                                throw new Error('Server error: Please try again later.');
+                            } else {
+                                throw new Error(`Server returned status ${response.status}`);
+                            }
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         formMessage.style.display = 'block';
                         if (data.success) {
                             formMessage.classList.remove('error');
                             formMessage.classList.add('success');
-                            formMessage.textContent = 'Your message has been sent successfully!';
-                            form.reset(); // Clear the form
+                            formMessage.textContent = data.message || 'Your message has been sent successfully!';
+                            form.reset();
                         } else {
                             formMessage.classList.remove('success');
                             formMessage.classList.add('error');
@@ -485,11 +472,10 @@
                         formMessage.style.display = 'block';
                         formMessage.classList.remove('success');
                         formMessage.classList.add('error');
-                        formMessage.textContent = 'An error occurred while sending your message. Please try again.';
+                        formMessage.textContent = error.message || 'An error occurred while sending your message. Please try again.';
                         console.error('Error:', error);
                     })
                     .finally(() => {
-                        // Re-enable the submit button
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'SEND MESSAGE';
                     });
