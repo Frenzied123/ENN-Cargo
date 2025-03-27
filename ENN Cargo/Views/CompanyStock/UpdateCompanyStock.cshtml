@@ -1,81 +1,223 @@
-﻿@model ENN_Cargo.Models.CompanyStockViewModel<h2 class="mb-4">Update Company Stock</h2><form asp-action="UpdateCompanyStock" asp-controller="CompanyStock" method="post" class="p-4 border rounded shadow-sm">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="Name">Name</label>
-        <input type="text" asp-for="Name" class="form-control" required />
-        <span asp-validation-for="Name" class="text-danger"></span>
+﻿@model ENN_Cargo.Models.CompanyStockViewModel
+@{
+    ViewData["Title"] = "Update Company Stock";
+    // Remove the Layout = null; line to use the shared _Layout.cshtml
+}
+
+<div class="container">
+    <div class="stock-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Update Company Stock
+            </h1>
+            <div class="breadcrumb">
+                <a asp-controller="CompanyStock" asp-action="ListOfCompaniesStock">Company Stocks</a>
+                <span class="separator">›</span>
+                <span class="current">Update Company Stock</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Edit Company Stock Details</h2>
+                <p class="card-subtitle">Update company information and contact details</p>
+            </div>
+            <div class="card-body">
+                <form asp-action="UpdateCompanyStock" asp-controller="CompanyStock" method="post" class="stock-form">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-section">
+                        <h3 class="section-title">General Information</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label asp-for="Name">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    Company Name
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="Enter company name" />
+                                <span asp-validation-for="Name" class="field-validation-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Email">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                    Email
+                                </label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="company@example.com" />
+                                <span asp-validation-for="Email" class="field-validation-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                    Phone Number
+                                </label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="+1 234 567 8900" />
+                                <span asp-validation-for="PhoneNumber" class="field-validation-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Location Information</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="SelectedCountry">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    </svg>
+                                    Country
+                                </label>
+                                <select asp-for="SelectedCountry" class="form-control" id="SelectedCountry">
+                                    <option value="">Select a country</option>
+                                    @foreach (var country in Model.CountryList)
+                                    {
+                                        <option value="@country.Value" selected="@(country.Value == Model.SelectedCountry ? "selected" : null)">@country.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="SelectedCountry" class="field-validation-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="SelectedTown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    Town
+                                </label>
+                                <select asp-for="SelectedTown" class="form-control" id="SelectedTown">
+                                    <option value="">Select a town</option>
+                                </select>
+                                <span asp-validation-for="SelectedTown" class="field-validation-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="CustomTown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20h9"></path>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                    </svg>
+                                    Or enter a custom town
+                                </label>
+                                <input type="text" id="CustomTown" name="CustomTown" class="form-control" value="@Model.CustomTown" placeholder="Enter town if not in the list" />
+                                <span asp-validation-for="CustomTown" class="field-validation-error"></span>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label asp-for="Address">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    Address
+                                </label>
+                                <input asp-for="Address" class="form-control" placeholder="Street address, building number, etc." />
+                                <span asp-validation-for="Address" class="field-validation-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Save Changes
+                        </button>
+
+                        <a asp-controller="CompanyStock" asp-action="ListOfCompaniesStock" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 12H5"></path>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input type="email" asp-for="Email" class="form-control" required />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber">Phone Number</label>
-        <input type="text" asp-for="PhoneNumber" class="form-control" required />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address">Address</label>
-        <input type="text" asp-for="Address" class="form-control" required />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="SelectedCountry">Country</label>
-        <select asp-for="SelectedCountry" class="form-control" id="SelectedCountry">
-            <option value="">Select a country</option>
-            @foreach (var country in Model.CountryList)
-            {
-                <option value="@country.Value" selected="@(country.Value == Model.SelectedCountry ? "selected" : null)">@country.Text</option>
-            }
-        </select>
-        <span asp-validation-for="SelectedCountry" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="SelectedTown">Town</label>
-        <select asp-for="SelectedTown" class="form-control" id="SelectedTown">
-            <option value="">Select a town</option>
-        </select>
-        <span asp-validation-for="SelectedTown" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="CustomTown">Or enter a custom town:</label>
-        <input type="text" id="CustomTown" name="CustomTown" class="form-control" value="@Model.CustomTown" />
-        <span asp-validation-for="CustomTown" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>@section Scripts {
+</div>
+
+@section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
-        const predefinedTowns = {
-            "USA": ["New York", "Los Angeles"],
-            "Canada": ["Toronto", "Vancouver"],
-            "Germany": ["Berlin", "Munich"],
-            "France": ["Paris", "Lyon"],
-            "UK": ["London", "Manchester"]
-        };
-        $(document).ready(function () {
-            $('#SelectedCountry').change(function () {
-                var country = $(this).val();
-                var townSelect = $('#SelectedTown');
-                townSelect.empty().append('<option value="">Select a town</option>');                if (country && predefinedTowns[country]) {
-                    predefinedTowns[country].forEach(function (town) {
-                        townSelect.append($('<option></option>').attr('value', town).text(town));
+        document.addEventListener("DOMContentLoaded", function () {
+            // Predefined towns
+            const predefinedTowns = {
+                "USA": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+                "Canada": ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa"],
+                "Germany": ["Berlin", "Munich", "Hamburg", "Cologne", "Frankfurt"],
+                "France": ["Paris", "Lyon", "Marseille", "Toulouse", "Nice"],
+                "UK": ["London", "Manchester", "Birmingham", "Glasgow", "Liverpool"],
+                "Bulgaria": ["Sofia", "Plovdiv", "Varna", "Burgas", "Ruse"]
+            };
+
+            // Country and town selection
+            function updateTowns() {
+                const selectedCountry = document.getElementById('SelectedCountry').value;
+                const townSelect = document.getElementById('SelectedTown');
+                const selectedTown = '@Model.SelectedTown'; // Current selected town
+
+                townSelect.innerHTML = '<option value="">Select a town</option>';
+
+                if (selectedCountry && predefinedTowns[selectedCountry]) {
+                    predefinedTowns[selectedCountry].forEach(function(town) {
+                        const option = document.createElement('option');
+                        option.value = town;
+                        option.text = town;
+                        if (town === selectedTown) {
+                            option.selected = true;
+                        }
+                        townSelect.appendChild(option);
                     });
                 }
-            });
-            $('#CustomTown').on('input', function () {
-                if ($(this).val().trim() !== '') {
-                    $('#SelectedTown').val('');
+            }
+
+            // Initialize towns when page loads
+            updateTowns();
+
+            // Update towns when country changes
+            document.getElementById('SelectedCountry').addEventListener('change', updateTowns);
+
+            // Handle custom town vs selected town
+            const customTownInput = document.getElementById('CustomTown');
+            const townSelect = document.getElementById('SelectedTown');
+
+            customTownInput.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    townSelect.value = '';
                 }
             });
-            $('#SelectedTown').change(function () {
-                if ($(this).val() !== '') {
-                    $('#CustomTown').val('');
+
+            townSelect.addEventListener('change', function() {
+                if (this.value !== '') {
+                    customTownInput.value = '';
                 }
             });
-            $('#SelectedCountry').trigger('change');
         });
     </script>
 }

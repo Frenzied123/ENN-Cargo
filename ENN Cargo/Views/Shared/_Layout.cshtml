@@ -122,6 +122,10 @@
                                 {
                                     <a href="/CompanyStock/ListOfCompaniesStock"><i class="fas fa-warehouse"></i> Company Stocks</a>
                                 }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a href="/Admin/AdminPage"><i class="fas fa-user-shield"></i> Admin Page</a>
+                                }
                             }
 
                             <div class="divider"></div>
@@ -165,6 +169,7 @@
                         <a href="/Vehicle/ListOfVehicles" class="@(Context.Request.Path.StartsWithSegments("/Vehicle") ? "active" : "")"><i class="fas fa-truck"></i> Vehicles</a>
                         <a href="/Shipment/ListOfShipments" class="@(Context.Request.Path.StartsWithSegments("/Shipment") ? "active" : "")"><i class="fas fa-box"></i> Shipments</a>
                         <a href="/CompanyStock/ListOfCompaniesStock" class="@(Context.Request.Path.StartsWithSegments("/CompanyStock") ? "active" : "")"><i class="fas fa-warehouse"></i> Company Stocks</a>
+                        <a href="/Admin/AdminPage" class="@(Context.Request.Path.StartsWithSegments("/Admin/AdminPage") ? "active" : "")"><i class="fas fa-user-shield"></i> Admin Page</a>
                     }
                     else if (User.IsInRole("TruckCompany"))
                     {
