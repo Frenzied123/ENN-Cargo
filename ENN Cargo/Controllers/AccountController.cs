@@ -204,6 +204,134 @@ namespace ENN_Cargo.Controllers
             TempData["Success"] = "You have been logged out successfully.";
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault();
+            var model = new UserSettingsViewModel
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Role = role
+            };
+            if (role == "Driver")
+            {
+                var driver = (await _driverService.GetAllAsync()).FirstOrDefault(d => d.UserId == user.Id);
+                if (driver != null)
+                {
+                    model.FirstName = driver.FirstName;
+                    model.LastName = driver.LastName;
+                    model.Experience = driver.Experience;
+                }
+            }
+            else if (role == "TruckCompany")
+            {
+                var truckCompany = (await _truckCompanyService.GetAllAsync()).FirstOrDefault(tc => tc.UserId == user.Id);
+                if (truckCompany != null)
+                {
+                    model.Name = truckCompany.Name;
+                    model.Address = truckCompany.Address;
+                    model.Country = truckCompany.Country;
+                    model.Town = truckCompany.Town;
+                }
+            }
+            else if (role == "ShipmentCompany")
+            {
+                var companyStock = (await _companyStockService.GetAllAsync()).FirstOrDefault(cs => cs.UserId == user.Id);
+                if (companyStock != null)
+                {
+                    model.Name = companyStock.Name;
+                    model.Address = companyStock.Address;
+                    model.Country = companyStock.Country;
+                    model.Town = companyStock.Town;
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(UserSettingsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                foreach (var error in updateResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var passwordResult = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                if (!passwordResult.Succeeded)
+                {
+                    foreach (var error in passwordResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault();
+            if (role == "Driver")
+            {
+                var driver = (await _driverService.GetAllAsync()).FirstOrDefault(d => d.UserId == user.Id);
+                if (driver != null)
+                {
+                    driver.FirstName = model.FirstName;
+                    driver.LastName = model.LastName;
+                    driver.Experience = model.Experience;
+                    await _driverService.UpdateAsync(driver);
+                }
+            }
+            else if (role == "TruckCompany")
+            {
+                var truckCompany = (await _truckCompanyService.GetAllAsync()).FirstOrDefault(tc => tc.UserId == user.Id);
+                if (truckCompany != null)
+                {
+                    truckCompany.Name = model.Name;
+                    truckCompany.Address = model.Address;
+                    truckCompany.Country = model.Country;
+                    truckCompany.Town = model.Town;
+                    await _truckCompanyService.UpdateAsync(truckCompany);
+                }
+            }
+            else if (role == "ShipmentCompany")
+            {
+                var companyStock = (await _companyStockService.GetAllAsync()).FirstOrDefault(cs => cs.UserId == user.Id);
+                if (companyStock != null)
+                {
+                    companyStock.Name = model.Name;
+                    companyStock.Address = model.Address;
+                    companyStock.Country = model.Country;
+                    companyStock.Town = model.Town;
+                    await _companyStockService.UpdateAsync(companyStock);
+                }
+            }
+            TempData["Success"] = "Your settings have been updated successfully.";
+            return RedirectToAction("Index", "Home");
+        }
         public IActionResult AccessDenied()
         {
             return View();

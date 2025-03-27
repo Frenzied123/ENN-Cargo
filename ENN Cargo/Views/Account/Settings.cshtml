@@ -1,0 +1,115 @@
+﻿@model ENN_Cargo.Models.UserSettingsViewModel
+
+@{
+    ViewData["Title"] = "Account Settings";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Account Settings</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+    <form asp-action="Settings" method="post" class="needs-validation" novalidate>
+        <div asp-validation-summary="All" class="alert alert-danger" role="alert" style="@(ViewData.ModelState.IsValid ? "display: none;" : "")"></div>
+
+        <!-- Common Fields for All Users -->
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewPassword" class="form-label">New Password (optional)</label>
+            <input asp-for="NewPassword" class="form-control" type="password" />
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ConfirmNewPassword" class="form-label">Confirm New Password</label>
+            <input asp-for="ConfirmNewPassword" class="form-control" type="password" />
+            <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+        </div>
+
+        <!-- Role-Specific Fields -->
+        @if (Model.Role == "Driver")
+        {
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input asp-for="FirstName" class="form-control" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input asp-for="LastName" class="form-control" required />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Experience" class="form-label">Experience (Years)</label>
+                <input asp-for="Experience" class="form-control" type="number" min="0" required />
+                <span asp-validation-for="Experience" class="text-danger"></span>
+            </div>
+        }
+        else if (Model.Role == "TruckCompany" || Model.Role == "ShipmentCompany")
+        {
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Company Name</label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" required />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Country" class="form-label">Country</label>
+                <input asp-for="Country" class="form-control" required />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Town" class="form-label">Town</label>
+                <input asp-for="Town" class="form-control" required />
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+        }
+
+        <!-- Hidden field for Role -->
+        <input type="hidden" asp-for="Role" />
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
